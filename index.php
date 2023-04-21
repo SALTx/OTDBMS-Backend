@@ -41,6 +41,26 @@
                 
     ?>
     <?php include 'partials/nav.php'; ?>
+    <?php
+        echo "<script>";
+        $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS trips_count FROM students LEFT JOIN trips ON adminNumber = trips.studentAdminNumber GROUP BY students.adminNumber;";
+        $result = $connection->query($sql);
+
+        echo "students = [];";
+        echo "tripCount = [];";
+
+        while($row = $result->fetch_assoc()) {
+            echo "students.push('" . $row["name"] . "');";
+            echo "tripCount.push('" . $row["trips_count"] . "');";
+        }
+        echo "</script>";
+    ?>
+
+    <div>
+    <canvas id="myChart"></canvas>
+    </div>
+
+
     <h1>Overseas Travel Database prototype</h1>
     <section>
         <h2>Table of students</h2>
@@ -200,5 +220,28 @@
         </table>
     </section>
     <?php include 'partials/footer.php'; ?>
+    <script>
+        alert(students);
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+            labels: students,
+            datasets: [{
+                label: 'admission years',
+                data: tripCount,
+                borderWidth: 1
+            }]
+            },
+            options: {
+            scales: {
+                y: {
+                beginAtZero: true
+                }
+            }
+            }
+        });
+    </script>
 </body>
 </html>
