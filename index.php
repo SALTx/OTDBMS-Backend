@@ -42,15 +42,18 @@
     <!-- Retrieve students and the number of trips they have been on and save them to a local js variable to be charted -->
     <?php
     echo "<script>";
-    $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS trips_count FROM students LEFT JOIN trips ON adminNumber = trips.studentAdminNumber GROUP BY students.adminNumber;";
+    // $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS trips_count FROM students LEFT JOIN trips ON adminNumber = trips.studentAdminNumber GROUP BY students.adminNumber;";
+    $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS total_trips, SUM(CASE WHEN overseasProgrammes.aciCountry = 1 THEN 1 ELSE 0 END) AS aci_trips  FROM students  LEFT JOIN trips ON students.adminNumber = trips.studentAdminNumber  LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId  GROUP BY students.adminNumber;";
     $result = $connection->query($sql);
 
     echo "students = [];";
     echo "tripCount = [];";
+    echo "aciTripCount = [];";
 
     while ($row = $result->fetch_assoc()) {
         echo "students.push('" . $row["name"] . "');";
-        echo "tripCount.push('" . $row["trips_count"] . "');";
+        echo "tripCount.push('" . $row["total_trips"] . "');";
+        echo "aciTripCount.push('" . $row["aci_trips"] . "');";
     }
     echo "</script>";
     ?>
@@ -230,6 +233,10 @@
                 datasets: [{
                     label: 'Number of overseas trips',
                     data: tripCount,
+                    borderWidth: 0.5
+                }, {
+                    label: 'Number of trips to ACI countries',
+                    data: aciTripCount,
                     borderWidth: 0.5
                 }]
             },
