@@ -5,26 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Overseas Travel Database prototype</title>
-    <link rel="stylesheet" href="css/style.css">
     <?php include 'partials/imports.php'; ?>
 </head>
 <body>
     <?php
-        //start session
         session_start();
-
-        //see if a user is logged in and has a session, if not. go to login.php
-        if(!isset($_SESSION['username'])){
+        
+        if(!isset($_SESSION['username'])) {
             header('Location: login.php');
         }
 
-        //see if user role is admin and set that as a bool variable
         $admin = false;
-        if($_SESSION['userType'] == 'Admin'){
+        if($_SESSION['userType'] == 'Admin') {
             $admin = true;
         }
 
-        // connect to mysql database
         $connection = new mysqli('localhost', 'root', '', 'otdb');
         if($connection->connect_error) {
             die("Connection failed: " . $connection->connect_error);
@@ -38,9 +33,10 @@
             $enum = explode("','", $matches[1]);
             return $enum;
         }
-                
     ?>
     <?php include 'partials/nav.php'; ?>
+
+    <!-- Retrieve students and the number of trips they have been on and save them to a local js variable to be charted -->
     <?php
         echo "<script>";
         $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS trips_count FROM students LEFT JOIN trips ON adminNumber = trips.studentAdminNumber GROUP BY students.adminNumber;";
@@ -57,11 +53,12 @@
     ?>
 
     <div>
-    <canvas id="myChart"></canvas>
+        <canvas id="myChart" style="position: relative; height:40vh; width:80vw"></canvas>
     </div>
 
-
     <h1>Overseas Travel Database prototype</h1>
+
+    <!-- Displays a table of students -->
     <section>
         <h2>Table of students</h2>
         <table>
@@ -74,11 +71,7 @@
                 <th>Citizenship status</th>
                 <th>diploma</th>
                 <th>PEM name</th>
-                <?php
-                    if($admin){
-                        echo "<th>Actions</th>";
-                    }
-                ?>
+                <?php if($admin){ echo "<th>Actions</th>"; } ?>
             </tr>
             <?php
                 //display a list of students from the students table
@@ -138,6 +131,8 @@
             ?>
         </table>
     </section>
+
+    <!-- Table displaying overseas programmes -->
     <section>
         <h2>Table of overseas programmes</h2>
         <table>
@@ -149,11 +144,7 @@
                 <th>End</th>
                 <th>country</th>
                 <th>ACI</th>
-                <?php
-                    if($admin){
-                        echo "<th>Delete</th>";
-                    }
-                ?>
+                <?php if($admin){ echo "<th>Delete</th>"; } ?>
             </tr>
             <?php
                 $sql = "SELECT * FROM overseasProgrammes";
@@ -175,7 +166,9 @@
             ?>
         </table>
     </section>
-    <section>
+
+    <!-- Table displaying overseas records -->
+    <section id="overseasRecords">
         <h2>Records of student overseas travel</h2>
         <table>
                 <tr>
@@ -185,14 +178,10 @@
                     <th>Start date</th>
                     <th>End date</th>
                     <th>ACI Country</th>
-                    <?php
-                        if($admin){
-                            echo "<th>Delete</th>";
-                        }
-                    ?>
+                    <?php if($admin){ echo "<th>Delete</th>"; } ?>
                 </tr>
                 <?php
-                    //display a list of records of student overseas travel from the studentOverseasProgrammes table
+                    //display a list of records of student who travelled overseas from the trips table
                     $sql = "SELECT students.name, students.adminNumber, overseasProgrammes.country, overseasProgrammes.startDate, overseasProgrammes.endDate, overseasProgrammes.aciCountry, trips.tripId
                             FROM trips
                             JOIN students ON students.adminNumber = trips.studentAdminNumber
@@ -220,26 +209,27 @@
         </table>
     </section>
     <?php include 'partials/footer.php'; ?>
+
+    <!-- script to load values into chart on canvas -->
     <script>
-        alert(students);
         const ctx = document.getElementById('myChart');
 
         new Chart(ctx, {
             type: 'bar',
             data: {
-            labels: students,
-            datasets: [{
-                label: 'admission years',
-                data: tripCount,
-                borderWidth: 1
-            }]
+                labels: students,
+                datasets: [{
+                    label: 'admission years',
+                    data: tripCount,
+                    borderWidth: 0.5
+                }]
             },
             options: {
-            scales: {
-                y: {
-                beginAtZero: true
+                scales: {
+                    y: {
+                    beginAtZero: true
+                    }
                 }
-            }
             }
         });
     </script>

@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>OITP | Login</title>
+    <?php include 'partials/imports.php'; ?>
+    <title>OTDBMS | Login</title>
 </head>
 <body>
     <?php
@@ -14,19 +14,19 @@
             header('Location: index.php');
         }
 
+        // Logs user out
         if(isset($_GET['logout'])){
             session_destroy();
             header('Location: login.php');
         }
-
 
         //connect to mysql database
         $connection = new mysqli('localhost', 'root', '', 'otdb');
         if($connection->connect_error) {
             die("Connection failed: " . $connection->connect_error);
         }
-        echo "Connected to MySql successfully";
 
+        // Check if form is submitted
         if(isset($_POST['submit'])){
             $username = $_POST['username'];
             $password = $_POST['password'];
@@ -38,8 +38,9 @@
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['userType'] = $row['userType'];
                 header('Location: index.php');
+                exit();
             } else {
-                echo "Invalid username or password";
+                header('Location: login.php?error=1');
             }
         }
     
@@ -55,7 +56,13 @@
             password:
             <input type="password" id="password" name="password">
         </label><br>
-        <input type="submit" name="submit" value="Login">
+        <input type="submit" name="submit" value="Login"> <br>
+        <?php
+            if(isset($_GET['error'])){
+                echo "<div id='errorMessage'>Invalid username or password</div>";
+            }
+        ?>
+        </span>
     </form>
     <?php include 'partials/footer.php'; ?>
 </body>
