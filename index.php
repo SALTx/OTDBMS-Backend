@@ -228,7 +228,7 @@
             data: {
                 labels: students,
                 datasets: [{
-                    label: 'admission years',
+                    label: 'Number of overseas trips',
                     data: tripCount,
                     borderWidth: 0.5
                 }]
@@ -237,6 +237,27 @@
                 scales: {
                     y: {
                         beginAtZero: true
+                    }
+                }
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Students"
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: "Number of trips",
+                        },
+                        min: 0,
+                        max: 5,
+                        ticks: {
+                            stepSize: 1
+                        }
                     }
                 }
             }
