@@ -1,3 +1,3 @@
 <footer>
-©<?php echo date('Y'); ?> OITP
+    ©<?php echo date('Y'); ?> OITP
 </footer>
