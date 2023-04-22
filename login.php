@@ -48,24 +48,30 @@
 
     ?>
     <?php include 'partials/nav.php'; ?>
-    <form action="login.php" method="POST">
-        <h2>Login</h2>
-        <label for="username">
-            username:
-            <input type="text" id="username" name="username">
-        </label><br>
-        <label for="password">
-            password:
-            <input type="password" id="password" name="password">
-        </label><br>
-        <input type="submit" name="submit" value="Login"> <br>
-        <?php
-        if (isset($_GET['error'])) {
-            echo "<div id='errorMessage'>Invalid username or password</div>";
-        }
-        ?>
-        </span>
-    </form>
+    <div class="login-form">
+        <form action="login.php" method="POST">
+            <h1>Login</h1>
+            <div class="content">
+                <div class="input-field">
+                    <input type="text" placeholder="Username" name="username">
+                </div>
+                <div class="input-field">
+                    <input type="password" placeholder="Password" name="password">
+                </div>
+                <!-- <a href="#" class="link">Forgot Your Password?</a> -->
+                <!-- TODO: add a forgot password link -->
+            </div>
+            <div class="action">
+                <!-- <button>Register</button> -->
+                <button type="submit" name="submit">Log in</button>
+            </div>
+            <?php
+            if (isset($_GET['error'])) {
+                echo "<div id='errorMessage'>Invalid username or password</div>";
+            }
+            ?>
+        </form>
+    </div>
     <?php include 'partials/footer.php'; ?>
 </body>
 
