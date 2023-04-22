@@ -14,12 +14,14 @@
     session_start();
     if (isset($_SESSION['username'])) {
         header('Location: index.php');
+        exit();
     }
 
     // Logs user out
     if (isset($_GET['logout'])) {
         session_destroy();
         header('Location: login.php');
+        exit();
     }
 
     //connect to mysql database
@@ -43,6 +45,7 @@
             exit();
         } else {
             header('Location: login.php?error=1');
+            exit();
         }
     }
 

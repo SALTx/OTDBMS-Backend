@@ -15,6 +15,7 @@
 
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
+        exit();
     }
 
     $admin = false;
@@ -39,16 +40,13 @@
     ?>
     <?php include 'partials/nav.php'; ?>
 
-    <!-- Retrieve students and the number of trips they have been on and save them to a local js variable to be charted -->
+    <!-- Retrieve Students, the number of trips theyve been on, and the number of trips of which were in ACI countries -->
     <?php
     echo "<script>";
-    // $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS trips_count FROM students LEFT JOIN trips ON adminNumber = trips.studentAdminNumber GROUP BY students.adminNumber;";
     $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS total_trips, SUM(CASE WHEN overseasProgrammes.aciCountry = 1 THEN 1 ELSE 0 END) AS aci_trips  FROM students  LEFT JOIN trips ON students.adminNumber = trips.studentAdminNumber  LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId  GROUP BY students.adminNumber;";
     $result = $connection->query($sql);
 
-    echo "students = [];";
-    echo "tripCount = [];";
-    echo "aciTripCount = [];";
+    echo "students = []; tripsCount=[]; aciTripCount=[];";
 
     while ($row = $result->fetch_assoc()) {
         echo "students.push('" . $row["name"] . "');";
@@ -167,7 +165,11 @@
                 echo "<td>" . $row["startDate"] . "</td>";
                 echo "<td>" . $row["endDate"] . "</td>";
                 echo "<td>" . $row["country"] . "</td>";
-                echo "<td>" . $row["aciCountry"] . "</td>";
+                if ($row["aciCountry"] == 1) {
+                    echo "<td>Yes</td>";
+                } else {
+                    echo "<td>No</td>";
+                }
                 if ($admin) {
                     echo "<td><a href='delete.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'>Delete</a></td>";
                 }
