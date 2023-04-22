@@ -94,7 +94,7 @@
                 echo "<td>" . $row["diploma"] . "</td>";
                 echo "<td>" . $row["pemName"] . "</td>";
                 if ($admin) {
-                    echo "<td>";
+                    echo "<td class='tableActions'>";
                     echo "<a href='delete.php?table=students&id=" . $row["adminNumber"] . "'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
                     echo "<a href='edit.php?table=students&id=" . $row["adminNumber"] . "'><i class='fa-solid fa-pen-to-square' style='color:darkgreen'></i></i></a>";
                     echo "</td>";
@@ -127,7 +127,7 @@
                 echo "</td>";
                 echo "<td><input type='text' name='diploma' placeholder='Diploma'></td>";
                 echo "<td><input type='text' name='pemName' placeholder='PEM name' required></td>";
-                echo "<td>
+                echo "<td class='tableActions'>
                     <input type='hidden' value='students' name='table'>
                     <button type='submit'><i class='fa-solid fa-plus'></i></button>
                     </td>";
@@ -171,7 +171,7 @@
                     echo "<td>No</td>";
                 }
                 if ($admin) {
-                    echo "<td>";
+                    echo "<td class='tableActions'>";
                     echo "<a href='delete.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
                     echo "<a href='edit.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'><i class='fa-solid fa-pen-to-square' style='color:darkgreen'></i></i></a>";
                     echo "</td>";
@@ -197,7 +197,7 @@
                 // echo "<td><input type='text' name='country' placeholder='Country' required></td>";
                 echo "<td><select name='country' id='country' required></select></td>";
                 echo "<td></td>";
-                echo "<td>
+                echo "<td class='tableActions'>
                     <input type='hidden' value='overseasProgrammes' name='table'>
                     <button type='submit'><i class='fa-solid fa-plus'></i></button>
                     </td>";
