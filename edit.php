@@ -10,7 +10,6 @@
 
 <body>
     <?php
-    //checks if admin logged in TODO: definitive edition
     session_start();
     if (!isset($_SESSION['username']) || $_SESSION['userType'] !== 'Admin') {
         header('Location: login.php');
@@ -22,7 +21,6 @@
     if ($connection->connect_error) {
         die("Connection failed: " . $connection->connect_error);
     }
-    echo "Connected successfully";
 
     //handles post
     if (isset($_POST['table']) && isset($_POST['id'])) {
@@ -36,7 +34,6 @@
             $citizenshipStatus = $_POST['citizenshipStatus'];
             $diploma = $_POST['diploma'];
             $pemName = $_POST['pemName'];
-
 
             $sql = "UPDATE students SET name = '$name', admissionYear = $admissionYear, gender = '$gender', birthday = '$birthday', citizenshipStatus = '$citizenshipStatus', diploma = '$diploma', pemName = '$pemName' WHERE adminNumber = '$id'";
 
@@ -69,7 +66,6 @@
         }
     }
 
-
     if (!isset($_GET['table']) && !isset($_GET['id'])) {
         header('Location: index.php');
         exit();
@@ -77,7 +73,6 @@
 
     $table = $_GET['table'];
     $id = $_GET['id'];
-
 
     function get_enum_values($connection, $table, $field)
     {
