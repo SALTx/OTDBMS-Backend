@@ -5,3 +5,4 @@
 
 <!-- import css -->
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/table.css">
