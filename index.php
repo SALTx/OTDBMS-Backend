@@ -252,6 +252,9 @@
         </table>
     </section>
     <?php include 'partials/footer.php'; ?>
+    <input list="newcountry">
+    <datalist id="newcountry">
+    </datalist>
 
     <!-- script to load values into chart on canvas -->
     <script>
@@ -314,6 +317,7 @@
                 // loop through the data and add each country to the dropdown
                 for (let i = 0; i < data.length; i++) {
                     $("#country").append("<option value='" + data[i].name.common + "'>" + data[i].name.common + "</option>");
+                    $("#newcountry").append("<option value='" + data[i].name.common + "'>" + data[i].name.common + "</option>");
                 }
                 console.log("number of countries loaded: " + data.length);
             },
