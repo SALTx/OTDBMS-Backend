@@ -42,10 +42,31 @@
 
             if ($connection->query($sql) === TRUE) {
                 header('Location: index.php');
+                exit();
             } else {
                 echo "Error updating record: " . $connection->error;
+                exit();
             }
             exit();
+        } else if ($_POST['table'] == "overseasProgrammes") {
+            $programmeId = $_POST['id'];
+            $programmeName = $_POST['programmeName'];
+            $programmeType = $_POST['programmeType'];
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            $country = $_POST['country'];
+            $aciCountry = $_POST['aciCountry'];
+
+            $sql = "UPDATE overseasProgrammes SET programmeName = '$programmeName', programmeType = '$programmeType', startDate = '$startDate', endDate = '$endDate', country = '$country' WHERE programmeId = '$programmeId'";
+
+
+            if ($connection->query($sql) === TRUE) {
+                header('Location: index.php');
+                exit();
+            } else {
+                echo "Error updating record: " . $connection->error;
+                exit();
+            }
         }
     }
 
@@ -117,6 +138,43 @@
 
         echo "<label for='pemName'>PEM Name</label>";
         echo "<input type='text' name='pemName' value='{$row['pemName']}'>";
+        echo "<input type='submit' value='Submit'>";
+        echo "</form>";
+    } else if ($table = "overseasProgrammes") {
+        $sql = "SELECT * FROM overseasProgrammes WHERE programmeId = '$id'";
+        $result = $connection->query($sql);
+        $row = $result->fetch_assoc();
+
+        echo "Edit overseas programme";
+        echo "<form action='edit.php' method='post'>";
+        echo "<input type='hidden' name='table' value='overseasProgrammes'>";
+        echo "<input type='hidden' name='id' value='$id'>";
+        //programmeId(int), programmeName(string), programmeType(enum), startDate(date), endDate(date), country(String), aciCountry(boolean)
+        echo "<label for='programmeName'>Programme Name</label>";
+        echo "<input type='text' name='programmeName' value='{$row['programmeName']}'>";
+        echo "<label for='programmeType'>Programme Type</label>";
+        echo "<select name='programmeType'>";
+        $values = get_enum_values($connection, 'overseasProgrammes', 'programmeType');
+        foreach ($values as $value) {
+            if ($value == $row['programmeType']) {
+                echo "<option value='$value' selected>$value</option>";
+            } else {
+                echo "<option value='$value'>$value</option>";
+            }
+        }
+        echo "</select>";
+        echo "<label for='startDate'>Start Date</label>";
+        echo "<input type='date' name='startDate' value='{$row['startDate']}'>";
+        echo "<label for='endDate'>End Date</label>";
+        echo "<input type='date' name='endDate' value='{$row['endDate']}'>";
+        echo "<label for='country'>Country</label>";
+        echo "<input type='text' name='country' value='{$row['country']}'>";
+        echo "<label for='aciCountry'>ACI Country</label>";
+        echo "<input type='checkbox' name='aciCountry' value='true' ";
+        if ($row['aciCountry'] == 1) {
+            echo "checked";
+        }
+        echo ">";
         echo "<input type='submit' value='Submit'>";
         echo "</form>";
     }

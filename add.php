@@ -44,9 +44,26 @@
             } else {
                 echo "Error: " . $sql . "<br>" . $connection->error;
             }
+        } else if ($table == "overseasProgrammes") {
+            $programmeName = $_POST['programmeName'];
+            $programmeType = $_POST['programmeType'];
+            $startDate = $_POST['startDate'];
+            $endDate = $_POST['endDate'];
+            $country = $_POST['country'];
+
+            $sql = "INSERT INTO overseasProgrammes (programmeName, programmeType, startDate, endDate, country)
+                    VALUES ('$programmeName', '$programmeType', '$startDate', '$endDate', '$country')";
+
+            if ($connection->query($sql) === TRUE) {
+                header('Location: index.php');
+                exit();
+            } else {
+                echo "Error: " . $sql . "<br>" . $connection->error;
+            }
         }
     } else {
         header('Location: index.php');
+        exit();
     }
     ?>
 </body>

@@ -151,7 +151,7 @@
                 <th>country</th>
                 <th>ACI</th>
                 <?php if ($admin) {
-                    echo "<th>Delete</th>";
+                    echo "<th>Actions</th>";
                 } ?>
             </tr>
             <?php
@@ -171,8 +171,36 @@
                     echo "<td>No</td>";
                 }
                 if ($admin) {
-                    echo "<td><a href='delete.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'>Delete</a></td>";
+                    echo "<td>";
+                    echo "<a href='delete.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
+                    echo "<a href='edit.php?table=overseasProgrammes&id=" . $row["programmeId"] . "'><i class='fa-solid fa-pen-to-square' style='color:darkgreen'></i></i></a>";
+                    echo "</td>";
                 }
+                echo "</tr>";
+            }
+            if ($admin) {
+                echo "<tr>";
+                echo "<form action='add.php' method='post'>";
+                echo "<td></td>";
+                echo "<td><input type='text' name='programmeName' placeholder='Name' required></td>";
+                echo "<td>";
+                $programmeType_values = get_enum_values($connection, "overseasProgrammes", "programmeType");
+                echo "<select name='programmeType' id='programmeType' required>";
+                foreach ($programmeType_values as $value) {
+                    echo "<option value='$value'>$value</option>";
+                }
+                echo "</select>";
+                echo "</td>";
+                echo "<td><input type='date' name='startDate' required></td>";
+                echo "<td><input type='date' name='endDate' required></td>";
+                // TODO add a dropdown for countries using an external API or something
+                echo "<td><input type='text' name='country' placeholder='Country' required></td>";
+                echo "<td></td>";
+                echo "<td>
+                    <input type='hidden' value='overseasProgrammes' name='table'>
+                    <button type='submit'><i class='fa-solid fa-plus'></i></button>
+                    </td>";
+                echo "</form>";
                 echo "</tr>";
             }
             ?>
@@ -275,3 +303,10 @@
 </body>
 
 </html>
+
+
+<!-- TODO
+Add error checking so end date is not before start date
+fix edit for overseasProgrammes to not include aciCountry
+fix hanging echoes for errors / successful sql connections
+improve footer -->
