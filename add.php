@@ -51,6 +51,13 @@
             $endDate = $_POST['endDate'];
             $country = $_POST['country'];
 
+            // if the end date is before the start date, swap them
+            if ($endDate < $startDate) {
+                $temp = $endDate;
+                $endDate = $startDate;
+                $startDate = $temp;
+            }
+
             $sql = "INSERT INTO overseasProgrammes (programmeName, programmeType, startDate, endDate, country)
                     VALUES ('$programmeName', '$programmeType', '$startDate', '$endDate', '$country')";
 
