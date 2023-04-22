@@ -194,7 +194,8 @@
                 echo "<td><input type='date' name='startDate' required></td>";
                 echo "<td><input type='date' name='endDate' required></td>";
                 // TODO add a dropdown for countries using an external API or something
-                echo "<td><input type='text' name='country' placeholder='Country' required></td>";
+                // echo "<td><input type='text' name='country' placeholder='Country' required></td>";
+                echo "<td><select name='country' id='country' required></select></td>";
                 echo "<td></td>";
                 echo "<td>
                     <input type='hidden' value='overseasProgrammes' name='table'>
@@ -297,6 +298,27 @@
                         }
                     }
                 }
+            }
+        });
+    </script>
+
+    <!-- script to populate country dropdown -->
+    <!-- TODO: add fallback in case api doesnt exist in future -->
+    <script>
+        // send request to get list of countries from https://restcountries.com/v3.1/all using ajax
+        $.ajax({
+            url: "https://restcountries.com/v3.1/all",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                // loop through the data and add each country to the dropdown
+                for (let i = 0; i < data.length; i++) {
+                    $("#country").append("<option value='" + data[i].name.common + "'>" + data[i].name.common + "</option>");
+                }
+                console.log("number of countries loaded: " + data.length);
+            },
+            error: function() {
+                alert("Error loading countries");
             }
         });
     </script>
