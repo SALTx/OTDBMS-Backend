@@ -46,7 +46,7 @@
     $sql = "SELECT students.name, COUNT(trips.studentAdminNumber) AS total_trips, SUM(CASE WHEN overseasProgrammes.aciCountry = 1 THEN 1 ELSE 0 END) AS aci_trips  FROM students  LEFT JOIN trips ON students.adminNumber = trips.studentAdminNumber  LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId  GROUP BY students.adminNumber;";
     $result = $connection->query($sql);
 
-    echo "students = []; tripsCount=[]; aciTripCount=[];";
+    echo "students = []; tripCount=[]; aciTripCount=[];";
 
     while ($row = $result->fetch_assoc()) {
         echo "students.push('" . $row["name"] . "');";
