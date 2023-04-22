@@ -332,7 +332,7 @@
 
 
 <!-- TODO
-Add error checking so end date is not before start date
-fix edit for overseasProgrammes to not include aciCountry
+Add error checking so end date is not before start date (DONE)
+fix edit for overseasProgrammes to not include aciCountry (DONE)
 fix hanging echoes for errors / successful sql connections
 improve footer -->

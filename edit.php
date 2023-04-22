@@ -55,7 +55,6 @@
             $startDate = $_POST['startDate'];
             $endDate = $_POST['endDate'];
             $country = $_POST['country'];
-            $aciCountry = $_POST['aciCountry'];
 
             $sql = "UPDATE overseasProgrammes SET programmeName = '$programmeName', programmeType = '$programmeType', startDate = '$startDate', endDate = '$endDate', country = '$country' WHERE programmeId = '$programmeId'";
 
@@ -170,11 +169,6 @@
         echo "<label for='country'>Country</label>";
         echo "<input type='text' name='country' value='{$row['country']}'>";
         echo "<label for='aciCountry'>ACI Country</label>";
-        echo "<input type='checkbox' name='aciCountry' value='true' ";
-        if ($row['aciCountry'] == 1) {
-            echo "checked";
-        }
-        echo ">";
         echo "<input type='submit' value='Submit'>";
         echo "</form>";
     }
