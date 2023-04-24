@@ -110,7 +110,7 @@
         if (isset($_GET['error'])) {
             echo "<p class='error'>";
             $error = $_GET['error'];
-            if ($error == 'duplicate') {
+            if ($error == 'duplicateAdminNumber') {
                 echo "Admin number already exists";
             } else if ($error == 'adminNumberLength') {
                 echo "Invalid admin number";

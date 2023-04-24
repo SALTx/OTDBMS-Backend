@@ -45,7 +45,10 @@
                 header('Location: students.php');
                 exit();
             } else {
-                echo "Error: " . $sql . "<br>" . $connection->error;
+                if (strpos($connection->error, "Duplicate entry") !== false) {
+                    header('Location: students.php?error=duplicateAdminNumber');
+                    exit();
+                }
             }
         } else if ($table == "overseasProgrammes") {
             $programmeName = $_POST['programmeName'];
