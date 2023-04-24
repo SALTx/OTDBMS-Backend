@@ -21,7 +21,9 @@ CREATE TABLE IF NOT EXISTS overseasProgrammes (
     startDate DATE NOT NULL,
     endDate DATE NOT NULL,
     country VARCHAR(64) NOT NULL,
-    aciCountry BOOLEAN GENERATED ALWAYS AS (country IN ('Singapore', 'Malaysia', 'Indonesia', 'Thailand', 'Philippines', 'Vietnam', 'China', 'India')) STORED
+    -- aciCountry BOOLEAN GENERATED ALWAYS AS (country IN ('Singapore', 'Malaysia', 'Indonesia', 'Thailand', 'Philippines', 'Vietnam', 'China', 'India')) STORED
+    aciCountry BOOLEAN GENERATED ALWAYS AS (country IN ('Brunei', 'Cambodia', 'Indonesia', 'Laos', 'Malaysia', 'Myanmar', 'Philippines', 'Singapore', 'Thailand', 'Vietnam', 'China', 'India')) STORED
+
 );
 
 -- create table trips

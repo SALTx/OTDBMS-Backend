@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'partials/helpers.php'; ?>
     <title>OITP | Delete</title>
 </head>
 
@@ -20,11 +21,7 @@
         $id = $_GET['id'];
 
         //connect to mysql server
-        $connection = new mysqli('localhost', 'root', '', 'otdb');
-        if ($connection->connect_error) {
-            die("Connection failed: " . $connection->connect_error);
-        }
-        echo "Connected to MySql successfully";
+        $connection = connect_to_db();
 
 
         if ($table == "students") {
@@ -37,11 +34,13 @@
 
         if ($connection->query($sql) === TRUE) {
             header('Location: index.php');
+            exit();
         } else {
             echo "Error deleting record: " . $connection->error;
         }
     } else {
         header('Location: index.php');
+        exit();
     }
     ?>
 </body>

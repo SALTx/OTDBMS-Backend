@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTDBMS | Home</title>
     <?php include 'partials/imports.php'; ?>
+    <?php include 'partials/helpers.php'; ?>
 </head>
 
 <body>
@@ -23,20 +24,8 @@
         $admin = true;
     }
 
-    $connection = new mysqli('localhost', 'root', '', 'otdb');
-    if ($connection->connect_error) {
-        die("Connection failed: " . $connection->connect_error);
-    }
-
-    function get_enum_values($connection, $table, $field)
-    {
-        $result = $connection->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'");
-        $row = $result->fetch_assoc();
-        $type = $row['Type'];
-        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
-        $enum = explode("','", $matches[1]);
-        return $enum;
-    }
+    // connect_to_db();
+    $connection = connect_to_db();
     ?>
     <?php include 'partials/nav.php'; ?>
 

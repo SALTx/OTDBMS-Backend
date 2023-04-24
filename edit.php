@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'partials/imports.php'; ?>
+    <?php include 'partials/helpers.php'; ?>
     <title>Document</title>
 </head>
 
@@ -17,10 +19,7 @@
     }
 
     //connects to database
-    $connection = new mysqli('localhost', 'root', '', 'otdb');
-    if ($connection->connect_error) {
-        die("Connection failed: " . $connection->connect_error);
-    }
+    $connection = connect_to_db();
 
     //handles post
     if (isset($_POST['table']) && isset($_POST['id'])) {
@@ -73,16 +72,6 @@
 
     $table = $_GET['table'];
     $id = $_GET['id'];
-
-    function get_enum_values($connection, $table, $field)
-    {
-        $result = $connection->query("SHOW COLUMNS FROM {$table} WHERE Field = '{$field}'");
-        $row = $result->fetch_assoc();
-        $type = $row['Type'];
-        preg_match("/^enum\(\'(.*)\'\)$/", $type, $matches);
-        $enum = explode("','", $matches[1]);
-        return $enum;
-    }
 
     if ($table == "students") {
         $sql = "SELECT * FROM students WHERE adminNumber = '$id'";

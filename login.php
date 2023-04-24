@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include 'partials/imports.php'; ?>
+    <?php include 'partials/helpers.php'; ?>
     <link rel="stylesheet" href="css/login.css">
     <title>OTDBMS | Login</title>
 </head>
@@ -27,10 +28,7 @@
     }
 
     //connect to mysql database
-    $connection = new mysqli('localhost', 'root', '', 'otdb');
-    if ($connection->connect_error) {
-        die("Connection failed: " . $connection->connect_error);
-    }
+    $connection = connect_to_db();
 
     // Check if form is submitted
     if (isset($_POST['submit'])) {
