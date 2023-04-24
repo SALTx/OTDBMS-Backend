@@ -33,6 +33,36 @@
 
     <section>
         <h2>Table of students</h2>
+        <button id='exportButton'>Export data</button>
+        <?php
+        echo "<script>";
+        echo "function exportTableToCSV(filename) {";
+        echo "var csv = [];";
+        echo "var rows = document.querySelectorAll('table tr');";
+        echo "for (var i = 0; i < rows.length-1; i++) {";
+        echo "var row = [], cols = rows[i].querySelectorAll('td, th');";
+        echo "for (var j = 0; j < cols.length; j++)";
+        echo "row.push(cols[j].innerText);";
+        echo "csv.push(row.join(','));";
+        echo "}";
+        echo "downloadCSV(csv.join('\\n'), filename);";
+        echo "}";
+        echo "function downloadCSV(csv, filename) {";
+        echo "var csvFile;";
+        echo "var downloadLink;";
+        echo "csvFile = new Blob([csv], { type: 'text/csv' });";
+        echo "downloadLink = document.createElement('a');";
+        echo "downloadLink.download = filename;";
+        echo "downloadLink.href = window.URL.createObjectURL(csvFile);";
+        echo "downloadLink.style.display = 'none';";
+        echo "document.body.appendChild(downloadLink);";
+        echo "downloadLink.click();";
+        echo "}";
+        echo "document.getElementById('exportButton').addEventListener('click', function () {";
+        echo "exportTableToCSV('students.csv');";
+        echo "});";
+        echo "</script>";
+        ?>
         <table>
             <tr>
                 <th>Admin number</th>

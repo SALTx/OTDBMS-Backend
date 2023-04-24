@@ -13,8 +13,12 @@
     <?php
     if (isset($_POST['table'])) {
         session_start();
-        if (!isset($_SESSION['username']) && $_SESSION['userType'] != 'Admin') {
+        if (!isset($_SESSION['username'])) {
             header('Location: login.php');
+            exit();
+        } else if ($_SESSION['userType'] != 'Admin') {
+            header('Location: index.php');
+            exit();
         }
 
         $table = $_POST['table'];
