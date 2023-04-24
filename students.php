@@ -97,7 +97,7 @@
                     echo "<td>" . $row["pemName"] . "</td>";
                     if ($admin) {
                         echo "<td class='tableActions'>";
-                        echo "<a href='delete.php?table=students&id=" . $row["adminNumber"] . "'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
+                        echo "<a href='delete.php?table=students&id=" . $row["adminNumber"] . "' class='deleteButton'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
                         echo "<a href='edit.php?table=students&id=" . $row["adminNumber"] . "'><i class='fa-solid fa-pen-to-square' style='color:darkgreen'></i></i></a>";
                         echo "</td>";
                     }
@@ -156,6 +156,18 @@
         }
         ?>
     </section>
+
+    <script>
+        // when any of the anchors with deleteButton class is clicked show a popup asking if theyre sure they want to delete
+        $(document).ready(function() {
+            var deleteButtons = $(".deleteButton");
+            deleteButtons.each(function() {
+                $(this).click(function() {
+                    return confirm("Are you sure you want to delete this student?");
+                });
+            });
+        });
+    </script>
 
     <?php include 'partials/footer.php'; ?>
 </body>
