@@ -19,19 +19,22 @@
 
         $table = $_GET['table'];
         $id = $_GET['id'];
+        $redirect = "index.php";
 
         $connection = connect_to_db();
 
         if ($table == "students") {
             $sql = "DELETE FROM students WHERE adminNumber = '$id'";
+            $redirect = "students.php";
         } else if ($table == "overseasProgrammes") {
             $sql = "DELETE FROM overseasprogrammes WHERE programmeId = $id";
+            $redirect = "programs.php";
         } else if ($table == "trips") {
             $sql = "DELETE FROM trips WHERE tripId = $id";
         }
 
         if ($connection->query($sql) === TRUE) {
-            header('Location: students.php');
+            header('Location: ' . $redirect);
             exit();
         } else {
             echo "Error deleting record: " . $connection->error;
