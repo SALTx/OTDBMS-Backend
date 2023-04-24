@@ -20,9 +20,7 @@
         $table = $_GET['table'];
         $id = $_GET['id'];
 
-        //connect to mysql server
         $connection = connect_to_db();
-
 
         if ($table == "students") {
             $sql = "DELETE FROM students WHERE adminNumber = '$id'";
@@ -33,7 +31,7 @@
         }
 
         if ($connection->query($sql) === TRUE) {
-            header('Location: index.php');
+            header('Location: students.php');
             exit();
         } else {
             echo "Error deleting record: " . $connection->error;
