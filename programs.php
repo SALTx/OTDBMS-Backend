@@ -91,6 +91,7 @@
                 echo "<td class='tableActions'>
                     <input type='hidden' value='overseasProgrammes' name='table'>
                     <button type='submit'><i class='fa-solid fa-plus'></i></button>
+                    <button type='reset'><i class='fa-sharp fa-solid fa-eraser'></i></button>
                     </td>";
                 echo "</form>";
                 echo "</tr>";

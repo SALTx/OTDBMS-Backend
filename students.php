@@ -34,25 +34,37 @@
 
     <section>
         <h2>Table of students</h2>
-        <div id="actionButtons">
+        <div id="actionButtons" class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h2>Export</h2>
-                    <div class="btn-group-vertical" role="group" aria-label="Export buttons">
-                        <button type="button" id="exportToCSV" class="btn btn-warning">CSV</button>
-                        <button type="button" id="exportToXLS" class="btn btn-warning">XLS</button>
-                        <button type="button" id="exportToJSON" class="btn btn-warning">JSON</button>
-                        <button type="button" id="exportToXML" class="btn btn-warning">XML</button>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Export</h5>
+                            <div class="btn-group-vertical" role="group" aria-label="Export buttons">
+                                <button type="button" id="exportToCSV" class="btn btn-warning">CSV</button>
+                                <button type="button" id="exportToXLS" class="btn btn-warning">XLS</button>
+                                <button type="button" id="exportToJSON" class="btn btn-warning">JSON</button>
+                                <button type="button" id="exportToXML" class="btn btn-warning">XML</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <h2>Import</h2>
-                    <div class="btn-group-vertical" role="group" aria-label="Import buttons">
-                        <button type="button" id="importButton" class="btn btn-primary">Import data</button>
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Import</h5>
+                            <div class="btn-group-vertical" role="group" aria-label="Import buttons">
+                                <button type="button" id="importFromCSV" class="btn btn-primary">CSV</button>
+                                <button type="button" id="importFromXLS" class="btn btn-primary">XLS</button>
+                                <button type="button" id="importFromJSON" class="btn btn-primary">JSON</button>
+                                <button type="button" id="importFromXML" class="btn btn-primary">XML</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <div id="table-conatainer">
             <table id="students">
@@ -121,6 +133,7 @@
                     echo "<td class='tableActions'>
                     <input type='hidden' value='students' name='table'>
                     <button type='submit'><i class='fa-solid fa-plus'></i></button>
+                    <button type='reset'><i class='fa-sharp fa-solid fa-eraser'></i></button>
                     </td>";
                     echo "</form>";
                     echo "</tr>";
