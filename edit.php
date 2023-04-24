@@ -37,7 +37,7 @@
             $sql = "UPDATE students SET name = '$name', admissionYear = $admissionYear, gender = '$gender', birthday = '$birthday', citizenshipStatus = '$citizenshipStatus', diploma = '$diploma', pemName = '$pemName' WHERE adminNumber = '$id'";
 
             if ($connection->query($sql) === TRUE) {
-                header('Location: index.php');
+                header('Location: students.php');
                 exit();
             } else {
                 echo "Error updating record: " . $connection->error;
@@ -56,7 +56,7 @@
 
 
             if ($connection->query($sql) === TRUE) {
-                header('Location: index.php');
+                header('Location: programs.php');
                 exit();
             } else {
                 echo "Error updating record: " . $connection->error;
