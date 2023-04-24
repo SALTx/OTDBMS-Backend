@@ -29,6 +29,7 @@
 
     .nav-links a {
         color: #fff;
+        text-decoration: none;
     }
 
     .logo {
@@ -41,13 +42,13 @@
         font-size: 18px;
     }
 
+    .menu li {
+        padding: 0.3em 0.7em;
+    }
+
     .menu li:hover {
         background-color: #4c9e9e;
         border-radius: 5px;
         transition: 0.3s ease;
-    }
-
-    .menu li {
-        padding: 5px 14px;
     }
 </style>
