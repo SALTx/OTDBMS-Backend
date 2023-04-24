@@ -47,6 +47,39 @@ function exportTableToJSON(filename) {
   downloadFile(data, filename, "application/json");
 }
 
+function exportTableToXML(filename) {
+  // Get the table headers and data
+  let headers = [];
+  let rows = [];
+  let table = document.getElementById("students");
+  let headerRow = table.rows[0];
+  for (let i = 0; i < headerRow.cells.length; i++) {
+    headers.push(headerRow.cells[i].textContent.toLowerCase());
+  }
+  for (let i = 1; i < table.rows.length; i++) {
+    let row = {};
+    for (let j = 0; j < headers.length; j++) {
+      row[headers[j]] = table.rows[i].cells[j].textContent;
+    }
+    rows.push(row);
+  }
+
+  // Build XML string
+  let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+  xml += "<students>\n";
+  for (let i = 0; i < rows.length; i++) {
+    xml += "  <student>\n";
+    for (let j = 0; j < headers.length; j++) {
+      xml += `    <${headers[j]}>${rows[i][headers[j]]}</${headers[j]}>\n`;
+    }
+    xml += "  </student>\n";
+  }
+  xml += "</students>";
+
+  // Download XML file
+  downloadFile(xml, filename, "application/xml");
+}
+
 function downloadFile(data, filename, type) {
   var file = new Blob([data], { type: type });
   var downloadLink = document.createElement("a");
@@ -67,5 +100,8 @@ $(document).ready(function () {
   });
   $("#exportToJSON").on("click", function () {
     exportTableToJSON("students.json");
+  });
+  $("#exportToXML").on("click", function () {
+    exportTableToXML("students.xml");
   });
 });

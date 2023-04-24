@@ -42,6 +42,7 @@
                         <button type="button" id="exportToCSV" class="btn btn-warning">CSV</button>
                         <button type="button" id="exportToXLS" class="btn btn-warning">XLS</button>
                         <button type="button" id="exportToJSON" class="btn btn-warning">JSON</button>
+                        <button type="button" id="exportToXML" class="btn btn-warning">XML</button>
                     </div>
                 </div>
                 <div class="col-md-6">
