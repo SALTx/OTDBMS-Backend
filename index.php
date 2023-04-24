@@ -33,21 +33,18 @@
     echo "<script>";
     $sql = "SELECT students.name, 
     COUNT(trips.studentAdminNumber) AS total_trips, 
-    SUM(CASE WHEN overseasProgrammes.aciCountry = 1 THEN 1 ELSE 0 END) AS aci_trips,
-    YEAR(CURDATE()) - YEAR(students.startDate) AS yearNumber 
+    SUM(CASE WHEN overseasProgrammes.aciCountry = 1 THEN 1 ELSE 0 END) AS aci_trips  
     FROM students  
     LEFT JOIN trips ON students.adminNumber = trips.studentAdminNumber  
-    LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId  
-    GROUP BY students.adminNumber;";
+    LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId  GROUP BY students.adminNumber;";
     $result = $connection->query($sql);
 
-    echo "students = []; tripCount=[]; aciTripCount=[]; yearNumber=[];";
+    echo "students = []; tripCount=[]; aciTripCount=[];";
 
     while ($row = $result->fetch_assoc()) {
         echo "students.push('" . $row["name"] . "');";
         echo "tripCount.push('" . $row["total_trips"] . "');";
         echo "aciTripCount.push('" . $row["aci_trips"] . "');";
-        echo "yearNumber.push('" . $row["yearNumber"] . "');";
     }
     echo "</script>";
     ?>
@@ -81,13 +78,6 @@
             },
             options: {
                 scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            },
-            options: {
-                scales: {
                     x: {
                         title: {
                             display: true,
@@ -103,7 +93,8 @@
                         max: 5,
                         ticks: {
                             stepSize: 1
-                        }
+                        },
+                        beginAtZero: true
                     }
                 }
             }

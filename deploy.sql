@@ -64,3 +64,11 @@ INSERT INTO trips (studentAdminNumber, programmeId) VALUES ('234567B', 3);
 -- example user accounts
 INSERT INTO users VALUES ('admin', 'admin', 'Admin');
 INSERT INTO users VALUES ('user', 'user', 'Default');
+
+-- create a view that shows trip information and includes students.adminNumber, students.name, number of trips, and number of trips to ACI countries
+CREATE OR REPLACE VIEW tripInfo AS
+SELECT students.adminNumber, students.name, COUNT(trips.tripId) AS numTrips, SUM(overseasProgrammes.aciCountry) AS numAciTrips
+FROM students
+LEFT JOIN trips ON students.adminNumber = trips.studentAdminNumber
+LEFT JOIN overseasProgrammes ON trips.programmeId = overseasProgrammes.programmeId
+GROUP BY students.adminNumber;
