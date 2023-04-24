@@ -20,7 +20,7 @@ td {
   border-collapse: collapse;
 }
 
-#errorMessage {
+.error {
   color: red;
   background-color: coral;
   border: 1px solid red;

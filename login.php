@@ -70,7 +70,7 @@
             </div>
             <?php
             if (isset($_GET['error'])) {
-                echo "<div id='errorMessage'>Invalid username or password</div>";
+                echo "<div class='error'>Invalid username or password</div>";
             }
             ?>
         </form>

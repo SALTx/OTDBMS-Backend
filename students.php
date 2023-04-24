@@ -104,6 +104,19 @@
             }
             ?>
         </table>
+        <!-- error messages if any -->
+        <?php
+        if (isset($_GET['error'])) {
+            echo "<p class='error'>";
+            $error = $_GET['error'];
+            if ($error == 'duplicate') {
+                echo "Admin number already exists";
+            } else if ($error == 'adminNumberLength') {
+                echo "Invalid admin number";
+            }
+            echo "</p>";
+        }
+        ?>
     </section>
 
     <?php include 'partials/footer.php'; ?>

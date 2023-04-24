@@ -32,6 +32,12 @@
             $diploma = $_POST['diploma'];
             $pemName = $_POST['pemName'];
 
+            // validate the admin number, if its not 6 digits followed by 1 character, redirect to students.php
+            if (!preg_match('/^[0-9]{6}[A-Z]$/', $adminNumber)) {
+                header('Location: students.php?error=adminNumberLength');
+                exit();
+            }
+
             $sql = "INSERT INTO students (adminNumber, name, admissionYear, gender, birthday, citizenshipStatus, diploma, pemName)
                         VALUES ('$adminNumber', '$name', '$admissionYear', '$gender', '$birthday', '$citizenshipStatus', '$diploma', '$pemName')";
 
