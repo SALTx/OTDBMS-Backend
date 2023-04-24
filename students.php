@@ -77,6 +77,7 @@
                     <th>Citizenship status</th>
                     <th>diploma</th>
                     <th>PEM name</th>
+                    <th>Year #</th>
                     <?php if ($admin) {
                         echo "<th>Actions</th>";
                     } ?>
@@ -95,6 +96,9 @@
                     echo "<td>" . $row["citizenshipStatus"] . "</td>";
                     echo "<td>" . $row["diploma"] . "</td>";
                     echo "<td>" . $row["pemName"] . "</td>";
+
+                    $year_number = date("Y") - $row["admissionYear"];
+                    echo "<td>" . $year_number . "</td>";
                     if ($admin) {
                         echo "<td class='tableActions'>";
                         echo "<a href='delete.php?table=students&id=" . $row["adminNumber"] . "' class='deleteButton'><i class='fa-solid fa-trash' style='color:Maroon'></i></a>";
@@ -130,6 +134,7 @@
                     echo "</td>";
                     echo "<td><input type='text' name='diploma' placeholder='Diploma'></td>";
                     echo "<td><input type='text' name='pemName' placeholder='PEM name' required></td>";
+                    echo "<td></td>";
                     echo "<td class='tableActions'>
                     <input type='hidden' value='students' name='table'>
                     <button type='submit'><i class='fa-solid fa-plus'></i></button>
