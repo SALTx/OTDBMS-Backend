@@ -40,7 +40,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Export</h5>
-                            <div class="btn-group-vertical" role="group" aria-label="Export buttons">
+                            <div class="btn-group-horizontal" role="group" aria-label="Export buttons">
                                 <button type="button" id="exportToCSV" class="btn btn-warning">CSV</button>
                                 <button type="button" id="exportToXLS" class="btn btn-warning">XLS</button>
                                 <button type="button" id="exportToJSON" class="btn btn-warning">JSON</button>
@@ -53,7 +53,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Import</h5>
-                            <div class="btn-group-vertical" role="group" aria-label="Import buttons">
+                            <div class="btn-group-horizontal" role="group" aria-label="Import buttons">
                                 <button type="button" id="importFromCSV" class="btn btn-primary">CSV</button>
                                 <button type="button" id="importFromXLS" class="btn btn-primary">XLS</button>
                                 <button type="button" id="importFromJSON" class="btn btn-primary">JSON</button>
