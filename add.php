@@ -36,7 +36,7 @@
                         VALUES ('$adminNumber', '$name', '$admissionYear', '$gender', '$birthday', '$citizenshipStatus', '$diploma', '$pemName')";
 
             if ($connection->query($sql) === TRUE) {
-                header('Location: index.php');
+                header('Location: students.php');
                 exit();
             } else {
                 echo "Error: " . $sql . "<br>" . $connection->error;
@@ -59,7 +59,7 @@
                     VALUES ('$programmeName', '$programmeType', '$startDate', '$endDate', '$country')";
 
             if ($connection->query($sql) === TRUE) {
-                header('Location: index.php');
+                header('Location: programs.php');
                 exit();
             } else {
                 echo "Error: " . $sql . "<br>" . $connection->error;
