@@ -75,7 +75,8 @@
                 echo "<form action='add.php' method='post'>";
                 echo "<td><input type='text' name='adminNumber' placeholder='Admin number' required></td>";
                 echo "<td><input type='text' name='name' placeholder='Name' required></td>";
-                echo "<td><input type='number' name='admissionYear' placeholder='Admission Year' required></td>";
+                $min_year = date("Y") - 10;
+                echo "<td><input type='number' name='admissionYear' placeholder='Admission Year' min='" . $min_year . "' max='" . date("Y") . "' required></td>";
                 echo "<td>";
                 $gender_values = get_enum_values($connection, "students", "gender");
                 echo "<select name='gender' id='gender' required>";
