@@ -18,3 +18,257 @@ trip_graph_representation
 	-Number of year twos on trips
 	-Number of year threes on trips
 	-Number of year fours and above on trips
+
+    -------------------------------------------------------------------------
+
+1. student_trip_details
+   - student admin number
+   - student name
+   - program name
+   - program start date
+   - program end date
+   - program type (educational trip, immersion program, internship)
+   - program location (ACI or non-ACI country)
+
+
+4. trip_duration_statistics
+   - average duration of all trips
+   - average duration of ACI trips
+   - average duration of non-ACI trips
+   - shortest trip duration
+   - longest trip duration
+
+5. program_participation_details
+   - program name
+   - program type (educational trip, immersion program, internship)
+   - program location (ACI or non-ACI country)
+   - number of students who attended each program
+   - list of students who attended each program
+
+6. student_trip_by_year
+   - year (based on program start date)
+   - total number of trips
+   - total number of ACI trips
+   - total number of non-ACI trips
+
+7. program_trip_details
+   - program name
+   - program type (educational trip, immersion program, internship)
+   - program location (ACI or non-ACI country)
+   - number of trips
+   - list of students who attended each trip
+
+8. trip_cost_statistics
+   - average cost of all trips
+   - average cost of ACI trips
+   - average cost of non-ACI trips
+   - most expensive trip
+   - least expensive trip
+
+9. program_date_range
+   - program name
+   - program type (educational trip, immersion program, internship)
+   - program location (ACI or non-ACI country)
+   - program start date
+   - program end date
+
+10. student_trip_by_type
+    - student admin number
+    - student name
+    - number of educational trips attended
+    - number of immersion programs attended
+    - number of overseas internships attended
+
+-------------------------------------------------------------------------------
+1. Student_trip_statistics
+   - Student admin number
+   - Student name
+   - Total number of trips attended
+   - Total number of ACI trips attended
+   - Percentage of ACI trips attended
+
+2. Program_attendance_statistics
+   - Program ID
+   - Program name
+   - Total number of students attended
+   - Total number of ACI students attended
+   - Percentage of ACI students attended
+
+3. Yearly_program_attendance
+   - Year
+   - Program ID
+   - Program name
+   - Number of students attended
+   - Number of ACI students attended
+
+4. Student_program_history
+   - Student admin number
+   - Student name
+   - Program ID
+   - Program name
+   - Start date
+   - End date
+   - Country
+   - ACI or non-ACI
+
+5. Student_internship_history
+   - Student admin number
+   - Student name
+   - Internship ID
+   - Internship name
+   - Start date
+   - End date
+   - Company name
+   - Country
+   - ACI or non-ACI
+
+6. Program_internship_attendance
+   - Program ID
+   - Program name
+   - Total number of students attended
+   - Total number of internships attended
+   - Total number of ACI internships attended
+   - Percentage of ACI internships attended
+
+7. Student_immersion_history
+   - Student admin number
+   - Student name
+   - Immersion ID
+   - Immersion name
+   - Start date
+   - End date
+   - Organization name
+   - Country
+   - ACI or non-ACI
+
+8. Program_immersion_attendance
+   - Program ID
+   - Program name
+   - Total number of students attended
+   - Total number of immersions attended
+   - Total number of ACI immersions attended
+   - Percentage of ACI immersions attended
+
+9. Student_participation_history
+   - Student admin number
+   - Student name
+   - Program/immersion/internship ID
+   - Program/immersion/internship name
+   - Type of participation (attended or applied but not attended)
+   - Start date
+   - End date
+   - Country
+   - ACI or non-ACI
+
+10. Program_participation_statistics
+   - Program ID
+   - Program name
+   - Number of students who attended
+   - Number of students who applied but did not attend
+   - Number of ACI students who attended
+   - Number of ACI students who applied but did not attend
+
+=================================================================================================================================
+View: Student_programme_attendance_info
+- student admin number
+- student name
+- programme name
+- programme type
+- start date
+- end date
+
+Procedure: Insert_student_programme_attendance
+- Input parameters: student admin number, programme id
+- Description: Inserts a record into the trips table for the specified student and programme id. Checks if the student has already attended two programmes and if the programme is valid (i.e. within the start and end date range).
+
+View: Student_internship_info
+- student admin number
+- student name
+- internship name
+- company name
+- start date
+- end date
+
+Procedure: Insert_student_internship_attendance
+- Input parameters: student admin number, internship name, company name
+- Description: Inserts a record into the trips table for the specified student and internship. Checks if the student has already attended two programmes and if the internship is valid (i.e. within the start and end date range).
+
+View: ACI_country_participation_info
+- programme name
+- programme type
+- number of students who attended from ACI countries
+- number of students who attended from non-ACI countries
+
+View: Student_diploma_info
+- diploma
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+
+View: Student_admission_year_info
+- admission year
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+
+Procedure: Update_programme_attendance
+- Input parameters: programme id, number of students
+- Description: Updates the number of students who attended the specified programme in the overseasProgrammes table.
+
+Procedure: Update_internship_attendance
+- Input parameters: internship name, number of students
+- Description: Updates the number of students who attended the specified internship in the overseasProgrammes table.
+
+View: Student_gender_info
+- gender
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+
+Procedure: Update_KPI
+- Input parameters: total number of students to send overseas
+- Description: Updates the KPI for the total number of students to send overseas in the database.
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+ok, I need your help with SQL, before everything starts, I need to feed you the data, and background settings for a system,the overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. the overseas region is classified as ACI countries or Non-ACI countries. ACI stands for ASEAN  CHINA INDIAN, 
+We have KPIs given for how many students should go for overseas in total, currently I have 3 tables.
+overseasProgrammes table:programmeId,programmeName,programmeType,startDate,endDate,country,aciCountry
+students table:studAdmin,studName,admissionYear,gender,birthday,citizenshipStatus,diploma,pemName(pem is the student's private mentor for his acadamic life, something like a form teacher)
+trips table:tripId,studAdmin,programmeId
+
+well, I need the outline of some good ideas of views and procedures. I do need not the actual codes, just some outlines, this might sound confusing, but I have 4  examples here of what I want you to produce.
+Views / Procedures for Application
+
+Student_trip_info
+	-student admin number
+	-student name
+	-number of overseas programs attended
+	-number of trips to ACI country
+
+basic_trip_statistics
+	-number of students who went on overseas programs
+	-num of students who went to ACI overseas progs
+	-year1 num of trips
+	-year2 num of trips
+	-year3 num of trips
+
+trip_graph_representation
+	-Number of year ones on trips
+	-Number of year twos on trips
+	-Number of year threes on trips
+	-Number of year fours and above on trips
+
+  get_trips
+-Admin number
+-Name
+-Trip Country
+-Start Date
+-End Date
+-Is it aci country
+
+-----------------------------
+i need 5-10 more of such ideas written in the same format and way
