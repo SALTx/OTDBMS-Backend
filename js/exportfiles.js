@@ -63,16 +63,23 @@ function exportTableToJSON(filename) {
   downloadFile(data, filename, "application/json");
 }
 
+/*
+Fixed formatting to match XML format
+removed last row and column but still need to finalize rows and columns that need to be exported
+fixed sanitization of headers
+*/
 function exportTableToXML(filename) {
   // Get the table headers and data
   let headers = [];
   let rows = [];
   let table = document.getElementById("students");
   let headerRow = table.rows[0];
-  for (let i = 0; i < headerRow.cells.length; i++) {
-    headers.push(headerRow.cells[i].textContent.toLowerCase());
+  for (let i = 0; i < headerRow.cells.length - 1; i++) {
+    headers.push(
+      headerRow.cells[i].textContent.toLowerCase().replace(/\W/g, "_")
+    );
   }
-  for (let i = 1; i < table.rows.length; i++) {
+  for (let i = 1; i < table.rows.length - 1; i++) {
     let row = {};
     for (let j = 0; j < headers.length; j++) {
       row[headers[j]] = table.rows[i].cells[j].textContent;
@@ -86,15 +93,8 @@ function exportTableToXML(filename) {
   for (let i = 0; i < rows.length; i++) {
     xml += "  <student>\n";
     for (let j = 0; j < headers.length; j++) {
-      let value = rows[i][headers[j]];
-      value = value
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
-      xml += `    <${headers[j]}>${value}</${headers[j]}>\n`;
+      xml += `    <${headers[j]}>${rows[i][headers[j]]}</${headers[j]}>\n`;
     }
-
     xml += "  </student>\n";
   }
   xml += "</students>";
@@ -105,13 +105,13 @@ function exportTableToXML(filename) {
 
 function downloadFile(data, filename, type) {
   var file = new Blob([data], { type: type });
-  var downloadLink = document.createElement("a");
-  downloadLink.download = filename;
-  downloadLink.href = URL.createObjectURL(file);
-  downloadLink.style.display = "none";
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
+  var downloadLink = $("<a></a>");
+  downloadLink.attr("download", filename);
+  downloadLink.attr("href", URL.createObjectURL(file));
+  downloadLink.css("display", "none");
+  $("body").append(downloadLink);
+  downloadLink[0].click();
+  downloadLink.remove();
 }
 
 $(document).ready(function () {
