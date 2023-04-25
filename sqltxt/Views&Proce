@@ -225,22 +225,135 @@ View: Student_gender_info
 Procedure: Update_KPI
 - Input parameters: total number of students to send overseas
 - Description: Updates the KPI for the total number of students to send overseas in the database.
+===========================================================================================================
+STATS AFTER FEEDING IN THE WHOLE SQL QUERY
 
+Sure, here are some more ideas for views and procedures for the overseas student program management system:
 
+Views / Procedures for Application
 
+1. Program_availability
+- Program ID
+- Program name
+- Program start date
+- Program end date
+- Available slots
 
+2. Student_program_history
+- Student admin number
+- Program ID
+- Program name
+- Program start date
+- Program end date
 
+3. Program_participants
+- Program ID
+- Program name
+- Number of participants
+- Participants' names and admin numbers
+
+4. Program_evaluation
+- Program ID
+- Program name
+- Overall program rating
+- Comments/feedback from participants
+
+5. Student_evaluation
+- Student admin number
+- Program ID
+- Program name
+- Personal program rating
+- Comments/feedback from student
+
+6. Student_details
+- Student admin number
+- Student name
+- Student contact information
+- Year of study
+
+7. Program_schedule
+- Program ID
+- Program name
+- Program start date
+- Program end date
+- Activities and schedule for each day
+
+8. Program_budget
+- Program ID
+- Program name
+- Total budget
+- Itemized expenses (e.g. airfare, accommodation, meals)
+
+9. Trip_logistics
+- Program ID
+- Program name
+- Flight information
+- Accommodation details
+- Transportation arrangements
+
+10. Student_status
+- Student admin number
+- Status of application (e.g. pending, accepted, rejected)
+- Date of application
+- PEM name (form teacher)
+
+I hope these ideas help in the development of your overseas student program management system!
+================================================================================================================
+STATS THAT ENFORCE ON KPI
+I apologize for misunderstanding your requirements earlier. Here are some additional ideas for views and procedures based on your revised specifications:
+
+Views / Procedures for Comparing Students who Attended Overseas Programmes vs. Those who Did Not
+
+overseas_vs_nonoverseas_cohort_comparison
+	- Cohort Year
+	- Total number of students in cohort
+	- Number of students who attended overseas programme
+	- Number of students who did not attend overseas programme
+	- Percentage of students who attended overseas programme
+	- Percentage of students who did not attend overseas programme
+
+overseas_vs_nonoverseas_school_comparison
+	- Total number of students in school
+	- Number of students who attended overseas programme
+	- Number of students who did not attend overseas programme
+	- Percentage of students who attended overseas programme
+	- Percentage of students who did not attend overseas programme
+
+overseas_vs_nonoverseas_year_level_comparison
+	- Year Level
+	- Total number of students in year level
+	- Number of students who attended overseas programme
+	- Number of students who did not attend overseas programme
+	- Percentage of students who attended overseas programme
+	- Percentage of students who did not attend overseas programme
+
+overseas_vs_nonoverseas_student_details
+	- Student Admin Number
+	- Student Name
+	- Cohort Year
+	- Year Level
+	- Whether student attended overseas programme
+	- Number of overseas programmes attended by student (if applicable)
+
+overseas_vs_nonoverseas_performance_comparison
+	- Cohort Year
+	- Year Level
+	- Total number of students in cohort/year level
+	- Average GPA of students who attended overseas programme
+	- Average GPA of students who did not attend overseas programme
+	- Percentage of students who attended overseas programme who achieved a GPA of 3.5 or above
+	- Percentage of students who did not attend overseas programme who achieved a GPA of 3.5 or above
+
+I hope these ideas are more in line with what you were looking for. Let me know if you have any further questions or if there is anything else I can help you with.
 
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
-ok, I need your help with SQL, before everything starts, I need to feed you the data, and background settings for a system,the overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. the overseas region is classified as ACI countries or Non-ACI countries. ACI stands for ASEAN  CHINA INDIAN, 
-We have KPIs given for how many students should go for overseas in total, currently I have 3 tables.
-overseasProgrammes table:programmeId,programmeName,programmeType,startDate,endDate,country,aciCountry
-students table:studAdmin,studName,admissionYear,gender,birthday,citizenshipStatus,diploma,pemName(pem is the student's private mentor for his acadamic life, something like a form teacher)
-trips table:tripId,studAdmin,programmeId
+I need help with SQL, before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. 
+We have KPIs given for how many students should go for overseas in total, and in case you dont understand what is pemName, a pem is soemthing like a form teacher
 
-well, I need the outline of some good ideas of views and procedures. I do need not the actual codes, just some outlines, this might sound confusing, but I have 4  examples here of what I want you to produce.
+well, I need the outline of some good ideas of views and procedures. before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. 
+We have KPIs given for how many students should go for overseas in total, and in case you dont understand what is pemName, a pem is soemthing like a form teacherI do need not the actual codes, just some outlines, this might sound confusing, but I have 4  examples here of what I want you to produce.
 Views / Procedures for Application
 
 Student_trip_info
