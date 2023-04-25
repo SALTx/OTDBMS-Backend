@@ -1,5 +1,7 @@
 <nav class="navbar">
-    <div class="logo">OTDBMS</div>
+    <a href="index.php" class="logo-link">
+        <div class="logo">OTDBMS</div>
+    </a>
     <ul class="nav-links">
         <div class="menu">
             <li><a href="index.php">Home</a></li>
@@ -19,6 +21,23 @@
     </ul>
 </nav>
 <style>
+    .logo-link {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .logo-link:hover {
+        background-color: #4c9e9e;
+        border-radius: 5px;
+        transition: 0.3s ease;
+    }
+
+    .logo {
+        font-size: 32px;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+
     .navbar {
         display: flex;
         align-items: center;
@@ -31,10 +50,7 @@
     .nav-links a {
         color: #fff;
         text-decoration: none;
-    }
-
-    .logo {
-        font-size: 32px;
+        font-weight: bold;
     }
 
     .menu {
