@@ -1,17 +1,29 @@
+// TODO: Finalize rows and columns that need to be exported
+// TODO: Convert functions to take table object as parameter so that it can be used for any table
+
+/*
+INCOMPLETE
+- removed trailing commas
+- still need to fix export rows (actions row should not be exported for student table)
+*/
 function exportTableToCSV(filename) {
   var csv = [];
-  var rows = document.querySelectorAll("table tr");
+  var rows = $("table tr");
   for (var i = 0; i < rows.length - 1; i++) {
     var row = [];
-    var cols = rows[i].querySelectorAll("td, th");
+    var cols = $(rows[i]).find("td, th");
     for (var j = 0; j < cols.length; j++) {
       row.push(cols[j].innerText);
     }
-    csv.push(row.join(","));
+    csv.push(row.join(",").slice(0, -1));
   }
   downloadFile(csv.join("\n"), filename, "text/csv");
 }
 
+/*
+REPLACE
+use SheetsJS for exporting to XLS
+*/
 function exportTableToXLS(filename) {
   var excelTemplate =
     "<html> " +
@@ -25,38 +37,49 @@ function exportTableToXLS(filename) {
   downloadFile(excelTemplate, filename, "application/vnd.ms-excel");
 }
 
+/*
+INCOMPLETE
+removed unused row and column but still need to finalize rows and columns that need to be exported
+*/
 function exportTableToJSON(filename) {
-  // Get the table headers and data
   let headers = [];
   let rows = [];
-  let table = document.getElementById("students");
-  let headerRow = table.rows[0];
-  for (let i = 0; i < headerRow.cells.length; i++) {
-    headers.push(headerRow.cells[i].textContent.toLowerCase());
-  }
-  for (let i = 1; i < table.rows.length; i++) {
+  let table = $("#students");
+  let headerRow = table.find("tr:first-child th");
+  headerRow.each(function () {
+    headers.push($(this).text().toLowerCase());
+  });
+  let rowLength = table.find("tr").length - 1;
+  let colLength = headerRow.length - 1;
+  for (let i = 1; i < rowLength; i++) {
     let row = {};
-    for (let j = 0; j < headers.length; j++) {
-      row[headers[j]] = table.rows[i].cells[j].textContent;
+    for (let j = 0; j < colLength; j++) {
+      row[headers[j]] = table.find("tr:eq(" + i + ") td:eq(" + j + ")").text();
     }
     rows.push(row);
   }
 
-  // Convert data to JSON and download the file
   let data = JSON.stringify(rows, null, 2);
   downloadFile(data, filename, "application/json");
 }
 
+/*
+Fixed formatting to match XML format
+removed last row and column but still need to finalize rows and columns that need to be exported
+fixed sanitization of headers
+*/
 function exportTableToXML(filename) {
   // Get the table headers and data
   let headers = [];
   let rows = [];
   let table = document.getElementById("students");
   let headerRow = table.rows[0];
-  for (let i = 0; i < headerRow.cells.length; i++) {
-    headers.push(headerRow.cells[i].textContent.toLowerCase());
+  for (let i = 0; i < headerRow.cells.length - 1; i++) {
+    headers.push(
+      headerRow.cells[i].textContent.toLowerCase().replace(/\W/g, "_")
+    );
   }
-  for (let i = 1; i < table.rows.length; i++) {
+  for (let i = 1; i < table.rows.length - 1; i++) {
     let row = {};
     for (let j = 0; j < headers.length; j++) {
       row[headers[j]] = table.rows[i].cells[j].textContent;
@@ -82,13 +105,13 @@ function exportTableToXML(filename) {
 
 function downloadFile(data, filename, type) {
   var file = new Blob([data], { type: type });
-  var downloadLink = document.createElement("a");
-  downloadLink.download = filename;
-  downloadLink.href = URL.createObjectURL(file);
-  downloadLink.style.display = "none";
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
+  var downloadLink = $("<a></a>");
+  downloadLink.attr("download", filename);
+  downloadLink.attr("href", URL.createObjectURL(file));
+  downloadLink.css("display", "none");
+  $("body").append(downloadLink);
+  downloadLink[0].click();
+  downloadLink.remove();
 }
 
 $(document).ready(function () {
