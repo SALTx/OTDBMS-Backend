@@ -1,0 +1,20 @@
+Views / Procedures for Application
+
+Student_trip_info
+	-student admin number
+	-student name
+	-number of overseas programs attended
+	-number of trips to ACI country
+
+basic_trip_statistics
+	-number of students who went on overseas programs
+	-num of students who went to ACI overseas progs
+	-year1 num of trips
+	-year2 num of trips
+	-year3 num of trips
+
+trip_graph_representation
+	-Number of year ones on trips
+	-Number of year twos on trips
+	-Number of year threes on trips
+	-Number of year fours and above on trips
