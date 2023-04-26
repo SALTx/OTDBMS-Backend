@@ -1,12 +1,12 @@
-Here is a neat and tidy format of the information you provided:
 
-Student_trip_info
+
+1. Student_trip_info
 - student admin number
 - student name
 - number of overseas programs attended
 - number of trips to ACI country
 
-1. student_trip_details
+2. student_trip_details
 - student admin number
 - student name
 - program name
@@ -15,13 +15,13 @@ Student_trip_info
 - program type (educational trip, immersion program, internship)
 - program location (ACI or non-ACI country)
 
-6. student_trip_by_year
+3. student_trip_by_year
 - year (based on program start date)
 - total number of trips
 - total number of ACI trips
 - total number of non-ACI trips
 
-9. Student_participation_history
+4. Student_participation_history
 - student admin number
 - student name
 - program/immersion/internship ID
@@ -32,43 +32,43 @@ Student_trip_info
 - country
 - ACI or non-ACI
 
-10. Student_program_history
+5. Student_program_history
 - student admin number
 - program ID
 - program name
 - program start date
 - program end date
 
-11. Student_evaluation
+6. Student_evaluation
 - student admin number
 - program ID
 - program name
 - personal program rating
 - comments/feedback from student
 
-12. Student_details
+7. Student_details
 - student admin number
 - student name
 - student contact information
 - year of study
 
-13. Student_status
+8. Student_status
 - student admin number
 - status of application (e.g. pending, accepted, rejected)
 - date of application
 - PEM name (form teacher)
 
-View: Student_diploma_info
+9. View: Student_diploma_info
 - diploma
 - number of students who attended overseas programmes
 - number of students who attended overseas internships
 
-View: Student_admission_year_info
+10. View: Student_admission_year_info
 - admission year
 - number of students who attended overseas programmes
 - number of students who attended overseas internships
 
-View: Student_gender_info
+11. View: Student_gender_info
 - gender
 - number of students who attended overseas programmes
 - number of students who attended overseas internships
