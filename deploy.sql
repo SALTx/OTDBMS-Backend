@@ -42,6 +42,21 @@ CREATE TABLE IF NOT EXISTS users (
     userType ENUM('Admin', 'Default') NOT NULL
 );
 
+-- create internships table
+CREATE TABLE IF NOT EXISTS interships (
+    internId INT NOT NULL PRIMARY KEY,
+    programmeId INT NOT NULL,
+    studName VARCHAR(64) NOT NULL,
+    adminNumber CHAR(7) NOT NULL,
+    country VARCHAR(64) NOT NULL,
+    companyName VARCHAR(64) NOT NULL,
+    startDate DATE NOT NULL,
+    endDate DATE NOT NULL,
+    FOREIGN KEY (adminNumber) REFERENCES students(adminNumber),
+    FOREIGN KEY (programmeId) REFERENCES overseasProgrammes(programmeId)
+
+);
+
 -- example students
 INSERT INTO students VALUES ('123456A', 'John Doe', 12, 'Male', '2000-01-01', 'Singapore Citizen', 'Diploma in Computer Science', 'John Smith');
 INSERT INTO students VALUES ('234567B', 'Jane Doe', 12, 'Female', '2000-01-01', 'Permanent resident', 'Diploma in Nursing', 'Megan Lee');
