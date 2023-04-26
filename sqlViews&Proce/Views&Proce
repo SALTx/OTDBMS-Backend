@@ -1,25 +1,12 @@
 Views / Procedures for Application
 
-Student_trip_info
-	-student admin number
-	-student name
-	-number of overseas programs attended
-	-number of trips to ACI country
-
-basic_trip_statistics
+   basic_trip_statistics
 	-number of students who went on overseas programs
 	-num of students who went to ACI overseas progs
 	-year1 num of trips
 	-year2 num of trips
 	-year3 num of trips
 
-trip_graph_representation
-	-Number of year ones on trips
-	-Number of year twos on trips
-	-Number of year threes on trips
-	-Number of year fours and above on trips
-
-    -------------------------------------------------------------------------
 
 1. student_trip_details
    - student admin number
@@ -29,7 +16,6 @@ trip_graph_representation
    - program end date
    - program type (educational trip, immersion program, internship)
    - program location (ACI or non-ACI country)
-
 
 4. trip_duration_statistics
    - average duration of all trips
@@ -72,36 +58,14 @@ trip_graph_representation
    - program start date
    - program end date
 
-10. student_trip_by_type
-    - student admin number
-    - student name
-    - number of educational trips attended
-    - number of immersion programs attended
-    - number of overseas internships attended
-
--------------------------------------------------------------------------------
-1. Student_trip_statistics
-   - Student admin number
-   - Student name
-   - Total number of trips attended
-   - Total number of ACI trips attended
-   - Percentage of ACI trips attended
-
-2. Program_attendance_statistics
-   - Program ID
-   - Program name
-   - Total number of students attended
-   - Total number of ACI students attended
-   - Percentage of ACI students attended
-
 3. Yearly_program_attendance
    - Year
    - Program ID
    - Program name
    - Number of students attended
-   - Number of ACI students attended
+   - Number of students signed up
 
-4. Student_program_history
+4.  Program_history
    - Student admin number
    - Student name
    - Program ID
@@ -228,7 +192,7 @@ Procedure: Update_KPI
 ===========================================================================================================
 STATS AFTER FEEDING IN THE WHOLE SQL QUERY
 
-Sure, here are some more ideas for views and procedures for the overseas student program management system:
+
 
 Views / Procedures for Application
 
@@ -300,7 +264,6 @@ Views / Procedures for Application
 I hope these ideas help in the development of your overseas student program management system!
 ================================================================================================================
 STATS THAT ENFORCE ON KPI
-I apologize for misunderstanding your requirements earlier. Here are some additional ideas for views and procedures based on your revised specifications:
 
 Views / Procedures for Comparing Students who Attended Overseas Programmes vs. Those who Did Not
 
@@ -343,9 +306,6 @@ overseas_vs_nonoverseas_performance_comparison
 	- Average GPA of students who did not attend overseas programme
 	- Percentage of students who attended overseas programme who achieved a GPA of 3.5 or above
 	- Percentage of students who did not attend overseas programme who achieved a GPA of 3.5 or above
-
-I hope these ideas are more in line with what you were looking for. Let me know if you have any further questions or if there is anything else I can help you with.
-
 
 
 -----------------------------------------------------------------------------------------------------------------------------------------
