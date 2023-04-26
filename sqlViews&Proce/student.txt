@@ -1,0 +1,49 @@
+Student_trip_info
+	-student admin number
+	-student name
+	-number of overseas programs attended
+	-number of trips to ACI country
+
+    1. student_trip_details
+   - student admin number
+   - student name
+   - program name
+   - program start date
+   - program end date
+   - program type (educational trip, immersion program, internship)
+   - program location (ACI or non-ACI country)
+
+
+6. student_trip_by_year
+   - year (based on program start date)
+   - total number of trips
+   - total number of ACI trips
+   - total number of non-ACI trips
+
+   9. Student_participation_history
+   - Student admin number
+   - Student name
+   - Program/immersion/internship ID
+   - Program/immersion/internship name
+   - Type of participation (attended or applied but not attended)
+   - Start date
+   - End date
+   - Country
+   - ACI or non-ACI
+
+   
+View: Student_diploma_info
+- diploma
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+
+View: Student_admission_year_info
+- admission year
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+
+View: Student_gender_info
+- gender
+- number of students who attended overseas programmes
+- number of students who attended overseas internships
+

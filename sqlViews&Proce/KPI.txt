@@ -1,0 +1,3 @@
+Procedure: Update_KPI
+- Input parameters: total number of students to send overseas
+- Description: Updates the KPI for the total number of students to send overseas in the database.
