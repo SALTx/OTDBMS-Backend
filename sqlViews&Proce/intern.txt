@@ -1,5 +1,4 @@
-
-5. Student_internship_history
+1. Student_internship_history
    - Student admin number
    - Student name
    - Internship ID
@@ -10,7 +9,7 @@
    - Country
    - ACI or non-ACI
 
-6. Program_internship_attendance
+2. Program_internship_attendance
    - Program ID
    - Program name
    - Total number of students attended
@@ -18,23 +17,22 @@
    - Total number of ACI internships attended
    - Percentage of ACI internships attended
 
-   View: Student_internship_info
-- student admin number
-- student name
-- internship name
-- company name
-- start date
-- end date
+3. View: Student_internship_info
+   - student admin number
+   - student name
+   - internship name
+   - company name
+   - start date
+   - end date
 
-Procedure: Insert_student_internship_attendance
-- Input parameters: student admin number, internship name, company name
-- Description: Inserts a record into the trips table for the specified student and internship. Checks if the student has already attended two programmes and if the internship is valid (i.e. within the start and end date range).
+4. Procedure: Insert_student_internship_attendance
+   - Input parameters: student admin number, internship name, company name
+   - Description: Inserts a record into the trips table for the specified student and internship. Checks if the student has already attended two programmes and if the internship is valid (i.e. within the start and end date range).
 
+5. Procedure: Update_programme_attendance
+   - Input parameters: programme id, number of students
+   - Description: Updates the number of students who attended the specified programme in the overseasProgrammes table.
 
-Procedure: Update_programme_attendance
-- Input parameters: programme id, number of students
-- Description: Updates the number of students who attended the specified programme in the overseasProgrammes table.
-
-Procedure: Update_internship_attendance
-- Input parameters: internship name, number of students
-- Description: Updates the number of students who attended the specified internship in the overseasProgrammes table.
+6. Procedure: Update_internship_attendance
+   - Input parameters: internship name, number of students
+   - Description: Updates the number of students who attended the specified internship in the overseasProgrammes table.

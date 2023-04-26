@@ -1,37 +1,63 @@
+Here is a neat and tidy format of the information you provided:
+
 Student_trip_info
-	-student admin number
-	-student name
-	-number of overseas programs attended
-	-number of trips to ACI country
+- student admin number
+- student name
+- number of overseas programs attended
+- number of trips to ACI country
 
-    1. student_trip_details
-   - student admin number
-   - student name
-   - program name
-   - program start date
-   - program end date
-   - program type (educational trip, immersion program, internship)
-   - program location (ACI or non-ACI country)
-
+1. student_trip_details
+- student admin number
+- student name
+- program name
+- program start date
+- program end date
+- program type (educational trip, immersion program, internship)
+- program location (ACI or non-ACI country)
 
 6. student_trip_by_year
-   - year (based on program start date)
-   - total number of trips
-   - total number of ACI trips
-   - total number of non-ACI trips
+- year (based on program start date)
+- total number of trips
+- total number of ACI trips
+- total number of non-ACI trips
 
-   9. Student_participation_history
-   - Student admin number
-   - Student name
-   - Program/immersion/internship ID
-   - Program/immersion/internship name
-   - Type of participation (attended or applied but not attended)
-   - Start date
-   - End date
-   - Country
-   - ACI or non-ACI
+9. Student_participation_history
+- student admin number
+- student name
+- program/immersion/internship ID
+- program/immersion/internship name
+- type of participation (attended or applied but not attended)
+- start date
+- end date
+- country
+- ACI or non-ACI
 
-   
+10. Student_program_history
+- student admin number
+- program ID
+- program name
+- program start date
+- program end date
+
+11. Student_evaluation
+- student admin number
+- program ID
+- program name
+- personal program rating
+- comments/feedback from student
+
+12. Student_details
+- student admin number
+- student name
+- student contact information
+- year of study
+
+13. Student_status
+- student admin number
+- status of application (e.g. pending, accepted, rejected)
+- date of application
+- PEM name (form teacher)
+
 View: Student_diploma_info
 - diploma
 - number of students who attended overseas programmes
@@ -46,4 +72,3 @@ View: Student_gender_info
 - gender
 - number of students who attended overseas programmes
 - number of students who attended overseas internships
-

@@ -1,11 +1,12 @@
 
-3. Yearly_program_attendance
+1. Yearly_program_attendance
    - Year
    - Program ID
    - Program name
    - Number of students attended
    - Number of students signed up
-   8. Program_immersion_attendance
+
+2. Program_immersion_attendance
    - Program ID
    - Program name
    - Total number of students attended
@@ -13,14 +14,16 @@
    - Total number of ACI immersions attended
    - Percentage of ACI immersions attended
 
-   View: Student_programme_attendance_info
-- student admin number
-- student name
-- programme name
-- programme type
-- start date
-- end date
+3. Student_programme_attendance_info
+   - Student admin number
+   - Student name
+   - Programme name
+   - Programme type
+   - Start date
+   - End date
 
-Procedure: Insert_student_programme_attendance
-- Input parameters: student admin number, programme id
-- Description: Inserts a record into the trips table for the specified student and programme id. Checks if the student has already attended two programmes and if the programme is valid (i.e. within the start and end date range).
+4. Insert_student_programme_attendance
+   - Input parameters: student admin number, programme id
+   - Description: Inserts a record into the trips table for the specified 
+   student and programme id. Checks if the student has already attended two programmes 
+   and if the programme is valid (i.e. within the start and end date range).

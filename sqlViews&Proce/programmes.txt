@@ -1,82 +1,119 @@
-basic_trip_statistics
-	-number of students who went on overseas programs
-	-num of students who went to ACI overseas progs
-	-year1 num of trips
-	-year2 num of trips
-	-year3 num of trips
+I apologize for the confusion. Here's the list of database objects arranged in the sequence you sent:
 
-trip_graph_representation
-	-Number of year ones on trips
-	-Number of year twos on trips
-	-Number of year threes on trips
-	-Number of year fours and above on trips
+1. basic_trip_statistics
+    - number of students who went on overseas programs
+    - num of students who went to ACI overseas progs
+    - year1 num of trips
+    - year2 num of trips
+    - year3 num of trips
 
-  get_trips
--Admin number
--Name
--Trip Country
--Start Date
--End Date
--Is it aci country
+2. trip_graph_representation
+    - Number of year ones on trips
+    - Number of year twos on trips
+    - Number of year threes on trips
+    - Number of year fours and above on trips
 
-
+3. get_trips
+    - Admin number
+    - Name
+    - Trip Country
+    - Start Date
+    - End Date
+    - Is it aci country
 
 4. trip_duration_statistics
-   - average duration of all trips
-   - average duration of ACI trips
-   - average duration of non-ACI trips
-   - shortest trip duration
-   - longest trip duration
+    - average duration of all trips
+    - average duration of ACI trips
+    - average duration of non-ACI trips
+    - shortest trip duration
+    - longest trip duration
 
 5. program_participation_details
-   - program name
-   - program type (educational trip, immersion program, internship)
-   - program location (ACI or non-ACI country)
-   - number of students who attended each program
-   - list of students who attended each program
+    - program name
+    - program type (educational trip, immersion program, internship)
+    - program location (ACI or non-ACI country)
+    - number of students who attended each program
+    - list of students who attended each program
 
-   
-7. program_trip_details
-   - program name
-   - program type (educational trip, immersion program, internship)
-   - program location (ACI or non-ACI country)
-   - number of trips
-   - list of students who attended each trip
+6. program_trip_details
+    - program name
+    - program type (educational trip, immersion program, internship)
+    - program location (ACI or non-ACI country)
+    - number of trips
+    - list of students who attended each trip
 
-8. trip_cost_statistics
-   - average cost of all trips
-   - average cost of ACI trips
-   - average cost of non-ACI trips
-   - most expensive trip
-   - least expensive trip
+7. trip_cost_statistics
+    - average cost of all trips
+    - average cost of ACI trips
+    - average cost of non-ACI trips
+    - most expensive trip
+    - least expensive trip
 
-9. program_date_range
-   - program name
-   - program type (educational trip, immersion program, internship)
-   - program location (ACI or non-ACI country)
-   - program start date
-   - program end date
+8. program_date_range
+    - program name
+    - program type (educational trip, immersion program, internship)
+    - program location (ACI or non-ACI country)
+    - program start date
+    - program end date
 
-   4.  Program_history
-   - Student admin number
-   - Student name
-   - Program ID
-   - Program name
-   - Start date
-   - End date
-   - Country
-   - ACI or non-ACI
-   
+9. Program_history
+    - Student admin number
+    - Student name
+    - Program ID
+    - Program name
+    - Start date
+    - End date
+    - Country
+    - ACI or non-ACI
+
 10. Program_participation_statistics
-   - Program ID
-   - Program name
-   - Number of students who attended
-   - Number of students who applied but did not attend
-   - Number of ACI students who attended
-   - Number of ACI students who applied but did not attend
-   
-   View: ACI_country_participation_info
-- programme name
-- programme type
-- number of students who attended from ACI countries
-- number of students who attended from non-ACI countries
+    - Program ID
+    - Program name
+    - Number of students who attended
+    - Number of students who applied but did not attend
+    - Number of ACI students who attended
+    - Number of ACI students who applied but did not attend
+
+11. View: ACI_country_participation_info
+    - programme name
+    - programme type
+    - number of students who attended from ACI countries
+    - number of students who attended from non-ACI countries
+
+12. Program_availability
+    - Program ID
+    - Program name
+    - Program start date
+    - Program end date
+    - Available slots
+
+13. Program_participants
+    - Program ID
+    - Program name
+    - Number of participants
+    - Participants' names and admin numbers
+
+14. Program_evaluation
+    - Program ID
+    - Program name
+    - Overall program rating
+    - Comments/feedback from participants
+
+15. Program_schedule
+    - Program ID
+    - Program name
+    - Program start date
+    - Program end date
+    - Activities and schedule for each day
+
+16. Program_budget
+    - Program ID
+    - Program name
+    - Total budget
+    - Itemized expenses (e.g. airfare, accommodation, meals)
+
+17. Trip_logistics
+    - Program ID
+    - Program name
+    - Flight information
+    - Accommodation details
