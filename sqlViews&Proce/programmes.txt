@@ -1,4 +1,3 @@
-I apologize for the confusion. Here's the list of database objects arranged in the sequence you sent:
 
 1. basic_trip_statistics
     - number of students who went on overseas programs
@@ -7,16 +6,10 @@ I apologize for the confusion. Here's the list of database objects arranged in t
     - year2 num of trips
     - year3 num of trips
 
-2. trip_graph_representation
-    - Number of year ones on trips
-    - Number of year twos on trips
-    - Number of year threes on trips
-    - Number of year fours and above on trips
-
 3. get_trips
     - Admin number
     - Name
-    - Trip Country
+    - Country
     - Start Date
     - End Date
     - Is it aci country
@@ -28,35 +21,29 @@ I apologize for the confusion. Here's the list of database objects arranged in t
     - shortest trip duration
     - longest trip duration
 
-5. program_participation_details
-    - program name
-    - program type (educational trip, immersion program, internship)
-    - program location (ACI or non-ACI country)
-    - number of students who attended each program
-    - list of students who attended each program
 
-6. program_trip_details
+5. program_trip_details
     - program name
     - program type (educational trip, immersion program, internship)
     - program location (ACI or non-ACI country)
     - number of trips
-    - list of students who attended each trip
+    - list of students who attended
 
-7. trip_cost_statistics
+6. trip_cost_statistics
     - average cost of all trips
     - average cost of ACI trips
     - average cost of non-ACI trips
     - most expensive trip
     - least expensive trip
 
-8. program_date_range
+7. program_date_range
     - program name
     - program type (educational trip, immersion program, internship)
     - program location (ACI or non-ACI country)
     - program start date
     - program end date
 
-9. Program_history
+8. Program_history
     - Student admin number
     - Student name
     - Program ID
@@ -66,53 +53,27 @@ I apologize for the confusion. Here's the list of database objects arranged in t
     - Country
     - ACI or non-ACI
 
-10. Program_participation_statistics
-    - Program ID
-    - Program name
-    - Number of students who attended
-    - Number of students who applied but did not attend
-    - Number of ACI students who attended
-    - Number of ACI students who applied but did not attend
-
-11. View: ACI_country_participation_info
-    - programme name
-    - programme type
-    - number of students who attended from ACI countries
-    - number of students who attended from non-ACI countries
-
-12. Program_availability
+9. Program_availability
     - Program ID
     - Program name
     - Program start date
     - Program end date
     - Available slots
 
-13. Program_participants
-    - Program ID
-    - Program name
-    - Number of participants
-    - Participants' names and admin numbers
-
-14. Program_evaluation
+10. Program_evaluation
     - Program ID
     - Program name
     - Overall program rating
     - Comments/feedback from participants
 
-15. Program_schedule
+11. Program_schedule
     - Program ID
     - Program name
     - Program start date
     - Program end date
     - Activities and schedule for each day
 
-16. Program_budget
-    - Program ID
-    - Program name
-    - Total budget
-    - Itemized expenses (e.g. airfare, accommodation, meals)
-
-17. Trip_logistics
+12. Trip_logistics
     - Program ID
     - Program name
     - Flight information

@@ -5,20 +5,23 @@
    - Program name
    - Number of students attended
    - Number of students signed up
+   - number of students absent
 
 2. Program_immersion_attendance
    - Program ID
    - Program name
-   - Total number of students attended
-   - Total number of immersions attended
-   - Total number of ACI immersions attended
-   - Percentage of ACI immersions attended
+   - Total number of immersions 
+   - Total number of student attendence 
 
 3. Student_programme_attendance_info
    - Student admin number
    - Student name
    - Programme name
    - Programme type
+   - Country
+   - Number of students attended
+   - Number of students signed up
+   - number of students absent
    - Start date
    - End date
 

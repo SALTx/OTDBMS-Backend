@@ -12,10 +12,10 @@
 2. Program_internship_attendance
    - Program ID
    - Program name
+   - Total number of internships signed up
    - Total number of students attended
-   - Total number of internships attended
-   - Total number of ACI internships attended
-   - Percentage of ACI internships attended
+   - Total number of ACI internships signed up
+   - Total number of ACI internships students attended
 
 3. View: Student_internship_info
    - student admin number

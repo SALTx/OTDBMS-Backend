@@ -1,5 +1,5 @@
 1. Procedure: Update_KPI
-   - Input parameters: total number of students to send overseas
+   - Input parameters: total number of students sent overseas
    - Description: Updates the KPI for the total number of students to send overseas in the database.
 
 2. overseas_vs_nonoverseas_cohort_comparison
@@ -25,15 +25,7 @@
    - Percentage of students who attended overseas programme
    - Percentage of students who did not attend overseas programme
 
-5. overseas_vs_nonoverseas_student_details
-   - Student Admin Number
-   - Student Name
-   - Cohort Year
-   - Year Level
-   - Whether student attended overseas programme
-   - Number of overseas programmes attended by student (if applicable)
-
-6. overseas_vs_nonoverseas_performance_comparison
+5. overseas_vs_nonoverseas_performance_comparison
    - Cohort Year
    - Year Level
    - Total number of students in cohort/year level
