@@ -1,6 +1,9 @@
-DROP DATABASE otdb;
+SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'otdb';
+-- If the database exists, drop it
+DROP DATABASE IF EXISTS otdb;
 -- create database otdb if it doesn't exist
 CREATE DATABASE IF NOT EXISTS otdb;
+USE otdb;
 -- create students table
 CREATE TABLE IF NOT EXISTS students (
     adminNumber CHAR(7) NOT NULL PRIMARY KEY,
