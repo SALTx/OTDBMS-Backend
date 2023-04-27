@@ -1,0 +1,131 @@
+#Problems
+
+
+#TODO
+[ ] Create base project
+[ ] Figure out which deps to use and install
+[ ] Restructure database **
+[ ] Create all the pages from the old project
+[ ] Use templating for the nav bar and footer
+[ ] Create API routes to modify the database and load pages
+[ ] Add table to students table with actions as well as form that adds new student
+[ ] 
+
+
+#Project deps
+    Dev Dependencies:
+        Nodemon: a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+        ESLint: a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
+        Prettier: a tool to help keep the formatting of your code consistent.
+    Dependencies:
+        Express: a popular Node.js framework that simplifies building web applications and APIs.
+        MySQL: a Node.js module that allows you to interact with MySQL databases.
+        Chart.js: a JavaScript library for creating responsive, customizable charts and graphs.
+        DataTables: a jQuery plugin that adds advanced interaction controls to HTML tables.
+        Passport: a middleware that handles user authentication and authorization.
+        Sequelize: a promise-based ORM (Object-Relational Mapping) for Node.js, which simplifies interacting with databases and makes it easier to manage database queries.
+        Moment.js: a JavaScript date library for parsing, validating, manipulating, and formatting dates. It can be useful for handling date and time data from the database.
+
+#Database structure
+students
+    adminNumber         char(7) not null
+    name                varchar(64) not null
+    gender              enum('Male', 'Female') not null
+    birthday            date not null
+    citizenshipStatus   enum('Singapore citizen', 'Permanent resident', 'Foreigner') not null
+    diploma             varchar(64)
+    pemName             varchar(64)
+    PRIMARY KEY         (adminNumber)
+    FOREIGN KEY         (pemName) references users(name)
+
+overseasPrograms
+    programID       smallint unsigned
+    programName     varchar(64)
+    programType     enum('Internship', 'Exchange program', 'Immersion program', 'Others') FORMAT: I/E/L/OxxxYY
+    startDate       date
+    endDate         date
+    country         varchar(64)
+    organization    varchar(64)
+
+countries
+    countryCode     char(3)
+    countryName     varchar(64)
+    numberOfTrips   smallint unsigned
+    aciCountry      enum('Yes', 'No')
+
+trips
+    studentAdminNumber  char(7) not null
+    programID           smallint unsigned not null
+    gradeReceived       enum('A', 'B', 'C', 'D', 'F')
+    comments            text
+    PRIMARY KEY         (studentAdminNumber, programID)
+    FOREIGN KEY         (studentAdminNumber) references students(adminNumber)
+    FOREIGN KEY         (programID) references overseasProgram(programID)
+
+users
+    username    varchar(64) not null
+    password    varchar(64)
+    accountType enum('Admin', 'Teacher', 'Guest')
+    name        varchar(64)    
+    PRIMARY KEY (username)
+
+
+#Views and Procedures
+
+studentTripInformation
+	-Student admin number
+	-Student name
+	-Program name
+	-Program type
+	-Program start date
+	-Program end date
+	-Country
+    -Organization
+    -Grade received
+    -Comments
+
+getTravelDetails(adminNumber):
+    -Program ID
+    -Program name
+    -Program type
+    -Program start date
+    -Program end date
+    -Country
+    -Organization
+    -Grade received
+    -Comments
+
+getProgramDetails(programID):
+    -Student admin number
+    -Student name
+    -Grade received
+    -Comments
+
+#API routes
+
+get / - returns the home page
+get /about - returns the about page
+
+get /students - returns the students page
+get /students/:adminNumber - returns the student with the specified admin number and an editable form
+    page also shows all the trips the student has been on with comments
+post /students - adds a new student to the database
+delete /students - deletes a student from the database
+put /students - updates a student in the database redirects to /students
+
+get /programs - returns the programs page
+post /programs - adds a new program to the database
+delete /programs - deletes a program from the database
+put /programs - updates a program in the database
+
+get /trips - returns the trips page
+post /trips - adds a new trip to the database
+delete /trips - deletes a trip from the database
+put /trips - updates a trip in the database
+
+get /login - returns the login page
+post /login - logs the user in and redirects to /
+get /logout - logs the user out and redirects to /login
+
+
+
