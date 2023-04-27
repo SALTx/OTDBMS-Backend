@@ -31,10 +31,10 @@ CREATE TABLE IF NOT EXISTS trips (
     tripId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     studentAdminNumber CHAR(7) NOT NULL,
     programmeId INT NOT NULL,
+    organizationName VARCHAR(64)  NULL,
     FOREIGN KEY (studentAdminNumber) REFERENCES students(adminNumber),
     FOREIGN KEY (programmeId) REFERENCES overseasProgrammes(programmeId)
 );
-
 -- create table for user accounts
 CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(64) NOT NULL PRIMARY KEY,
@@ -42,16 +42,7 @@ CREATE TABLE IF NOT EXISTS users (
     userType ENUM('Admin', 'Default') NOT NULL
 );
 
--- create internships table
-CREATE TABLE IF NOT EXISTS interships (
-    internId INT NOT NULL PRIMARY KEY,
-    programmeId INT NOT NULL,
-    adminNumber CHAR(7) NOT NULL,
-    companyName VARCHAR(64) NOT NULL,
-    FOREIGN KEY (adminNumber) REFERENCES students(adminNumber),
-    FOREIGN KEY (programmeId) REFERENCES overseasProgrammes(programmeId)
 
-);
 
 -- example students
 INSERT INTO students VALUES ('123456A', 'John Doe', 12, 'Male', '2000-01-01', 'Singapore Citizen', 'Diploma in Computer Science', 'John Smith');
