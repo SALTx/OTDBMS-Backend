@@ -1,6 +1,6 @@
+DROP DATABASE otdb;
 -- create database otdb if it doesn't exist
 CREATE DATABASE IF NOT EXISTS otdb;
-
 -- create students table
 CREATE TABLE IF NOT EXISTS students (
     adminNumber CHAR(7) NOT NULL PRIMARY KEY,
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS trips (
     tripId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     studentAdminNumber CHAR(7) NOT NULL,
     programmeId INT NOT NULL,
-    organizationName VARCHAR(64)  NULL,
+    organizationName VARCHAR(64) NOT NULL,
     FOREIGN KEY (studentAdminNumber) REFERENCES students(adminNumber),
     FOREIGN KEY (programmeId) REFERENCES overseasProgrammes(programmeId)
 );
@@ -51,17 +51,17 @@ INSERT INTO students VALUES ('345678C', 'Dwayne Wayne', 13, 'Male', '2000-04-15'
 
 -- example overseas programme
 INSERT INTO overseasProgrammes (programmeName, programmeType, startDate, endDate, country)
-VALUES ('Bing Soon', 'Internship', '2023-04-15', '2023-04-18', 'Malaysia');
+VALUES ('Bing Soon', 'Internship', '2023-04-15', '2023-07-18', 'Malaysia');
 INSERT INTO overseasProgrammes (programmeName, programmeType, startDate, endDate, country)
 VALUES ('Ramen Noodle', 'Exchange program', '2023-04-15', '2023-04-18', 'Japan');
 INSERT INTO overseasProgrammes (programmeName, programmeType, startDate, endDate, country)
-VALUES ('Walmart', 'Internship', '2023-04-15', '2023-04-18', 'USA');
+VALUES ('Walmart', 'Internship', '2023-04-15', '2023-07-18', 'USA');
 
 -- example student overseas programme
-INSERT INTO trips (studentAdminNumber, programmeId) VALUES ('123456A', 1);
-INSERT INTO trips (studentAdminNumber, programmeId) VALUES ('123456A', 3);
-INSERT INTO trips (studentAdminNumber, programmeId) VALUES ('234567B', 2);
-INSERT INTO trips (studentAdminNumber, programmeId) VALUES ('234567B', 3);
+INSERT INTO trips (studentAdminNumber, programmeId, organizationName) VALUES ('123456A', 1, 'IBM');
+INSERT INTO trips (studentAdminNumber, programmeId, organizationName) VALUES ('123456A', 3,'Tokyo Polytechnic University');
+INSERT INTO trips (studentAdminNumber, programmeId, organizationName) VALUES ('234567B', 2,'Walmart');
+INSERT INTO trips (studentAdminNumber, programmeId, organizationName) VALUES ('234567B', 3, 'Tokyo Polytechnic University');
 
 -- example user accounts
 INSERT INTO users VALUES ('admin', 'admin', 'Admin');
