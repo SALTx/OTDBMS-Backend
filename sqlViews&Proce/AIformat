@@ -1,37 +1,39 @@
-
-I need help with SQL, before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. 
+I need help with SQL, before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships.
 We have KPIs given for how many students should go for overseas in total.
 
-I need the outline of some good ideas of views and procedures. before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships. 
-We have KPIs given for how many students should go for overseas in total, and in case you dont understand what is pemName, a pem is soemthing like a form teacher.I do need not the actual codes, just some outlines, this might sound confusing, but I have 4  examples here of what I want you to produce.
+I need the outline of some good ideas of views and procedures. before everything starts, this is the background settings. This is a database for a overseas student program management system, students can be out for educational trips, immersion programs, or overseas internships.
+We have KPIs given for how many students should go for overseas in total, and in case you dont understand what is pemName, a pem is soemthing like a form teacher.I do need not the actual codes, just some outlines, this might sound confusing, but I have 4 examples here of what I want you to produce.
 Views / Procedures for Application
 
-Student_trip_info
-	-student admin number
-	-student name
-	-number of overseas programs attended
-	-number of trips to ACI country
+studentTripInformation
+-Student admin number
+-Student name
+-Program name
+-Program type
+-Program start date
+-Program end date
+-Country
+-Organization
+-Grade received
+-Comments
 
-basic_trip_statistics
-	-number of students who went on overseas programs
-	-num of students who went to ACI overseas progs
-	-year1 num of trips
-	-year2 num of trips
-	-year3 num of trips
+getTravelDetails(adminNumber):
+-Program ID
+-Program name
+-Program type
+-Program start date
+-Program end date
+-Country
+-Organization
+-Grade received
+-Comments
 
-trip_graph_representation
-	-Number of year ones on trips
-	-Number of year twos on trips
-	-Number of year threes on trips
-	-Number of year fours and above on trips
+getProgramDetails(programID):
+-Student admin number
+-Student name
+-Grade received
+-Comments
 
-  get_trips
--Admin number
--Name
--Trip Country
--Start Date
--End Date
--Is it aci country
+---
 
------------------------------
 i need 5-10 more of such ideas written in the same format and way
