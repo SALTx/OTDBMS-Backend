@@ -46,12 +46,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS interships (
     internId INT NOT NULL PRIMARY KEY,
     programmeId INT NOT NULL,
-    studName VARCHAR(64) NOT NULL,
     adminNumber CHAR(7) NOT NULL,
-    country VARCHAR(64) NOT NULL,
     companyName VARCHAR(64) NOT NULL,
-    startDate DATE NOT NULL,
-    endDate DATE NOT NULL,
     FOREIGN KEY (adminNumber) REFERENCES students(adminNumber),
     FOREIGN KEY (programmeId) REFERENCES overseasProgrammes(programmeId)
 
