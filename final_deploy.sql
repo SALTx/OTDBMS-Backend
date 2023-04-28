@@ -72,17 +72,17 @@ INSERT INTO overseasPrograms (programID, programName, programType, startDate, en
 VALUES ('E23223', 'Ramen Noodle', 'Exchange program', '2023-08-01', '2023-12-01', 'Japan', 'Tokyo Polytechnic University');
 
 INSERT INTO overseasPrograms (programID, programName, programType, startDate, endDate, country, organization)
-VALUES ('I87323', 'Walmart', 'Internship', '2023-05-01', '2023-08-01', 'USA', 'Walmart');
+VALUES ('I76823', 'Walmart', 'Internship', '2023-05-01', '2023-08-01', 'USA', 'Walmart');
 
 -- Sample data for countries table
 INSERT INTO countries (countryCode, countryName, numberOfTrips, aciCountry)
-VALUES ('SGP', 'Singapore', 50, 'Yes');
+VALUES ('TH', 'Thailand', 50, 'Yes');
 
 INSERT INTO countries (countryCode, countryName, numberOfTrips, aciCountry)
 VALUES ('JPN', 'Japan', 20, 'No');
 
 INSERT INTO countries (countryCode, countryName, numberOfTrips, aciCountry)
-VALUES ('USA', 'United States', 30, 'Yes');
+VALUES ('USA', 'United States', 30, 'No');
 
 -- Sample data for trips table
 INSERT INTO trips (studentAdminNumber, programID, gradeReceived, comments)
