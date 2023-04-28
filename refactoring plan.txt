@@ -29,34 +29,45 @@
 #Database structure
 students
     adminNumber         char(7) not null
+	-- change to adminNo
     name                varchar(64) not null
     gender              enum('Male', 'Female') not null
     birthday            date not null
     citizenshipStatus   enum('Singapore citizen', 'Permanent resident', 'Foreigner') not null
+	-- Add more info if foreigner (country of origin)
     diploma             varchar(64)
+	--use course information instead / make new course table
     pemName             varchar(64)
+	-- maybe change / add pemGroup
     PRIMARY KEY         (adminNumber)
     FOREIGN KEY         (pemName) references users(name)
+--consider year number and how to update
+--create separate table to track student progession
 
 overseasPrograms
-    programID       smallint unsigned
+    programID       char(6) not null
     programName     varchar(64)
-    programType     enum('Internship', 'Exchange program', 'Immersion program', 'Others') FORMAT: I/E/L/OxxxYY
+    programType     enum('Internship', 'Exchange program', 'Immersion program', 'Others')
     startDate       date
     endDate         date
-    country         varchar(64)
+    countryCode     char(3)
     organization    varchar(64)
+--make new field for type of organization
+    PRIMARY KEY     (programID)
+    FOREIGN KEY     (country) references countries(countryCode)
 
 countries
     countryCode     char(3)
     countryName     varchar(64)
-    numberOfTrips   smallint unsigned
+--add city
     aciCountry      enum('Yes', 'No')
+    PRIMARY KEY     (countryCode)
 
 trips
     studentAdminNumber  char(7) not null
-    programID           smallint unsigned not null
+    programID           char(6) not null
     gradeReceived       enum('A', 'B', 'C', 'D', 'F')
+--remove gradeRecieved
     comments            text
     PRIMARY KEY         (studentAdminNumber, programID)
     FOREIGN KEY         (studentAdminNumber) references students(adminNumber)
@@ -100,6 +111,12 @@ getProgramDetails(programID):
     -Student name
     -Grade received
     -Comments
+
+countryTripInformation
+    -Country
+    -Number of trips
+    -Number of students
+    -Number of programs
 
 #API routes
 
