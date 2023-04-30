@@ -82,6 +82,7 @@ INSERT INTO countries (countryCode, countryName, numberOfTrips, aciCountry)
 VALUES ('JPN', 'Japan', 20, 'No');
 
 INSERT INTO countries (countryCode, countryName, numberOfTrips, aciCountry)
+
 VALUES ('USA', 'United States', 30, 'No');
 
 -- Sample data for trips table
