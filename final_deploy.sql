@@ -6,7 +6,7 @@ CREATE DATABASE IF NOT EXISTS otdb;
 USE otdb;
 -- create students table
 CREATE TABLE IF NOT EXISTS students (
-    adminNumber CHAR(7) NOT NULL PRIMARY KEY,
+    adminNo CHAR(7) NOT NULL PRIMARY KEY,
     name VARCHAR(64) NOT NULL,
     gender ENUM('Male', 'Female') NOT NULL,
     birthday DATE NOT NULL,
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
 CREATE TABLE IF NOT EXISTS countries (
     countryCode CHAR(3) NOT NULL PRIMARY KEY,
     countryName VARCHAR(64) NOT NULL,
+    city VARCHAR(64) NOT NULL,
     numberOfTrips SMALLINT UNSIGNED,
     aciCountry ENUM('Yes', 'No')
 );

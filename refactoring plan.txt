@@ -29,7 +29,7 @@
 #Database structure
 students
     adminNumber         char(7) not null
-	-- change to adminNo
+	-- change to adminNo/done
     name                varchar(64) not null
     gender              enum('Male', 'Female') not null
     birthday            date not null
