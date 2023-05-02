@@ -10,10 +10,16 @@ CREATE TABLE IF NOT EXISTS students (
     name VARCHAR(64) NOT NULL,
     gender ENUM('Male', 'Female') NOT NULL,
     birthday DATE NOT NULL,
-    citizenshipStatus ENUM('Singapore citizen', 'Permanent resident', 'Foreigner') NOT NULL,
+    citizenshipStatus VARCHAR(64)，
     diploma VARCHAR(64),
-    pemName VARCHAR(64),
+    pemGroup VARCHAR(64),
     FOREIGN KEY (pemName) REFERENCES users(name)
+    FOREIGN KEY (diploma) REFERENCES diplomas(diplomaName)
+);
+-- create table for Diploma accounts
+CREATE TABLE IF NOT EXISTS diplomas (
+    diplomaId VARCHAR(64) NOT NULL PRIMARY KEY,
+    diplomaName VARCHAR(64),
 );
 
 -- create overseasProgrammes table
@@ -25,6 +31,7 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     endDate DATE NOT NULL,
     country VARCHAR(64) NOT NULL,
     organization VARCHAR(64),
+    organizationType VARCHAR(64),
     FOREIGN KEY (country) REFERENCES countries(countryName)
 );
 -- create table countries
@@ -39,7 +46,6 @@ CREATE TABLE IF NOT EXISTS countries (
 CREATE TABLE IF NOT EXISTS trips (
     studentAdminNumber CHAR(7) NOT NULL,
     programID VARCHAR(64) NOT NULL,
-    gradeReceived ENUM('A', 'B', 'C', 'D', 'F'),
     comments TEXT,
     PRIMARY KEY (studentAdminNumber, programID),
     FOREIGN KEY (studentAdminNumber) REFERENCES students(adminNumber),
@@ -53,6 +59,7 @@ CREATE TABLE IF NOT EXISTS users (
     accountType ENUM('Admin', 'Teacher', 'Guest'),
     name VARCHAR(64)
 );
+
 
 
 -- Sample data for students table

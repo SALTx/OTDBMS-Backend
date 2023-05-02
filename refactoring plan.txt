@@ -34,11 +34,11 @@ students
     gender              enum('Male', 'Female') not null
     birthday            date not null
     citizenshipStatus   enum('Singapore citizen', 'Permanent resident', 'Foreigner') not null
-	-- Add more info if foreigner (country of origin)
+	-- Add more info if foreigner (country of origin) /done
     diploma             varchar(64)
-	--use course information instead / make new course table
+	--use course information instead / make new course table  /done
     pemName             varchar(64)
-	-- maybe change / add pemGroup
+	-- maybe change / add pemGroup /done
     PRIMARY KEY         (adminNumber)
     FOREIGN KEY         (pemName) references users(name)
 --consider year number and how to update
@@ -52,7 +52,7 @@ overseasPrograms
     endDate         date
     countryCode     char(3)
     organization    varchar(64)
---make new field for type of organization
+--make new field for type of organization /done
     PRIMARY KEY     (programID)
     FOREIGN KEY     (country) references countries(countryCode)
 
@@ -67,7 +67,7 @@ trips
     studentAdminNumber  char(7) not null
     programID           char(6) not null
     gradeReceived       enum('A', 'B', 'C', 'D', 'F')
---remove gradeRecieved
+--remove gradeRecieved /done
     comments            text
     PRIMARY KEY         (studentAdminNumber, programID)
     FOREIGN KEY         (studentAdminNumber) references students(adminNumber)
