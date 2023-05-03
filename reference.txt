@@ -1,0 +1,11 @@
+C42 Common Engineering Programme
+C62 Advanced & Digital Manufacturing
+C51 Aeronautical & Aerospace Technology
+C52 Aerospace Systems & Management
+C31 AI & Data Engineering (New Professional Competency Model)
+C71 Biomedical Engineering
+C89 Electronic & Computer Engineering
+C41 Engineering with Business
+C75 Infocomm & Media Engineering
+C50 Nanotechnology & Materials Science
+C87 Robotics & Mechatronics

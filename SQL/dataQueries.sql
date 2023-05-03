@@ -1,6 +1,6 @@
 -- Sample data for students table
-INSERT INTO students (adminNumber, name, gender, birthday, citizenshipStatus, diploma, pemName)
-VALUES ('123456A', 'John Doe', 'Male', '2000-01-01', 'Singapore citizen', 'Diploma in Computer Science', 'John Smith');
+INSERT INTO students (adminNumber, name, gender, birthday, citizenshipStatus,countryOfOrigin, course, year,pemGroup)
+VALUES ('123456A', 'John Doe', 'Male', '2000-01-01', 'Singapore citizen','SGP' 'Common Engineering Programme', 'C42 ','John Smith');
 
 INSERT INTO students (adminNumber, name, gender, birthday, citizenshipStatus, diploma, pemName)
 VALUES ('234567B', 'Jane Doe', 'Female', '2001-02-03', 'Permanent resident', 'Diploma in Nursing', 'Megan Lee');
