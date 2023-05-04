@@ -9,7 +9,6 @@
 [ ] Use templating for the nav bar and footer
 [ ] Create API routes to modify the database and load pages
 [ ] Add table to students table with actions as well as form that adds new student
-[ ] 
 
 
 #Project deps
@@ -27,50 +26,58 @@
         Moment.js: a JavaScript date library for parsing, validating, manipulating, and formatting dates. It can be useful for handling date and time data from the database.
 
 #Database structure
-students
-    adminNumber         char(7) not null
-	-- change to adminNo/done
-    name                varchar(64) not null
-    gender              enum('Male', 'Female') not null
-    birthday            date not null
-    citizenshipStatus   enum('Singapore citizen', 'Permanent resident', 'Foreigner') not null
-	-- Add more info if foreigner (country of origin) /done
-    diploma             varchar(64)
-	--use course information instead / make new course table  /done
-    pemName             varchar(64)
-	-- maybe change / add pemGroup /done
-    PRIMARY KEY         (adminNumber)
-    FOREIGN KEY         (pemName) references users(name)
---consider year number and how to update
---create separate table to track student progession
-
-overseasPrograms
-    programID       char(6) not null
-    programName     varchar(64)
-    programType     enum('Internship', 'Exchange program', 'Immersion program', 'Others')
-    startDate       date
-    endDate         date
-    countryCode     char(3)
-    organization    varchar(64)
---make new field for type of organization /done
-    PRIMARY KEY     (programID)
-    FOREIGN KEY     (country) references countries(countryCode)
 
 countries
     countryCode     char(3)
     countryName     varchar(64)
---add city
+    city            varchar(64)
     aciCountry      enum('Yes', 'No')
     PRIMARY KEY     (countryCode)
 
-trips
-    studentAdminNumber  char(7) not null
+pemGroup
+    pemGroup            char(6) not null
+    pemName             varchar(64)
+    PRIMARY KEY         (pemGroup)
+
+course
+    courseCode          char(3) not null
+    courseName          varchar(64)
+    courseManager       varchar(64)
+    PRIMARY KEY         (courseCode)
+
+students
+    adminNo             char(7) not null
+    name                varchar(64) not null
+    gender              enum('Male', 'Female') not null
+    birthday            date not null
+    citizenshipStatus   enum('Singapore citizen', 'Permanent resident', 'Foreigner') not null
+    countryOfOrigin     char(3)
+    course              char(3) not null
+    year                tinyint not null
+    pemGroup            char(6) not null
+    PRIMARY KEY         (adminNumber)
+    FOREIGN KEY         (countryOfOrigin) references countries(countryCode)
+    FOREIGN KEY         (course) references course(courseCode)
+    FOREIGN KEY         (pemGroup) references pemGroup(pemGroup)
+
+overseasPrograms
     programID           char(6) not null
-    gradeReceived       enum('A', 'B', 'C', 'D', 'F')
---remove gradeRecieved /done
+    programName         varchar(64)
+    programType         enum('Internship', 'Exchange program', 'Immersion program', 'Others')
+    startDate           date
+    endDate             date
+    countryCode         char(3)
+    organization        varchar(64)
+    organizationType    enum('Company', 'College / University', 'Others')
+    PRIMARY KEY         (programID)
+    FOREIGN KEY         (country) references countries(countryCode)
+
+trips
+    studentAdminNo  	char(7) not null
+    programID           char(6) not null
     comments            text
-    PRIMARY KEY         (studentAdminNumber, programID)
-    FOREIGN KEY         (studentAdminNumber) references students(adminNumber)
+    PRIMARY KEY         (studentAdminNo, programID)
+    FOREIGN KEY         (studentAdminNo) references students(adminNumber)
     FOREIGN KEY         (programID) references overseasProgram(programID)
 
 users
