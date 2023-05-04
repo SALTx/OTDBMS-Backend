@@ -17,6 +17,7 @@
         ESLint: a tool for identifying and reporting on patterns found in ECMAScript/JavaScript code, with the goal of making code more consistent and avoiding bugs.
         Prettier: a tool to help keep the formatting of your code consistent.
     Dependencies:
+        Ejs: a templating language that lets you generate HTML markup with plain JavaScript.
         Express: a popular Node.js framework that simplifies building web applications and APIs.
         MySQL: a Node.js module that allows you to interact with MySQL databases.
         Chart.js: a JavaScript library for creating responsive, customizable charts and graphs.
