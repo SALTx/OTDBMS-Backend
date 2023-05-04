@@ -130,7 +130,7 @@ INSERT INTO overseasPrograms (programID, programName, programType, startDate, en
 INSERT INTO trips (studentAdminNo, programID, comments) VALUES
 ('A123456', 'OP001', 'Excited to start my summer internship at Google!'),
 ('A234567', 'OP002', 'Looking forward to studying at University of Melbourne'),
-('A345678', 'OP003', 'Can\'t wait to experience Japanese culture!');
+('A345678', 'OP003', 'Can''t wait to experience Japanese culture!');
  
 -- Sample data for users table
 INSERT INTO users (username, password, accountType, name) VALUES
