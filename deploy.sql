@@ -25,6 +25,8 @@ CREATE TABLE
         `courseManager` varchar(64),
         PRIMARY KEY (`courseCode`)
     );
+    -- create script to populate course table with current NYP courses
+    -- Edge case: Common programs which branch out to different courses
 
 CREATE TABLE
     IF NOT EXISTS students (
@@ -32,14 +34,18 @@ CREATE TABLE
         name varchar(64) not null,
         gender enum ('Male', 'Female') not null,
         birthday date not null,
+        -- rm (sensitive data)
         citizenshipStatus enum (
             'Singapore citizen',
             'Permanent resident',
             'Foreigner'
         ) not null,
+        -- consider grouping singaporean and pr together for certain views
         countryOfOrigin char(3),
+        -- rm (?)
         course char(3) not null,
         year tinyint not null,
+        -- change to stage
         pemGroup char(6) not null,
         PRIMARY KEY (adminNo),
         FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
@@ -49,6 +55,11 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS overseasPrograms (
+        -- cross reference with overseas program table
+        -- OET - Overseas educational trip
+        -- OITP - Overseas internship program
+        -- OIMP - Overseas immersion program
+        -- #TODO: add more if available
         programID char(6) not null,
         programName varchar(64),
         programType enum (
@@ -60,11 +71,16 @@ CREATE TABLE
         startDate date,
         endDate date,
         countryCode char(3),
+        -- add city
         organization varchar(64),
+        -- change to partnerName, overseasPartner (NULLABLE VAL)
         organizationType enum ('Company', 'College / University', 'Others'),
+        -- change col name to overseasPartnerType
+        -- change [1] to institution
         PRIMARY KEY (programID),
         FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
     );
+    -- Edge case: Trips that include multiple destinations
 
 CREATE TABLE
     IF NOT EXISTS trips (
@@ -78,6 +94,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS users (
+        -- not fully implemented
         username varchar(64) not null,
         password varchar(64),
         accountType enum ('Admin', 'Teacher', 'Guest'),
@@ -99,7 +116,7 @@ INSERT INTO course (courseCode, courseName, courseManager) VALUES
 
 -- Sample data for students table
 INSERT INTO students (adminNo, name, gender, birthday, citizenshipStatus, countryOfOrigin, course, year, pemGroup) VALUES
-('A123456', 'John Smith', 'Male', '2000-01-01', 'Singapore citizen', 'SGP', 'CSE', 1, 'PEM001'),
+('A123456', 'John Smith', 'Male', '2000-01-01', 'Singapore citizen', 'SGP', 'C75', 1, 'PEM001'),
 ('A234567', 'Jane Doe', 'Female', '2001-02-02', 'Permanent resident', 'MYS', 'ENG', 2, 'PEM002'),
 ('A345678', 'Bob Johnson', 'Male', '1999-03-03', 'Foreigner', 'USA', 'BIO', 3, 'PEM003');
 
