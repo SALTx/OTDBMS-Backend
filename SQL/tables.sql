@@ -15,7 +15,7 @@ CREATE TABLE
 
 CREATE TABLE
     IF NOT EXISTS `pemGroup` (
-        `pemGroup` char(6) not null,
+        `pemGroupId` char(6) not null,
         `pemName` varchar(64),
         PRIMARY KEY (`pemGroup`)
     );
