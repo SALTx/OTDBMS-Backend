@@ -1,67 +1,109 @@
-SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'otdb';
--- If the database exists, drop it
 DROP DATABASE IF EXISTS otdb;
 -- create database otdb if it doesn't exist
-CREATE DATABASE IF NOT EXISTS otdb;
-USE otdb;
--- create students table
-CREATE TABLE IF NOT EXISTS students (
-    adminNo CHAR(7) NOT NULL PRIMARY KEY,
-    name VARCHAR(64) NOT NULL,
-    gender ENUM('Male', 'Female') NOT NULL,
-    birthday DATE NOT NULL,
-    citizenshipStatus ENUM('Singapore citizen', 'Permanent resident', 'Foreigner') NOT NULL,
-    countryOfOrigin CHAR (3),
-    course CHAR(3),
-    year tiny int NOT NULL,
-    pemGroup CHAR(6),
-    FOREIGN KEY (pemName) REFERENCES users(name)
-    FOREIGN KEY (course) REFERENCES course(courseName)
-    FOREIGN KEY (countryOfOrigin) REFERENCES countries(countryCode)
-);
--- create table for Diploma accounts
-CREATE TABLE IF NOT EXISTS course (
-    courseCode CHAR(3) NOT NULL PRIMARY KEY,
-    courseName VARCHAR(64),
-    courseManager VARCHAR(64),
-);
+CREATE DATABASE IF NOT EXISTS `overseas-travel`;
 
--- create overseasProgrammes table
-CREATE TABLE IF NOT EXISTS overseasPrograms (
-    programID CHAR(6) NOT NULL PRIMARY KEY,
-    programName VARCHAR(64) NOT NULL,
-    programType ENUM('Internship', 'Exchange program', 'Immersion program', 'Others') NOT NULL, 
-    startDate DATE NOT NULL,
-    endDate DATE NOT NULL,
-    countryCode CHAR(3) NOT NULL,
-    organization VARCHAR(64),
-    organizationType ENUM('School','Industrial','Others') NOT NULL,
-    FOREIGN KEY (countryCode) REFERENCES countries(countryCode)
-);
--- create table countries
-CREATE TABLE IF NOT EXISTS countries (
-    countryCode CHAR(3) NOT NULL PRIMARY KEY,
-    countryName VARCHAR(64) NOT NULL,
-    city VARCHAR(64) NOT NULL,
-    aciCountry ENUM('Yes', 'No')
-);
--- create table trips
-CREATE TABLE IF NOT EXISTS trips (
-    studentAdminNumber CHAR(7) NOT NULL,
-    programID CHAR(6) NOT NULL,
-    comments TEXT,
-    PRIMARY KEY (studentAdminNumber, programID),
-    FOREIGN KEY (studentAdminNumber) REFERENCES students(adminNumber),
-    FOREIGN KEY (programID) REFERENCES overseasPrograms(programID)
-);
+USE `overseas-travel`;
 
--- create table for user accounts
-CREATE TABLE IF NOT EXISTS users (
-    username VARCHAR(64) NOT NULL PRIMARY KEY,
-    password VARCHAR(64)  NOT NULL,
-    accountType ENUM('Admin', 'Teacher', 'Guest'),
-    name VARCHAR(64)  NOT NULL,
-);
+CREATE TABLE
+    IF NOT EXISTS `countries` (
+        `countryCode` char(3),
+        `countryName` varchar(64),
+        `city` varchar(64),
+        `aciCountry` enum ('Yes', 'No'),
+        PRIMARY KEY (`countryCode`)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS `pemGroup` (
+        `pemGroup` char(6) not null,
+        `pemName` varchar(64),
+        PRIMARY KEY (`pemGroup`)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS `course` (
+        `courseCode` char(3) not null,
+        `courseName` varchar(64),
+        `courseManager` varchar(64),
+        PRIMARY KEY (`courseCode`)
+    );
+    -- create script to populate course table with current NYP courses
+    -- Edge case: Common programs which branch out to different courses
+
+CREATE TABLE
+    IF NOT EXISTS students (
+        adminNo char(7) not null,
+        name varchar(64) not null,
+        gender enum ('Male', 'Female') not null,
+        birthday date not null,
+        -- rm (sensitive data)
+        citizenshipStatus enum (
+            'Singapore citizen',
+            'Permanent resident',
+            'Foreigner'
+        ) not null,
+        -- consider grouping singaporean and pr together for certain views
+        countryOfOrigin char(3),
+        -- rm (?)
+        course char(3) not null,
+        year tinyint not null,
+        -- change to stage
+        pemGroup char(6) not null,
+        PRIMARY KEY (adminNo),
+        FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
+        FOREIGN KEY (course) REFERENCES course (courseCode),
+        FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroup)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS overseasPrograms (
+        -- cross reference with overseas program table
+        -- OET - Overseas educational trip
+        -- OITP - Overseas internship program
+        -- OIMP - Overseas immersion program
+        -- #TODO: add more if available
+        programID char(6) not null,
+        programName varchar(64),
+        programType enum (
+            'Internship',
+            'Exchange program',
+            'Immersion program',
+            'Others'
+        ),
+        startDate date,
+        endDate date,
+        countryCode char(3),
+        -- add city
+        organization varchar(64),
+        -- change to partnerName, overseasPartner (NULLABLE VAL)
+        organizationType enum ('Company', 'College / University', 'Others'),
+        -- change col name to overseasPartnerType
+        -- change [1] to institution
+        PRIMARY KEY (programID),
+        FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
+    );
+    -- Edge case: Trips that include multiple destinations
+
+CREATE TABLE
+    IF NOT EXISTS trips (
+        studentAdminNo char(7) not null,
+        programID char(6) not null,
+        comments text,
+        PRIMARY KEY (studentAdminNo, programID),
+        FOREIGN KEY (studentAdminNo) REFERENCES students (adminNo),
+        FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS users (
+        -- not fully implemented
+        username varchar(64) not null,
+        password varchar(64),
+        accountType enum ('Admin', 'Teacher', 'Guest'),
+        name varchar(64),
+        PRIMARY KEY (username)
+    );
+
 
 
 
