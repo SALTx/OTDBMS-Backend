@@ -1,0 +1,1217 @@
+[
+  {
+    "name": "Afghanistan",
+    "code": "AF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Åland Islands",
+    "code": "AX",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Albania",
+    "code": "AL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Algeria",
+    "code": "DZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "American Samoa",
+    "code": "AS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "AndorrA",
+    "code": "AD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Angola",
+    "code": "AO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Anguilla",
+    "code": "AI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Antarctica",
+    "code": "AQ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Antigua and Barbuda",
+    "code": "AG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Argentina",
+    "code": "AR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Armenia",
+    "code": "AM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Aruba",
+    "code": "AW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Australia",
+    "code": "AU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Austria",
+    "code": "AT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Azerbaijan",
+    "code": "AZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bahamas",
+    "code": "BS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bahrain",
+    "code": "BH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bangladesh",
+    "code": "BD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Barbados",
+    "code": "BB",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Belarus",
+    "code": "BY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Belgium",
+    "code": "BE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Belize",
+    "code": "BZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Benin",
+    "code": "BJ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bermuda",
+    "code": "BM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bhutan",
+    "code": "BT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bolivia",
+    "code": "BO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "code": "BA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Botswana",
+    "code": "BW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bouvet Island",
+    "code": "BV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Brazil",
+    "code": "BR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "British Indian Ocean Territory",
+    "code": "IO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Brunei Darussalam",
+    "code": "BN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Bulgaria",
+    "code": "BG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Burkina Faso",
+    "code": "BF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Burundi",
+    "code": "BI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cambodia",
+    "code": "KH",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Cameroon",
+    "code": "CM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Canada",
+    "code": "CA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cape Verde",
+    "code": "CV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cayman Islands",
+    "code": "KY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Central African Republic",
+    "code": "CF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Chad",
+    "code": "TD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Chile",
+    "code": "CL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "China",
+    "code": "CN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Christmas Island",
+    "code": "CX",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cocos (Keeling) Islands",
+    "code": "CC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Colombia",
+    "code": "CO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Comoros",
+    "code": "KM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Congo",
+    "code": "CG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Congo, The Democratic Republic of the",
+    "code": "CD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cook Islands",
+    "code": "CK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Costa Rica",
+    "code": "CR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cote D\"Ivoire",
+    "code": "CI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Croatia",
+    "code": "HR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cuba",
+    "code": "CU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Cyprus",
+    "code": "CY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Czech Republic",
+    "code": "CZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Denmark",
+    "code": "DK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Djibouti",
+    "code": "DJ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Dominica",
+    "code": "DM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Dominican Republic",
+    "code": "DO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Ecuador",
+    "code": "EC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Egypt",
+    "code": "EG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "El Salvador",
+    "code": "SV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Equatorial Guinea",
+    "code": "GQ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Eritrea",
+    "code": "ER",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Estonia",
+    "code": "EE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Ethiopia",
+    "code": "ET",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Falkland Islands (Malvinas)",
+    "code": "FK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Faroe Islands",
+    "code": "FO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Fiji",
+    "code": "FJ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Finland",
+    "code": "FI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "France",
+    "code": "FR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "French Guiana",
+    "code": "GF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "French Polynesia",
+    "code": "PF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "French Southern Territories",
+    "code": "TF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Gabon",
+    "code": "GA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Gambia",
+    "code": "GM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Georgia",
+    "code": "GE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Germany",
+    "code": "DE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Ghana",
+    "code": "GH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Gibraltar",
+    "code": "GI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Greece",
+    "code": "GR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Greenland",
+    "code": "GL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Grenada",
+    "code": "GD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guadeloupe",
+    "code": "GP",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guam",
+    "code": "GU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guatemala",
+    "code": "GT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guernsey",
+    "code": "GG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guinea",
+    "code": "GN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guinea-Bissau",
+    "code": "GW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Guyana",
+    "code": "GY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Haiti",
+    "code": "HT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Heard Island and Mcdonald Islands",
+    "code": "HM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Holy See (Vatican City State)",
+    "code": "VA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Honduras",
+    "code": "HN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Hong Kong",
+    "code": "HK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Hungary",
+    "code": "HU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Iceland",
+    "code": "IS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "India",
+    "code": "IN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Indonesia",
+    "code": "ID",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Iran, Islamic Republic Of",
+    "code": "IR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Iraq",
+    "code": "IQ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Ireland",
+    "code": "IE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Isle of Man",
+    "code": "IM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Israel",
+    "code": "IL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Italy",
+    "code": "IT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Jamaica",
+    "code": "JM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Japan",
+    "code": "JP",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Jersey",
+    "code": "JE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Jordan",
+    "code": "JO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Kazakhstan",
+    "code": "KZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Kenya",
+    "code": "KE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Kiribati",
+    "code": "KI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Korea, Democratic People\"S Republic of",
+    "code": "KP",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Korea, Republic of",
+    "code": "KR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Kuwait",
+    "code": "KW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Kyrgyzstan",
+    "code": "KG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Lao People\"S Democratic Republic",
+    "code": "LA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Latvia",
+    "code": "LV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Lebanon",
+    "code": "LB",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Lesotho",
+    "code": "LS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Liberia",
+    "code": "LR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Libyan Arab Jamahiriya",
+    "code": "LY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Liechtenstein",
+    "code": "LI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Lithuania",
+    "code": "LT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Luxembourg",
+    "code": "LU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Macao",
+    "code": "MO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Macedonia, The Former Yugoslav Republic of",
+    "code": "MK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Madagascar",
+    "code": "MG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Malawi",
+    "code": "MW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Malaysia",
+    "code": "MY",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Maldives",
+    "code": "MV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mali",
+    "code": "ML",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Malta",
+    "code": "MT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Marshall Islands",
+    "code": "MH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Martinique",
+    "code": "MQ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mauritania",
+    "code": "MR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mauritius",
+    "code": "MU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mayotte",
+    "code": "YT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mexico",
+    "code": "MX",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Micronesia, Federated States of",
+    "code": "FM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Moldova, Republic of",
+    "code": "MD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Monaco",
+    "code": "MC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mongolia",
+    "code": "MN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Montserrat",
+    "code": "MS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Morocco",
+    "code": "MA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Mozambique",
+    "code": "MZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Myanmar",
+    "code": "MM",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Namibia",
+    "code": "NA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Nauru",
+    "code": "NR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Nepal",
+    "code": "NP",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Netherlands",
+    "code": "NL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Netherlands Antilles",
+    "code": "AN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "New Caledonia",
+    "code": "NC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "New Zealand",
+    "code": "NZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Nicaragua",
+    "code": "NI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Niger",
+    "code": "NE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Nigeria",
+    "code": "NG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Niue",
+    "code": "NU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Norfolk Island",
+    "code": "NF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Northern Mariana Islands",
+    "code": "MP",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Norway",
+    "code": "NO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Oman",
+    "code": "OM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Pakistan",
+    "code": "PK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Palau",
+    "code": "PW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Palestinian Territory, Occupied",
+    "code": "PS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Panama",
+    "code": "PA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Papua New Guinea",
+    "code": "PG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Paraguay",
+    "code": "PY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Peru",
+    "code": "PE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Philippines",
+    "code": "PH",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Pitcairn",
+    "code": "PN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Poland",
+    "code": "PL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Portugal",
+    "code": "PT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Puerto Rico",
+    "code": "PR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Qatar",
+    "code": "QA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Reunion",
+    "code": "RE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Romania",
+    "code": "RO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Russian Federation",
+    "code": "RU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "RWANDA",
+    "code": "RW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saint Helena",
+    "code": "SH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saint Kitts and Nevis",
+    "code": "KN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saint Lucia",
+    "code": "LC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saint Pierre and Miquelon",
+    "code": "PM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saint Vincent and the Grenadines",
+    "code": "VC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Samoa",
+    "code": "WS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "San Marino",
+    "code": "SM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Sao Tome and Principe",
+    "code": "ST",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Saudi Arabia",
+    "code": "SA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Senegal",
+    "code": "SN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Serbia and Montenegro",
+    "code": "CS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Seychelles",
+    "code": "SC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Sierra Leone",
+    "code": "SL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Singapore",
+    "code": "SG",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Slovakia",
+    "code": "SK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Slovenia",
+    "code": "SI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Solomon Islands",
+    "code": "SB",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Somalia",
+    "code": "SO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "South Africa",
+    "code": "ZA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "South Georgia and the South Sandwich Islands",
+    "code": "GS",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Spain",
+    "code": "ES",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Sri Lanka",
+    "code": "LK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Sudan",
+    "code": "SD",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Suri\"name",
+    "code": "SR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Svalbard and Jan Mayen",
+    "code": "SJ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Swaziland",
+    "code": "SZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Sweden",
+    "code": "SE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Switzerland",
+    "code": "CH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Syrian Arab Republic",
+    "code": "SY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Taiwan, Province of China",
+    "code": "TW",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tajikistan",
+    "code": "TJ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tanzania, United Republic of",
+    "code": "TZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Thailand",
+    "code": "TH",
+    "aciCountry": "yes"
+  },
+  {
+    "name": "Timor-Leste",
+    "code": "TL",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Togo",
+    "code": "TG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tokelau",
+    "code": "TK",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tonga",
+    "code": "TO",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Trinidad and Tobago",
+    "code": "TT",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tunisia",
+    "code": "TN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Turkey",
+    "code": "TR",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Turkmenistan",
+    "code": "TM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Turks and Caicos Islands",
+    "code": "TC",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Tuvalu",
+    "code": "TV",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Uganda",
+    "code": "UG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Ukraine",
+    "code": "UA",
+    "aciCountry": "no"
+  },
+  {
+    "name": "United Arab Emirates",
+    "code": "AE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "United Kingdom",
+    "code": "GB",
+    "aciCountry": "no"
+  },
+  {
+    "name": "United States",
+    "code": "US",
+    "aciCountry": "no"
+  },
+  {
+    "name": "United States Minor Outlying Islands",
+    "code": "UM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Uruguay",
+    "code": "UY",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Uzbekistan",
+    "code": "UZ",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Vanuatu",
+    "code": "VU",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Venezuela",
+    "code": "VE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Viet Nam",
+    "code": "VN",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Virgin Islands, British",
+    "code": "VG",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Virgin Islands, U.S.",
+    "code": "VI",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Wallis and Futuna",
+    "code": "WF",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Western Sahara",
+    "code": "EH",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Yemen",
+    "code": "YE",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Zambia",
+    "code": "ZM",
+    "aciCountry": "no"
+  },
+  {
+    "name": "Zimbabwe",
+    "code": "ZW",
+    "aciCountry": "no"
+  }
+]
