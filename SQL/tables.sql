@@ -8,6 +8,7 @@ CREATE TABLE
     IF NOT EXISTS `countries` (
         `countryCode` char(3),
         `countryName` varchar(64),
+        `city` varchar(64),
         `aciCountry` enum ('Yes', 'No'),
         PRIMARY KEY (`countryCode`)
     );
