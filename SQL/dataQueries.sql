@@ -1,5 +1,5 @@
 -- Sample data for pemGroup table
-INSERT INTO pemGroup (pemGroup, pemName) VALUES
+INSERT INTO pemGroup (pemGroupId, pemName) VALUES
 ('PEM001', 'PEM Group 1'),
 ('PEM002', 'PEM Group 2'),
 ('PEM003', 'PEM Group 3');
