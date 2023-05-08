@@ -33,19 +33,13 @@ CREATE TABLE
         adminNo char(7) not null,
         name varchar(64) not null,
         gender enum ('Male', 'Female') not null,
-        birthday date not null,
-        -- rm (sensitive data)
         citizenshipStatus enum (
             'Singapore citizen',
             'Permanent resident',
             'Foreigner'
         ) not null,
-        -- consider grouping singaporean and pr together for certain views
-        countryOfOrigin char(3),
-        -- rm (?)
         course char(3) not null,
-        year tinyint not null,
-        -- change to stage
+        stage tinyint not null,
         pemGroup char(6) not null,
         PRIMARY KEY (adminNo),
         FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
@@ -71,7 +65,7 @@ CREATE TABLE
         startDate date,
         endDate date,
         countryCode char(3),
-        -- add city
+        city varchar(64),
         organization varchar(64),
         -- change to partnerName, overseasPartner (NULLABLE VAL)
         organizationType enum ('Company', 'College / University', 'Others'),
@@ -130,7 +124,7 @@ INSERT INTO overseasPrograms (programID, programName, programType, startDate, en
 INSERT INTO trips (studentAdminNo, programID, comments) VALUES
 ('A123456', 'OP001', 'Excited to start my summer internship at Google!'),
 ('A234567', 'OP002', 'Looking forward to studying at University of Melbourne'),
-('A345678', 'OP003', 'Can''t wait to experience Japanese culture!');
+('A345678', 'OP003', 'Can\'t wait to experience Japanese culture!');
  
 -- Sample data for users table
 INSERT INTO users (username, password, accountType, name) VALUES
