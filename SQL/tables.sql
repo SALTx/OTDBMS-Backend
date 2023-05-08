@@ -45,7 +45,6 @@ CREATE TABLE
         stage tinyint not null,
         pemGroup char(6) not null,
         PRIMARY KEY (adminNo),
-        FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
         FOREIGN KEY (course) REFERENCES course (courseCode),
         FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroup)
     );
@@ -70,7 +69,7 @@ CREATE TABLE
         countryCode char(3),
         city varchar(64),
         -- add city
-        partnerName NULL varchar(64),
+        partnerName varchar(64),
         -- change to partnerName, overseasPartner (NULLABLE VAL)
         overseasPartnerType enum ('Company', 'Institution', 'Others'),
         -- change col name to overseasPartnerType
