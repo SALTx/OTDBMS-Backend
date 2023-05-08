@@ -35,19 +35,14 @@ CREATE TABLE
         adminNo char(7) not null,
         name varchar(64) not null,
         gender enum ('Male', 'Female') not null,
-        birthday date not null,
-        -- rm (sensitive data)
         citizenshipStatus enum (
             'Singapore citizen',
             'Permanent resident',
             'Foreigner'
         ) not null,
         -- consider grouping singaporean and pr together for certain views
-        countryOfOrigin char(3),
-        -- rm (?)
         course char(3) not null,
-        year tinyint not null,
-        -- change to stage
+        stage tinyint not null,
         pemGroup char(6) not null,
         PRIMARY KEY (adminNo),
         FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
@@ -65,18 +60,19 @@ CREATE TABLE
         programID char(6) not null,
         programName varchar(64),
         programType enum (
-            'Internship',
-            'Exchange program',
-            'Immersion program',
+            'OET',
+            'OITP',
+            'IMP',
             'Others'
         ),
         startDate date,
         endDate date,
         countryCode char(3),
+        city varchar(64),
         -- add city
-        organization varchar(64),
+        partnerName NULL varchar(64),
         -- change to partnerName, overseasPartner (NULLABLE VAL)
-        organizationType enum ('Company', 'College / University', 'Others'),
+        overseasPartnerType enum ('Company', 'Institution', 'Others'),
         -- change col name to overseasPartnerType
         -- change [1] to institution
         PRIMARY KEY (programID),
