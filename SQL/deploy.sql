@@ -1,21 +1,22 @@
-CREATE DATABASE IF NOT EXISTS `overseas-travel`;
+DROP DATABASE IF EXISTS overseasProgrammeDB;
+-- create database otdb if it doesn't exist
+CREATE DATABASE IF NOT EXISTS `overseasProgrammeDB`;
 
-USE `overseas-travel`;
+USE `overseasProgrammeDB`;
 
 CREATE TABLE
     IF NOT EXISTS `countries` (
         `countryCode` char(3),
         `countryName` varchar(64),
-        `city` varchar(64),
         `aciCountry` enum ('Yes', 'No'),
         PRIMARY KEY (`countryCode`)
     );
 
 CREATE TABLE
     IF NOT EXISTS `pemGroup` (
-        `pemGroup` char(6) not null,
+        `pemGroupId` char(6) not null,
         `pemName` varchar(64),
-        PRIMARY KEY (`pemGroup`)
+        PRIMARY KEY (`pemGroupId`)
     );
 
 CREATE TABLE
@@ -38,11 +39,11 @@ CREATE TABLE
             'Permanent resident',
             'Foreigner'
         ) not null,
+        -- consider grouping singaporean and pr together for certain views
         course char(3) not null,
         stage tinyint not null,
         pemGroup char(6) not null,
         PRIMARY KEY (adminNo),
-        FOREIGN KEY (countryOfOrigin) REFERENCES countries (countryCode),
         FOREIGN KEY (course) REFERENCES course (courseCode),
         FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroup)
     );
@@ -57,20 +58,17 @@ CREATE TABLE
         programID char(6) not null,
         programName varchar(64),
         programType enum (
-            'Internship',
-            'Exchange program',
-            'Immersion program',
+            'OET',
+            'OITP',
+            'IMP',
             'Others'
         ),
         startDate date,
         endDate date,
         countryCode char(3),
         city varchar(64),
-        organization varchar(64),
-        -- change to partnerName, overseasPartner (NULLABLE VAL)
-        organizationType enum ('Company', 'College / University', 'Others'),
-        -- change col name to overseasPartnerType
-        -- change [1] to institution
+        partnerName varchar(64),
+        overseasPartnerType enum ('Company', 'Institution', 'Others'),
         PRIMARY KEY (programID),
         FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
     );
@@ -96,29 +94,39 @@ CREATE TABLE
         PRIMARY KEY (username)
     );
 
--- Sample data for pemGroup table
-INSERT INTO pemGroup (pemGroup, pemName) VALUES
-('PEM001', 'PEM Group 1'),
-('PEM002', 'PEM Group 2'),
-('PEM003', 'PEM Group 3');
 
--- Sample data for course table
+-- Sample data for pemGroup table
+INSERT INTO pemGroup (pemGroupId, pemName) VALUES
+('PEM001', 'Andy Lim'),
+('PEM002', 'David Loo'),
+('PEM003', 'Marry Lim');
+
+-- Actual data for course table
 INSERT INTO course (courseCode, courseName, courseManager) VALUES
-('CSE', 'Computer Science', 'John Doe'),
-('ENG', 'English Literature', 'Jane Smith'),
-('BIO', 'Biology', 'Alice Johnson');
+('C42', 'Common Engineering Programme', 'Siew Peng Shorn'),
+('C62', 'Advanced & Digital Manufacturing', 'Kent Loo'),
+('C51', 'Aeronautical & Aerospace Technology', 'Sneharaj Malankad'),
+('C52', 'Aerospace Systems & Management', 'Gan An Zhi'),
+('C31', 'AI & Data Engineering', 'Sophia Wei'),
+('C71', 'Biomedical Engineering', 'Poh Kok Kiong'),
+('C89', 'Electronic & Computer Engineering', 'Chang Wai Yee'),
+('C41', 'Engineering with Business', 'Ang Wei Sin'),
+('C75', 'Infocomm & Media Engineering', 'Cheng Yu Hui'),
+('C50', 'Nanotechnology & Materials Science', 'Eunice Goh'),
+('C87', 'Robotics & Mechatronics', 'David Poh');
+
 
 -- Sample data for students table
-INSERT INTO students (adminNo, name, gender, birthday, citizenshipStatus, countryOfOrigin, course, year, pemGroup) VALUES
-('A123456', 'John Smith', 'Male', '2000-01-01', 'Singapore citizen', 'SGP', 'C75', 1, 'PEM001'),
-('A234567', 'Jane Doe', 'Female', '2001-02-02', 'Permanent resident', 'MYS', 'ENG', 2, 'PEM002'),
-('A345678', 'Bob Johnson', 'Male', '1999-03-03', 'Foreigner', 'USA', 'BIO', 3, 'PEM003');
+INSERT INTO students (adminNo, name, gender, citizenshipStatus, course, stage, pemGroup) VALUES
+('A123456', 'John Smith', 'Male', 'Singapore citizen', 'C75', 1, 'PEM001'),
+('A234567', 'Jane Doe', 'Female', 'Permanent resident', 'ENG', 2, 'PEM002'),
+('A345678', 'Bob Johnson', 'Male', 'Foreigner', 'BIO', 3, 'PEM003');
 
 -- Sample data for overseasPrograms table
-INSERT INTO overseasPrograms (programID, programName, programType, startDate, endDate, countryCode, organization, organizationType) VALUES
-('OP001', 'Summer Internship', 'Internship', '2023-06-01', '2023-08-31', 'USA', 'Google', 'Company'),
-('OP002', 'Semester Exchange', 'Exchange program', '2024-01-01', '2024-05-31', 'AUS', 'University of Melbourne', 'College / University'),
-('OP003', 'Cultural Immersion', 'Immersion program', '2022-09-01', '2022-12-15', 'JPN', 'Japan Foundation', 'Others');
+INSERT INTO overseasPrograms (programID, programName, programType, startDate, endDate, countryCode,city, partnerName, overseasPartnerType) VALUES
+('OP001', 'Summer Internship', 'OITP', '2023-06-01', '2023-08-31', 'USA', 'New York','Google', 'Company'),
+('OP002', 'Semester Exchange', 'OET', '2024-01-01', '2024-05-31', 'AUS','Melbourne', 'University of Melbourne', 'Institution'),
+('OP003', 'Cultural Immersion', 'OIMP', '2022-09-01', '2022-12-15', 'JPN','Tokyo','Japan Foundation', 'Others');
 
 -- Sample data for trips table
 INSERT INTO trips (studentAdminNo, programID, comments) VALUES
@@ -127,7 +135,7 @@ INSERT INTO trips (studentAdminNo, programID, comments) VALUES
 ('A345678', 'OP003', 'Can\'t wait to experience Japanese culture!');
  
 -- Sample data for users table
-INSERT INTO users (username, password, accountType, name) VALUES
-('admin', 'adminpass', 'Admin', 'John Admin'),
-('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
-('guest1', 'guest1pass', 'Guest', 'Bob Guest');
+    INSERT INTO users (username, password, accountType, name) VALUES
+    ('admin', 'adminpass', 'Admin', 'John Admin'),
+    ('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
+    ('guest1', 'guest1pass', 'Guest', 'Bob Guest');
