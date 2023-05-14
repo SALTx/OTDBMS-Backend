@@ -1,108 +1,103 @@
 DROP DATABASE IF EXISTS overseasProgrammeDB;
--- create database otdb if it doesn't exist
-CREATE DATABASE IF NOT EXISTS `overseasProgrammeDB`;
+-- create database overseasProgrammeDB if it doesn't exist
+CREATE DATABASE IF NOT EXISTS overseasProgrammeDB;
 
-USE `overseasProgrammeDB`;
+USE overseasProgrammeDB;
 
-CREATE TABLE
-    IF NOT EXISTS `countries` (
-        `countryCode` char(3),
-        `countryName` varchar(64),
-        `aciCountry` enum ('Yes', 'No'),
-        PRIMARY KEY (`countryCode`)
-    );
+CREATE TABLE IF NOT EXISTS countries (
+    countryCode char(3),
+    countryName varchar(64),
+    aciCountry enum ('Yes', 'No'),
+    PRIMARY KEY (countryCode)
+);
 
-CREATE TABLE
-    IF NOT EXISTS `pemGroup` (
-        `pemGroupId` char(6) not null,
-        `pemName` varchar(64),
-        PRIMARY KEY (`pemGroupId`)
-    );
+CREATE TABLE IF NOT EXISTS pemGroup (
+    pemGroupId char(6) not null,
+    pemName varchar(64),
+    PRIMARY KEY (pemGroupId)
+);
 
-CREATE TABLE
-    IF NOT EXISTS `course` (
-        `courseCode` char(3) not null,
-        `courseName` varchar(64),
-        `courseManager` varchar(64),
-        PRIMARY KEY (`courseCode`)
-    );
-    -- create script to populate course table with current NYP courses
-    -- Edge case: Common programs which branch out to different courses
+CREATE TABLE IF NOT EXISTS course (
+    courseCode char(3) not null,
+    courseName varchar(64),
+    courseManager varchar(64),
+    PRIMARY KEY (courseCode)
+);
+-- create script to populate course table with current NYP courses
+-- Edge case: Common programs which branch out to different courses
 
-CREATE TABLE
-    IF NOT EXISTS students (
-        adminNo char(7) not null,
-        name varchar(64) not null,
-        gender enum ('Male', 'Female') not null,
-        citizenshipStatus enum (
-            'Singapore citizen',
-            'Permanent resident',
-            'Foreigner'
-        ) not null,
-        -- consider grouping singaporean and pr together for certain views
-        course char(3) not null,
-        stage tinyint not null,
-        pemGroup char(6) not null,
-        PRIMARY KEY (adminNo),
-        FOREIGN KEY (course) REFERENCES course (courseCode),
-        FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroup)
-    );
+CREATE TABLE IF NOT EXISTS students (
+    adminNo char(7) not null,
+    name varchar(64) not null,
+    gender enum ('Male', 'Female') not null,
+    citizenshipStatus enum ('Singapore citizen', 'Permanent resident', 'Foreigner') not null,
+    -- consider grouping singaporean and pr together for certain views
+    course char(3) not null,
+    stage tinyint not null,
+    pemGroup char(6) not null,
+    PRIMARY KEY (adminNo),
+    FOREIGN KEY (course) REFERENCES course (courseCode),
+    FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroupId)
+);
 
-CREATE TABLE
-    IF NOT EXISTS overseasPrograms (
-        -- cross reference with overseas program table
-        -- OET - Overseas educational trip
-        -- OITP - Overseas internship program
-        -- OIMP - Overseas immersion program
-        -- #TODO: add more if available
-        programID char(6) not null,
-        programName varchar(64),
-        programType enum (
-            'OET',
-            'OITP',
-            'IMP',
-            'Others'
-        ),
-        startDate date,
-        endDate date,
-        countryCode char(3),
-        city varchar(64),
-        partnerName varchar(64),
-        overseasPartnerType enum ('Company', 'Institution', 'Others'),
-        PRIMARY KEY (programID),
-        FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
-    );
-    -- Edge case: Trips that include multiple destinations
+CREATE TABLE IF NOT EXISTS overseasPrograms (
+    -- cross reference with overseas program table
+    -- OET - Overseas educational trip
+    -- OITP - Overseas internship program
+    -- OIMP - Overseas immersion program
+    -- #TODO: add more if available
+    programID char(6) not null,
+    programName varchar(64),
+    programType enum ('OET', 'OITP', 'OIMP', 'Others'),
+    startDate date,
+    endDate date,
+    countryCode char(3),    
+    city varchar(64),
+    partnerName varchar(64),
+    overseasPartnerType enum ('Company', 'Institution', 'Others'),
+    PRIMARY KEY (programID),
+    FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
+);
 
-CREATE TABLE
-    IF NOT EXISTS trips (
-        studentAdminNo char(7) not null,
-        programID char(6) not null,
-        comments text,
-        PRIMARY KEY (studentAdminNo, programID),
-        FOREIGN KEY (studentAdminNo) REFERENCES students (adminNo),
-        FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
-    );
+CREATE TABLE IF NOT EXISTS OIMPdetails (
+    gsmCode varchar(20) not null,
+    gsmName varchar(50) not null,
+    programID char(6) not null,
+    courseCode  char(3) not null,
+    PRIMARY KEY (gsmCode),
+    FOREIGN KEY (courseCode) REFERENCES course (courseCode),
+    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+);
 
-CREATE TABLE
-    IF NOT EXISTS users (
-        -- not fully implemented
-        username varchar(64) not null,
-        password varchar(64),
-        accountType enum ('Admin', 'Teacher', 'Guest'),
-        name varchar(64),
-        PRIMARY KEY (username)
-    );
 
+-- Edge case: Trips that include multiple destinations
+
+CREATE TABLE IF NOT EXISTS trips (
+    studentAdminNo char(7) not null,
+    programID char(6) not null,
+    comments text,
+    PRIMARY KEY (studentAdminNo, programID),
+    FOREIGN KEY (studentAdminNo) REFERENCES students (adminNo),
+    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    -- not fully implemented
+    username varchar(64) not null,
+    password varchar(64),
+    accountType enum ('Admin', 'Teacher', 'Guest'),
+    name varchar(64),
+    PRIMARY KEY (username)
+);
 
 -- Sample data for pemGroup table
-INSERT INTO pemGroup (pemGroupId, pemName) VALUES
+INSERT INTO 'pemGroup' (pemGroupId, pemName) VALUES
 ('PEM001', 'Andy Lim'),
 ('PEM002', 'David Loo'),
 ('PEM003', 'Marry Lim');
 
 -- Actual data for course table
-INSERT INTO course (courseCode, courseName, courseManager) VALUES
+INSERT INTO 'course' (courseCode, courseName, courseManager) VALUES
 ('C42', 'Common Engineering Programme', 'Siew Peng Shorn'),
 ('C62', 'Advanced & Digital Manufacturing', 'Kent Loo'),
 ('C51', 'Aeronautical & Aerospace Technology', 'Sneharaj Malankad'),
