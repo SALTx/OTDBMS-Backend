@@ -63,15 +63,10 @@ CREATE TABLE IF NOT EXISTS OIMPdetails (
     gsmCode varchar(20) not null,
     gsmName varchar(50) not null,
     programID char(6) not null,
-    courseCode  char(3) not null,
     PRIMARY KEY (gsmCode),
-    FOREIGN KEY (courseCode) REFERENCES course (courseCode),
-    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
 );
 
-
 -- Edge case: Trips that include multiple destinations
-
 CREATE TABLE IF NOT EXISTS trips (
     studentAdminNo char(7) not null,
     programID char(6) not null,

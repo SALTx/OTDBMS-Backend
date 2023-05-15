@@ -1,0 +1,7 @@
+CREATE VIEW OIMP_View AS
+SELECT op.programID, op.programName, op.programType, op.startDate, op.endDate, op.countryCode, op.city, op.partnerName, op.overseasPartnerType, od.gsmCode, od.gsmName
+FROM overseasPrograms AS op
+JOIN OIMPdetails AS od ON op.programID = od.programID
+WHERE op.programType = 'OIMP';
+SELECT * FROM OIMP_View;
+
