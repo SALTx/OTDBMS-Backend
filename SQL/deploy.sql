@@ -105,7 +105,6 @@ INSERT INTO 'course' (courseCode, courseName, courseManager) VALUES
 ('C50', 'Nanotechnology & Materials Science', 'Eunice Goh'),
 ('C87', 'Robotics & Mechatronics', 'David Poh');
 
-
 -- Sample data for students table
 INSERT INTO students (adminNo, name, gender, citizenshipStatus, course, stage, pemGroup) VALUES
 ('A123456', 'John Smith', 'Male', 'Singapore citizen', 'C75', 1, 'PEM001'),
@@ -118,14 +117,23 @@ INSERT INTO overseasPrograms (programID, programName, programType, startDate, en
 ('OP002', 'Semester Exchange', 'OET', '2024-01-01', '2024-05-31', 'AUS','Melbourne', 'University of Melbourne', 'Institution'),
 ('OP003', 'Cultural Immersion', 'OIMP', '2022-09-01', '2022-12-15', 'JPN','Tokyo','Japan Foundation', 'Others');
 
+INSERT INTO OIMPdetails (gsmCode, gsmName, programID) VALUES
+('sampledata', 'sampledata', 'OP001'),
+('sampledata', 'sampledata', 'OP001'),
+('sampledata', 'sampledata', 'OP001');
+
+
+ -- Sample data for users table
+INSERT INTO users (username, password, accountType, name) VALUES
+('admin', 'adminpass', 'Admin', 'John Admin'),
+('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
+('guest1', 'guest1pass', 'Guest', 'Bob Guest');
+
 -- Sample data for trips table
 INSERT INTO trips (studentAdminNo, programID, comments) VALUES
 ('A123456', 'OP001', 'Excited to start my summer internship at Google!'),
 ('A234567', 'OP002', 'Looking forward to studying at University of Melbourne'),
 ('A345678', 'OP003', 'Can\'t wait to experience Japanese culture!');
- 
--- Sample data for users table
-    INSERT INTO users (username, password, accountType, name) VALUES
-    ('admin', 'adminpass', 'Admin', 'John Admin'),
-    ('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
-    ('guest1', 'guest1pass', 'Guest', 'Bob Guest');
+
+
+
