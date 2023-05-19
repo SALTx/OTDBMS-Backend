@@ -32,8 +32,8 @@ CREATE TABLE IF NOT EXISTS students (
     gender enum ('Male', 'Female') not null,
     citizenshipStatus enum ('Singapore citizen', 'Permanent resident', 'Foreigner') not null,
     -- consider grouping singaporean and pr together for certain views
-    course char(3) not null,
     stage tinyint not null,
+    course char(3) not null,
     pemGroup char(6) not null,
     PRIMARY KEY (adminNo),
     FOREIGN KEY (course) REFERENCES course (courseCode),
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     overseasPartnerType enum ('Company', 'Institution', 'Others'),
     PRIMARY KEY (programID)
 );
-CREATE TABLE programDestinations (
+CREATE TABLE IF NOT EXISTS programDestinations (
     programID char(6),
     countryCode char(2),
     city varchar(64),
@@ -72,8 +72,7 @@ CREATE TABLE IF NOT EXISTS OIMPdetails (
     programID char(6) not null,
     PRIMARY KEY (gsmCode),
     FOREIGN KEY (courseCode) REFERENCES course (courseCode),
-    FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
-    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+    FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
 );
 
 -- Edge case: Trips that include multiple destinations
@@ -89,7 +88,7 @@ CREATE TABLE IF NOT EXISTS trips (
 CREATE TABLE IF NOT EXISTS users (
     -- not fully implemented
     username varchar(64) not null,
-    password varchar(255),
+    password varchar(64),
     accountType enum ('Admin', 'Teacher', 'Guest'),
     name varchar(64),
     PRIMARY KEY (username)
@@ -243,21 +242,36 @@ WHERE op.programType = 'OIMP';
 
 ---------------------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW StudentDetails AS
-SELECT s.adminNo, s.name, s.gender, s.citizenshipStatus, c.courseName, COALESCE(o.programName, 'No trip records') AS programName
-FROM students AS s
-JOIN course AS c ON s.course = c.courseCode
-LEFT JOIN trips AS t ON s.adminNo = t.studAdmin
-LEFT JOIN overseasPrograms AS o ON t.programID = o.programID;
+SELECT 
+    s.adminNo, 
+    s.name, 
+    s.gender, 
+    s.citizenshipStatus, 
+    c.courseName, 
+    COALESCE(o.programName, 'No trip records') AS programName
+FROM 
+    students AS s
+JOIN 
+    course AS c ON s.course = c.courseCode
+LEFT JOIN 
+    trips AS t ON s.adminNo = t.studAdmin
+LEFT JOIN 
+    overseasPrograms AS o ON t.programID = o.programID;
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 CREATE VIEW students_trip_status AS
 SELECT
     s.adminNo,
     s.name,
-    CASE WHEN t.studAdmin IS NOT NULL THEN 'Went for Trip' ELSE 'Did not go for Trip' END AS tripStatus
+    CASE 
+        WHEN t.studAdmin IS NOT NULL THEN 'Went for Trip' 
+        ELSE 'Did not go for Trip' 
+    END AS tripStatus
 FROM
     students s
 LEFT JOIN
     trips t ON s.adminNo = t.studAdmin;
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 DELIMITER //
 -- Stored procedure to update the date in the overseasprogramm table
