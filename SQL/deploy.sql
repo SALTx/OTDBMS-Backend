@@ -5,7 +5,7 @@ CREATE DATABASE IF NOT EXISTS overseasProgrammeDB;
 USE overseasProgrammeDB;
 
 CREATE TABLE IF NOT EXISTS countries (
-    countryCode char(3),
+    countryCode char(2),
     countryName varchar(64),
     aciCountry enum ('Yes', 'No'),
     PRIMARY KEY (countryCode)
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     programType enum ('OET', 'OITP', 'OIMP', 'Others'),
     startDate date,
     endDate date,
-    countryCode char(3),    
+    countryCode char(2),    
     city varchar(64),
     partnerName varchar(64),
     overseasPartnerType enum ('Company', 'Institution', 'Others'),
@@ -61,10 +61,13 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
 
 CREATE TABLE IF NOT EXISTS OIMPdetails (
     gsmCode varchar(20) not null,
+    courseCode char(3) not null,
     gsmName varchar(50) not null,
     programID char(6) not null,
-    PRIMARY KEY (gsmCode)
+    PRIMARY KEY (gsmCode),
+    FOREIGN KEY (courseCode) REFERENCES course (courseCode)
 );
+
 
 -- Edge case: Trips that include multiple destinations
 CREATE TABLE IF NOT EXISTS trips (
@@ -133,30 +136,21 @@ INSERT INTO students (adminNo, name, gender, citizenshipStatus, course, stage, p
 
 -- Sample data for overseasPrograms table
 INSERT INTO overseasPrograms (programID, programName, programType, startDate, endDate, countryCode, city, partnerName, overseasPartnerType) VALUES
-('OP001', 'Summer Internship', 'OITP', '2023-06-01', '2023-08-31', 'USA', 'New York', 'Google', 'Company'),
-('OP002', 'Semester Exchange', 'OET', '2024-01-01', '2024-05-31', 'AUS', 'Melbourne', 'University of Melbourne', 'Institution'),
-('OP003', 'Cultural Immersion', 'OIMP', '2022-09-01', '2022-12-15', 'JPN', 'Tokyo', 'Japan Foundation', 'Others'),
-('OP004', 'Educational Trip', 'OET', '2022-07-01', '2022-07-10', 'FRA', 'Paris', 'French Education Tours', 'Company'),
-('OP005', 'Internship Program', 'OITP', '2023-02-15', '2023-05-15', 'CAN', 'Toronto', 'Tech Innovators', 'Company'),
-('OP006', 'Language Exchange', 'OIMP', '2023-03-01', '2023-06-30', 'ESP', 'Barcelona', 'Universitat Autonoma de Barcelona', 'Institution'),
-('OP007', 'Cultural Exploration', 'OET', '2023-10-01', '2023-10-15', 'THA', 'Bangkok', 'Thailand Cultural Exchange', 'Institution'),
-('OP008', 'Industry Internship', 'OITP', '2023-07-01', '2023-09-30', 'GER', 'Berlin', 'Tech Solutions GmbH', 'Company'),
-('OP009', 'Language Immersion', 'OIMP', '2023-09-01', '2023-12-15', 'ITA', 'Rome', 'Italian Language Institute', 'Institution'),
-('OP010', 'Environmental Study', 'OET', '2023-05-01', '2023-05-10', 'BRA', 'Rio de Janeiro', 'Amazon Rainforest Institute', 'Institution');
+('OP001', 'Summer Internship', 'OITP', '2023-06-01', '2023-08-31', 'US', 'New York', 'Google', 'Company'),
+('OP002', 'Semester Exchange', 'OET', '2024-01-01', '2024-05-31', 'AU', 'Melbourne', 'University of Melbourne', 'Institution'),
+('OP003', 'Cultural Immersion', 'OIMP', '2022-09-01', '2022-12-15', 'JP', 'Tokyo', 'Japan Foundation', 'Others'),
+('OP004', 'Educational Trip', 'OET', '2022-07-01', '2022-07-10', 'FR', 'Paris', 'French Education Tours', 'Company'),
+('OP005', 'Internship Program', 'OITP', '2023-02-15', '2023-05-15', 'CA', 'Toronto', 'Tech Innovators', 'Company'),
+('OP006', 'Language Exchange', 'OIMP', '2023-03-01', '2023-06-30', 'ES', 'Barcelona', 'Universitat Autonoma de Barcelona', 'Institution'),
+('OP007', 'Cultural Exploration', 'OET', '2023-10-01', '2023-10-15', 'TH', 'Bangkok', 'Thailand University', 'Institution'),
+('OP011', 'Cultural Exploration', 'OET', '2023-2-01', '2023-2-15', 'MY', 'Kuala Lumpur', 'Malaysia University', 'Institution'),
+('OP008', 'Industry Internship', 'OITP', '2023-07-01', '2023-09-30', 'DE', 'Berlin', 'Tech Solutions GmbH', 'Company'),
+('OP009', 'Language Immersion', 'OIMP', '2023-09-01', '2023-12-15', 'IT', 'Rome', 'Italian Language Institute', 'Institution'),
+('OP010', 'Environmental Study', 'OET', '2023-05-01', '2023-05-10', 'BR', 'Rio de Janeiro', 'Amazon Rainforest Institute', 'Institution'),
+('OP012', 'Internship Program - China', 'OITP', '2023-06-15', '2023-09-15', 'CN', 'Beijing', 'Tech Innovators China', 'Company'),
+('OP013', 'Internship Program - India', 'OITP', '2023-07-01', '2023-10-01', 'IN', 'Mumbai', 'Indian Tech Solutions', 'Company'),
+('OP014', 'Internship Program - Indonesia', 'OITP', '2023-08-01', '2023-11-01', 'ID', 'Jakarta', 'Indonesian Tech Solutions', 'Company');
 
-
-
-INSERT INTO OIMPdetails (gsmCode, gsmName, programID) VALUES
-('sampledata1', 'sampledata1', 'OP003'),
-('sampledata2', 'sampledata2', 'OP006'),
-('sampledata3', 'sampledata3', 'OP009');
-
-
- -- Sample data for users table
-INSERT INTO users (username, password, accountType, name) VALUES
-('admin', 'adminpass', 'Admin', 'John Admin'),
-('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
-('guest1', 'guest1pass', 'Guest', 'Bob Guest');
 
 -- Sample data for trips table
 INSERT INTO trips (studentAdminNo, programID, comments) VALUES
@@ -167,9 +161,30 @@ INSERT INTO trips (studentAdminNo, programID, comments) VALUES
 ('A567890', 'OP005', 'Thrilled to participate in an internship program in Toronto'),
 ('A678901', 'OP006', 'Excited for a language exchange program in Barcelona'),
 ('A789012', 'OP007', 'Eager to explore Thai culture in Bangkok'),
+('A789012', 'OP011', 'Eager to explore Thai culture in Malaysia'),
 ('A890123', 'OP008', 'Looking forward to an industry internship in Berlin'),
 ('A901234', 'OP009', 'Ready to immerse in the language in Rome'),
-('A012345', 'OP010', 'Excited for an environmental study program in Rio de Janeiro');
+('A012345', 'OP010', 'Excited for an environmental study program in Rio de Janeiro'),
+('A123456', 'OP012', 'Ready for an internship program in China'),
+('A234567', 'OP013', 'Excited to start an internship program in India'),
+('A345678', 'OP014', 'Looking forward to the internship program in Indonesia');
+
+
+
+
+INSERT INTO OIMPdetails (gsmCode, courseCode, gsmName, programID) VALUES
+('sampledata1', 'C75', 'sampledata1', 'OP003'),
+('sampledata2', 'C89', 'sampledata2', 'OP006'),
+('sampledata3', 'C52', 'sampledata3', 'OP009');
+
+
+ -- Sample data for users table
+INSERT INTO users (username, password, accountType, name) VALUES
+('admin', 'adminpass', 'Admin', 'John Admin'),
+('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
+('guest1', 'guest1pass', 'Guest', 'Bob Guest');
+
+
 
 
 
