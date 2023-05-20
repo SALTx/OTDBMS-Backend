@@ -212,7 +212,7 @@ FROM trips AS t
 JOIN students AS s ON t.studAdmin = s.adminNo
 JOIN programDestinations AS pd ON t.programID = pd.programID
 WHERE s.stage = 3;
----------------------------------------------------------------------------------------------------------------------------------------
+
 -- KPI2ACIcount
 CREATE VIEW KPI2ACIcount AS
 SELECT COUNT(DISTINCT t.studAdmin) AS uniqueStudents
@@ -221,7 +221,7 @@ JOIN programDestinations AS pd ON t.programID = pd.programID
 JOIN countries AS c ON pd.countryCode = c.countryCode
 JOIN students AS s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'Yes' AND s.stage = 3;
----------------------------------------------------------------------------------------------------------------------------------------
+
 -- KPI3ACIoitp
 CREATE VIEW KPI3ACIoitp AS
 SELECT COUNT(DISTINCT t.studAdmin) AS uniqueStudents
@@ -231,7 +231,6 @@ JOIN countries AS c ON pd.countryCode = c.countryCode
 JOIN students AS s ON t.studAdmin = s.adminNo
 JOIN overseasPrograms AS op ON t.programID = op.programID
 WHERE c.aciCountry = 'Yes' AND op.programType = 'OITP' AND s.stage = 3;
----------------------------------------------------------------------------------------------------------------------------------------
 -- OIMP_View
 CREATE VIEW OIMP_View AS
 SELECT op.programID, op.programName, op.programType, op.startDate, op.endDate, pd.countryCode, pd.city, op.partnerName, op.overseasPartnerType, od.gsmCode, od.gsmName
@@ -240,7 +239,7 @@ JOIN overseasPrograms AS op ON pd.programID = op.programID
 JOIN OIMPdetails AS od ON op.programID = od.programID
 WHERE op.programType = 'OIMP';
 
----------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE VIEW StudentDetails AS
 SELECT 
     s.adminNo, 
@@ -258,7 +257,7 @@ LEFT JOIN
 LEFT JOIN 
     overseasPrograms AS o ON t.programID = o.programID;
 
----------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE VIEW students_trip_status AS
 SELECT
     s.adminNo,
@@ -272,7 +271,7 @@ FROM
 LEFT JOIN
     trips t ON s.adminNo = t.studAdmin;
 
----------------------------------------------------------------------------------------------------------------------------------------
+
 DELIMITER //
 -- Stored procedure to update the date in the overseasprogramm table
 CREATE PROCEDURE UpdateProgramDates(
@@ -285,7 +284,7 @@ BEGIN
   SET startDate = p_startDate, endDate = p_endDate
   WHERE programID = p_programID;
 END //
----------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE PROCEDURE UpdateTripComments(
   IN p_studAdmin CHAR(7),
   IN p_programID CHAR(6),
@@ -294,7 +293,7 @@ CREATE PROCEDURE UpdateTripComments(
 BEGIN
     UPDATE trips SET comments = p_comments WHERE studAdmin = p_studAdmin AND programID = p_programID;
 END //
----------------------------------------------------------------------------------------------------------------------------------------
+
 CREATE PROCEDURE InsertCountry(
   IN p_countryCode CHAR(3),
   IN p_countryName VARCHAR(64),
