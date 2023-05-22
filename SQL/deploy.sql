@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS overseasProgrammeDB;
+DROP DATABASE IF EXISTS overseasProgramDB;
 -- create database overseasProgrammeDB if it doesn't exist
-CREATE DATABASE IF NOT EXISTS overseasProgrammeDB;
+CREATE DATABASE IF NOT EXISTS overseasProgramDB;
 
-USE overseasProgrammeDB;
+USE overseasProgramDB;
 
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2),
