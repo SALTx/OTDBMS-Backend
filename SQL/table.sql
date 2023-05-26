@@ -57,6 +57,17 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     PRIMARY KEY (programID, countryCode, city)
 );
 
+-- Edge case: Trips that include multiple destinations
+CREATE TABLE IF NOT EXISTS trips (
+    studAdmin char(7) not null,
+    programID char(9) not null,
+    comments text,
+    PRIMARY KEY (studAdmin, programID),
+    FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
+    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+);
+
+
 CREATE TABLE IF NOT EXISTS OIMPdetails (
     gsmCode varchar(20) not null,
     courseCode char(6) not null,
@@ -68,15 +79,6 @@ CREATE TABLE IF NOT EXISTS OIMPdetails (
     FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
 );
 
--- Edge case: Trips that include multiple destinations
-CREATE TABLE IF NOT EXISTS trips (
-    studAdmin char(7) not null,
-    programID char(9) not null,
-    comments text,
-    PRIMARY KEY (studAdmin, programID),
-    FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
-    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
-);
 
 CREATE TABLE IF NOT EXISTS users (
     -- not fully implemented
@@ -85,4 +87,32 @@ CREATE TABLE IF NOT EXISTS users (
     accountType enum ('Admin', 'Teacher', 'Guest'),
     name varchar(64),
     PRIMARY KEY (username)
+);
+
+CREATE TABLE IF NOT EXISTS Planned_Trips (
+    TripType ENUM ('Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
+    'Overseas Competition/Exchange', 'Overseas Leadership Training', 'Overseas Leadership Training with Outward Bound',
+    'Overseas Service Learning-Youth Expedition Programme'),NOT NULL,
+    Category ENUM('A', 'N') NOT NULL,
+    Country varchar(64) NOT NULL,
+    City varchar(64) NOT NULL,
+    TripStartDate date NOT NULL,
+    TripEndDate date NOT NULL,
+    NumStaff int NOT NULL,
+    EstNumStudents int NOT NULL,
+    PRIMARY KEY (TripType, Country, City, TripStartDate, TripEndDate)
+);
+
+CREATE TABLE IF NOT EXISTS Approved_Trips (
+    TripType ENUM('Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
+    'Overseas Competition/Exchange', 'Overseas Leadership Training', 'Overseas Leadership Training with Outward Bound',
+    'Overseas Service Learning-Youth Expedition Programme'),NOT NULL,
+    Category ENUM('A', 'N') NOT NULL,
+    Country varchar(64) NOT NULL,
+    City varchar(64) NOT NULL,
+    TripStartDate date NOT NULL,
+    TripEndDate date NOT NULL,
+    NumStaff int NOT NULL,
+    ActualNumStudents int NOT NULL,
+    PRIMARY KEY (TripType, Country, City, TripStartDate, TripEndDate)
 );

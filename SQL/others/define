@@ -16,3 +16,27 @@ DROP VIEW IF EXISTS KPI1OverseasStudCount;
 DROP VIEW IF EXISTS KPI2ACIcount;
 DROP VIEW IF EXISTS KPI3ACIoitp;
 DROP VIEW IF EXISTS OIMP_View;
+
+CREATE VIEW KPI1OverseasStudCount AS
+SELECT COUNT(DISTINCT s.adminNo) AS StudentCount
+FROM students s
+JOIN trips t ON s.adminNo = t.studAdmin
+WHERE s.stage = 3;
+
+CREATE VIEW KPI2ACIcount AS
+SELECT COUNT(DISTINCT s.adminNo) AS StudentCount
+FROM students s
+JOIN trips t ON s.adminNo = t.studAdmin
+JOIN overseasPrograms op ON t.programID = op.programID
+JOIN countries c ON op.countryCode = c.countryCode
+WHERE c.aciCountry = 'A' AND s.stage = 3;
+
+CREATE VIEW KPI3ACIoitp AS
+SELECT COUNT(DISTINCT s.adminNo) AS StudentCount
+FROM students s
+JOIN trips t ON s.adminNo = t.studAdmin
+JOIN overseasPrograms op ON t.programID = op.programID
+JOIN countries c ON op.countryCode = c.countryCode
+WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3;
+
+

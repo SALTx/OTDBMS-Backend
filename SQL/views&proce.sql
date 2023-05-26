@@ -1,21 +1,25 @@
-
 CREATE VIEW KPI1OverseasStudCount AS
-SELECT COUNT(DISTINCT studAdmin) AS StudentCount
-FROM trips;
+SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
+FROM trips t
+JOIN students s ON t.studAdmin = s.adminNo
+WHERE s.stage = 3;
 
 CREATE VIEW KPI2ACIcount AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
-WHERE c.aciCountry = 'A';
+JOIN students s ON t.studAdmin = s.adminNo
+WHERE c.aciCountry = 'A' AND s.stage = 3;
 
 CREATE VIEW KPI3ACIoitp AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
-WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program';
+JOIN students s ON t.studAdmin = s.adminNo
+WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3;
+
 
 CREATE VIEW OIMPdetailsView AS
 SELECT 
@@ -31,7 +35,9 @@ SELECT
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN students s ON t.studAdmin = s.adminNo
-JOIN OIMPdetails od ON t.studAdmin = od.studAdmin AND t.programID = od.programID;
+JOIN OIMPdetails od ON t.studAdmin = od.studAdmin AND t.programID = od.programID
+WHERE s.stage = 3;
+
 
 DELIMITER //
 CREATE PROCEDURE getProgramAcronym(programType VARCHAR(64), OUT acronym CHAR(3))
