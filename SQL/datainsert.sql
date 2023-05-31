@@ -3,6 +3,8 @@ INSERT INTO pemGroup (pemGroupId, pemName) VALUES
 ('PEM001', 'Andy Lim'),
 ('PEM002', 'David Loo'),
 ('PEM003', 'Marry Lim');
+INSERT INTO plannedTrips (programID, startDate, endDate, NumStaff, EstNumStudents, Approved)
+VALUES ('IMP23A006', NULL, NULL, 5, 50, 'Yes');
 
 
 -- Actual data for course table

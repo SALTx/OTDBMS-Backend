@@ -105,6 +105,40 @@ BEGIN
 END//
 DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER update_dates_before_insert
+BEFORE INSERT ON plannedTrips
+FOR EACH ROW 
+BEGIN
+    DECLARE startD DATE;
+    DECLARE endD DATE;
+
+    SELECT startDate, endDate INTO startD, endD
+    FROM overseasPrograms 
+    WHERE overseasPrograms.programID = NEW.programID;
+
+    SET NEW.startDate = startD;
+    SET NEW.endDate = endD;
+END//
+DELIMITER ;
+
+CREATE VIEW Planned_Trips AS
+SELECT
+    op.programType,
+    CASE c.aciCountry
+        WHEN 'A' THEN 'Yes'
+        WHEN 'N' THEN 'No'
+    END AS aciCountry,
+    op.city,
+    pt.startDate AS `Trip Start Date`,
+    pt.endDate AS `Trip End Date`,
+    pt.NumStaff AS `No. of Staff`,
+    pt.EstNumStudents AS `Est. No. of Students`,
+    pt.Approved
+FROM plannedTrips pt
+JOIN overseasPrograms op ON pt.programID = op.programID
+JOIN countries c ON op.countryCode = c.countryCode;
+
 
 DELIMITER //
 CREATE PROCEDURE DeleteCountry(IN p_countryCode CHAR(2))
