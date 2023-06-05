@@ -4,10 +4,10 @@ CREATE DATABASE IF NOT EXISTS overseasProgramDB;
 USE overseasProgramDB;
 
 CREATE TABLE IF NOT EXISTS countries (
-    countryCode char(2),
+    countryCode char(2), -- not used in reports
     countryName varchar(64),
     aciCountry enum ('A', 'N'),
-    PRIMARY KEY (countryCode)
+    PRIMARY KEY (countryName)
 );
 
 CREATE TABLE IF NOT EXISTS pemGroup (
@@ -30,7 +30,6 @@ CREATE TABLE IF NOT EXISTS students (
     #--adminNo format: first 2 digit as enroll year,middle 4 random digit, last 1 random alphabet. 
     #--e.g. 191203G. 19 as enrolled in year 2019,the rest is all random generated
     name varchar(64) not null,
-    gender enum ('Male', 'Female') not null,
     citizenshipStatus enum ('Singapore citizen', 'Permanent resident', 'International Student') not null,
     -- consider grouping singaporean and pr together for certain views
     stage tinyint not null,
@@ -50,14 +49,14 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     'Overseas Service Learning-Youth Expedition Programme'),
     startDate date,
     endDate date,
-    countryCode char(2),
+    countryName varchar(64),
     city varchar(64),
     partnerName varchar(64),
     overseasPartnerType enum ('Company', 'Institution', 'Others'),
-    PRIMARY KEY (programID, countryCode, city)
-    FOREIGN KEY (countryCode) REFERENCES countries (countryCode),
+    PRIMARY KEY (programID, countryName, city),
+    FOREIGN KEY (countryName) REFERENCES countries (countryName),
 );
-
+-- group by quater(financial year)
 -- Edge case: Trips that include multiple destinations
 CREATE TABLE IF NOT EXISTS tripsDone (
     studAdmin char(7) not null,
@@ -67,8 +66,6 @@ CREATE TABLE IF NOT EXISTS tripsDone (
     FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
     FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
 );
-
-
 CREATE TABLE IF NOT EXISTS OIMPdetails (
     gsmCode varchar(20) not null,
     courseCode char(6) not null,
@@ -79,8 +76,6 @@ CREATE TABLE IF NOT EXISTS OIMPdetails (
     FOREIGN KEY (courseCode) REFERENCES course (courseCode),
     FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
 );
-
-
 CREATE TABLE IF NOT EXISTS users (
     -- not fully implemented
     username varchar(64) not null,
@@ -101,10 +96,17 @@ CREATE TABLE IF NOT EXISTS plannedTrips (
     date varchar(64),
     tripLeaders varchar(512),
     EstNumStudents int NOT NULL,
-    Approved ENUM('Yes','No'),
+    Approved ENUM('Yes','No'), 
     PRIMARY KEY (tripID),//
     FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
-);】
+);
 
 
+
+/*
+   quater 1 1st april - 31 june
+   quater 2 1st july - 31 september
+   quater 3 1st october - 31 december
+   quater 4 1st january - 31 march
+*/
 

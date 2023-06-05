@@ -92,7 +92,7 @@ BEGIN
     SET year = SUBSTRING(YEAR(NEW.startDate), 3, 2);
 
     -- Get the ACI or NON-ACI character directly from the countries table
-    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.countryCode);
+    SET aciChar = (SELECT aciCountry FROM countries WHERE countryName = NEW.countryName);
 
     -- Get the next sequence number
     SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(programID, 4, 2) = year), 3, '0');
@@ -105,89 +105,50 @@ BEGIN
 END//
 DELIMITER ;
 
-DELIMITER //
-CREATE TRIGGER update_dates_before_insert
-BEFORE INSERT ON plannedTrips
+
+SELECT *,
+CASE 
+    WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
+    WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
+    WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
+    WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
+    ELSE 'Unknown'
+END AS customQuarter
+FROM overseasPrograms;
+
+SELECT * FROM (
+    SELECT *,
+    CASE 
+        WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
+        WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
+        WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
+        WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
+        ELSE 'Unknown'
+    END AS customQuarter
+    FROM overseasPrograms
+) AS subquery
+WHERE customQuarter = 'Q2';
+
+
+
+-- Create the audit log table
+CREATE TABLE overseasProgramsAudit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    operation VARCHAR(20),
+    programID char(9),
+    changeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    old_startDate DATE,
+    new_startDate DATE
+);
+
+-- Create a trigger that inserts into the audit log table on UPDATE
+DELIMITER $$
+CREATE TRIGGER overseasPrograms_update_trigger
+AFTER UPDATE ON overseasPrograms
 FOR EACH ROW 
 BEGIN
-    DECLARE startD DATE;
-    DECLARE endD DATE;
-
-    SELECT startDate, endDate INTO startD, endD
-    FROM overseasPrograms 
-    WHERE overseasPrograms.programID = NEW.programID;
-
-    SET NEW.startDate = startD;
-    SET NEW.endDate = endD;
-END//
+   INSERT INTO overseasProgramsAudit(operation, programID, old_startDate, new_startDate) 
+   VALUES('UPDATE', OLD.programID, OLD.startDate, NEW.startDate);
+END;
+$$
 DELIMITER ;
-
-CREATE VIEW Planned_Trips AS
-SELECT
-    op.programType,
-    CASE c.aciCountry
-        WHEN 'A' THEN 'Yes'
-        WHEN 'N' THEN 'No'
-    END AS aciCountry,
-    op.city,
-    pt.startDate AS `Trip Start Date`,
-    pt.endDate AS `Trip End Date`,
-    pt.NumStaff AS `No. of Staff`,
-    pt.EstNumStudents AS `Est. No. of Students`,
-    pt.Approved
-FROM plannedTrips pt
-JOIN overseasPrograms op ON pt.programID = op.programID
-JOIN countries c ON op.countryCode = c.countryCode;
-
-
-DELIMITER //
-CREATE PROCEDURE DeleteCountry(IN p_countryCode CHAR(2))
-BEGIN
-    DELETE FROM countries WHERE countryCode = p_countryCode;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE UpdateStudentStage(IN p_adminNo CHAR(7), IN p_stage TINYINT)
-BEGIN
-    UPDATE students SET stage = p_stage WHERE adminNo = p_adminNo;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE updateCitizenship(IN p_adminNo CHAR(7), IN p_citizenshipStatus ENUM('Singapore citizen', 'Permanent resident', 'Foreigner'))
-BEGIN
-    UPDATE students SET citizenshipStatus = p_citizenshipStatus WHERE adminNo = p_adminNo;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE UpdateStudentCourse(IN p_adminNo CHAR(7), IN p_course CHAR(3))
-BEGIN
-    UPDATE students SET course = p_course WHERE adminNo = p_adminNo;
-END //
-DELIMITER 
-
-DELIMITER //
-CREATE PROCEDURE DeletePemGroup(IN p_pemGroupId CHAR(6))
-BEGIN
-    DELETE FROM pemGroup WHERE pemGroupId = p_pemGroupId;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE DeleteCourse(IN p_courseCode CHAR(3))
-BEGIN
-    DELETE FROM course WHERE courseCode = p_courseCode;
-END //
-DELIMITER ;
-
-
-DELIMITER //
-CREATE PROCEDURE UpdateCourseManager(IN p_courseCode CHAR(3), IN p_courseManager VARCHAR(64))
-BEGIN
-    UPDATE course SET courseManager = p_courseManager WHERE courseCode = p_courseCode;
-END //
-DELIMITER ;
-
-

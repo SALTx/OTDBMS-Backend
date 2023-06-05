@@ -41,10 +41,9 @@ def generate_students(year, current_year, num_students, course_distribution, exi
                 pemGroup_size_counter = 0
             adminNo = generate_adminNo(year, existing_admins)
             name = 'Student ' + adminNo  # Placeholder student name
-            gender = random.choice(['Male', 'Female'])
             citizenshipStatus = random.choice(['Singapore citizen', 'Permanent resident', 'International Student'])
             pemGroup = f"PEM{str(pemGroup_counter).zfill(3)}"  # Create the PEM group ID
-            students.append((adminNo, name, gender, citizenshipStatus, stage, course, pemGroup))
+            students.append((adminNo, name, citizenshipStatus, stage, course, pemGroup))
             pemGroup_size_counter += 1
     return students
 

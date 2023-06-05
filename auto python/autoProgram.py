@@ -20,10 +20,10 @@ def random_date(num_days):
     return result_date
 
 def generate_programs(num_programs, conn):
-    # Fetch country codes from the 'countries' table
+    # Fetch country names from the 'countries' table
     with conn.cursor() as cursor:
-        cursor.execute("SELECT countryCode FROM countries")
-        country_codes = [row[0] for row in cursor.fetchall()]
+        cursor.execute("SELECT countryName FROM countries")
+        country_names = [row[0] for row in cursor.fetchall()]
     
     programs = []
     program_types = ['Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
@@ -38,11 +38,11 @@ def generate_programs(num_programs, conn):
         programType = random.choice(program_types)
         startDate = random_date(7)  # Start dates are up to a week after the global date
         endDate = random_date(14)  # End dates are up to two weeks after the global date
-        countryCode = random.choice(country_codes)
+        countryName = random.choice(country_names)
         city = 'City ' + str(i+1)  # Placeholder city name
         partnerName = 'Partner ' + str(i+1)  # Placeholder partner name
         overseasPartnerType = random.choice(overseas_partner_types)
-        programs.append((programID, programName, programType, startDate, endDate, countryCode, city, partnerName, overseasPartnerType))
+        programs.append((programID, programName, programType, startDate, endDate, countryName, city, partnerName, overseasPartnerType))
     
     return programs
 
@@ -50,7 +50,7 @@ def insert_into_table(table_name, data, conn):
     with conn.cursor() as cursor:
         for row in data:
             placeholders = ', '.join(['%s'] * len(row))
-            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, countryCode, city, partnerName, overseasPartnerType) VALUES ({placeholders})"
+            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, countryName, city, partnerName, overseasPartnerType) VALUES ({placeholders})"
             cursor.execute(query, row)
     conn.commit()
 
