@@ -1,8 +1,6 @@
+CREATE DATABASE IF NOT EXISTS test;
 
-CREATE DATABASE IF NOT EXISTS overseasProgramDB;
-
-USE overseasProgramDB;
-
+USE test;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2), -- not used in reports
     countryName varchar(64),
@@ -22,16 +20,13 @@ CREATE TABLE IF NOT EXISTS course (
     courseManager varchar(64),
     PRIMARY KEY (courseCode)
 );
-
 -- Edge case: Common programs which branch out to different courses
-
 CREATE TABLE IF NOT EXISTS students (
     adminNo char(7) not null,
     #--adminNo format: first 2 digit as enroll year,middle 4 random digit, last 1 random alphabet. 
     #--e.g. 191203G. 19 as enrolled in year 2019,the rest is all random generated
     name varchar(64) not null,
     citizenshipStatus enum ('Singapore citizen', 'Permanent resident', 'International Student') not null,
-    -- consider grouping singaporean and pr together for certain views
     stage tinyint not null,
     -- stage 1,2,3 is like year 1,2,3. the max number for stage is 3
     course char(6) not null,
@@ -41,31 +36,43 @@ CREATE TABLE IF NOT EXISTS students (
     FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroupId)
     );
 CREATE TABLE IF NOT EXISTS overseasPrograms (
-    programID char(9) NOT NULL,
-    programName varchar(64),
-    programType ENUM
-    ('Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
-    'Overseas Competition/Exchange', 'Overseas Leadership Training', 'Overseas Leadership Training with Outward Bound',
-    'Overseas Service Learning-Youth Expedition Programme'),
-    startDate date,
-    endDate date,
-    countryName varchar(64),
-    city varchar(64),
-    partnerName varchar(64),
-    overseasPartnerType enum ('Company', 'Institution', 'Others'),
+    programID CHAR(9) NOT NULL,
+    programName VARCHAR(64),
+    programType ENUM (
+        'Overseas educational trip',
+        'Overseas internship program',
+        'Overseas immersion program',
+        'Overseas Competition/Exchange',
+        'Overseas Leadership Training',
+        'Overseas Leadership Training with Outward Bound',
+        'Overseas Service Learning-Youth Expedition Programme'
+    ),
+    startDate DATE,
+    endDate DATE,
+    ESTdate VARCHAR(255),
+    countryName VARCHAR(64),
+    city VARCHAR(64),
+    partnerName VARCHAR(64),
+    overseasPartnerType ENUM ('Company', 'Institution', 'Others'),
+    tripLeaders VARCHAR(512),
+    EstNumStudents INT,
+    Approved ENUM('Yes', 'No'),
     PRIMARY KEY (programID, countryName, city),
-    FOREIGN KEY (countryName) REFERENCES countries (countryName),
+    FOREIGN KEY (countryName) REFERENCES countries (countryName)
 );
+
 -- group by quater(financial year)
 -- Edge case: Trips that include multiple destinations
-CREATE TABLE IF NOT EXISTS tripsDone (
-    studAdmin char(7) not null,
-    programID char(9) not null,
-    comments text,
+CREATE TABLE IF NOT EXISTS trips (
+    studAdmin CHAR(7) NOT NULL,
+    programID CHAR(9) NOT NULL,
+    comments TEXT,
     PRIMARY KEY (studAdmin, programID),
     FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
     FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
 );
+
+
 CREATE TABLE IF NOT EXISTS OIMPdetails (
     gsmCode varchar(20) not null,
     courseCode char(6) not null,
@@ -84,24 +91,16 @@ CREATE TABLE IF NOT EXISTS users (
     name varchar(64),
     PRIMARY KEY (username)
 );
-
-CREATE TABLE IF NOT EXISTS plannedTrips (
-    tripID int AUTO_INCREMENT,
-    programType ENUM
-    ('Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
-    'Overseas Competition/Exchange', 'Overseas Leadership Training', 'Overseas Leadership Training with Outward Bound',
-    'Overseas Service Learning-Youth Expedition Programme'),
-    country char(2),
-    city varchar(64),
-    date varchar(64),
-    tripLeaders varchar(512),
-    EstNumStudents int NOT NULL,
-    Approved ENUM('Yes','No'), 
-    PRIMARY KEY (tripID),//
-    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+CREATE TABLE auditTable (
+    auditID INT AUTO_INCREMENT,
+    tableName VARCHAR(100) NOT NULL,
+    columnName VARCHAR(100) NOT NULL,
+    oldValue TEXT,
+    newValue TEXT,
+    programID char(9),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (auditID)
 );
-
-
 
 /*
    quater 1 1st april - 31 june

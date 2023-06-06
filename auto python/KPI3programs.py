@@ -19,29 +19,25 @@ def random_date(num_days):
     global_date = result_date
     return result_date
 
-def generate_programs(num_programs, conn):
-    # Fetch country names from the 'countries' table
+def generate_internship_programs(num_programs, conn):
+    # Fetch country names from the 'countries' table where aciCountry = 'A'
     with conn.cursor() as cursor:
-        cursor.execute("SELECT countryName FROM countries")
+        cursor.execute("SELECT countryName FROM countries WHERE aciCountry = 'A'")
         country_names = [row[0] for row in cursor.fetchall()]
     
     programs = []
-    program_types = ['Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
-                     'Overseas Competition/Exchange', 'Overseas Leadership Training', 
-                     'Overseas Leadership Training with Outward Bound',
-                     'Overseas Service Learning-Youth Expedition Programme']
     overseas_partner_types = ['Company', 'Institution', 'Others']
     
-    for i in range(num_programs):
-        programID = 'PROG' + str(i+1).zfill(5)
+    for _ in range(num_programs):
+        programID = 'PROG' + str(random.randint(1, 99999)).zfill(5)
         programName = 'Program ' + programID
-        programType = random.choice(program_types)
+        programType = 'Overseas internship program'
         startDate = random_date(7)  # Start dates are up to a week after the global date
         endDate = random_date(14)  # End dates are up to two weeks after the global date
         ESTdate = None
         countryName = random.choice(country_names)
-        city = 'City ' + str(i+1)  # Placeholder city name
-        partnerName = 'Partner ' + str(i+1)  # Placeholder partner name
+        city = 'City ' + str(random.randint(1, 100))
+        partnerName = 'Partner ' + str(random.randint(1, 100))
         overseasPartnerType = random.choice(overseas_partner_types)
         tripLeaders = None
         EstNumStudents = None
@@ -60,8 +56,8 @@ def insert_into_table(table_name, data, conn):
 
 conn = create_conn()
 
-# Generate dummy data for 100 overseas programs
-programs = generate_programs(100, conn)
+# Generate dummy data for 20 overseas internship programs
+programs = generate_internship_programs(20, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)

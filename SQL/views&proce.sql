@@ -8,7 +8,7 @@ CREATE VIEW KPI2ACIcount AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
-JOIN countries c ON op.countryCode = c.countryCode
+JOIN countries c ON op.countryName = c.countryName
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND s.stage = 3;
 
@@ -16,7 +16,7 @@ CREATE VIEW KPI3ACIoitp AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
-JOIN countries c ON op.countryCode = c.countryCode
+JOIN countries c ON op.countryName = c.countryName
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3;
 
@@ -105,7 +105,6 @@ BEGIN
 END//
 DELIMITER ;
 
-
 SELECT *,
 CASE 
     WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
@@ -129,26 +128,89 @@ SELECT * FROM (
 ) AS subquery
 WHERE customQuarter = 'Q2';
 
+CREATE VIEW plannedTrips AS
+SELECT programName, programType, ESTdate, countryName, city, partnerName, tripLeaders, EstNumStudents, Approved
+FROM overseasPrograms;
 
 
--- Create the audit log table
-CREATE TABLE overseasProgramsAudit (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    operation VARCHAR(20),
-    programID char(9),
-    changeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    old_startDate DATE,
-    new_startDate DATE
-);
+DELIMITER //
 
--- Create a trigger that inserts into the audit log table on UPDATE
-DELIMITER $$
 CREATE TRIGGER overseasPrograms_update_trigger
 AFTER UPDATE ON overseasPrograms
-FOR EACH ROW 
+FOR EACH ROW
 BEGIN
-   INSERT INTO overseasProgramsAudit(operation, programID, old_startDate, new_startDate) 
-   VALUES('UPDATE', OLD.programID, OLD.startDate, NEW.startDate);
-END;
-$$
+    IF NEW.programID != OLD.programID THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'programID', OLD.programID, NEW.programID, NEW.programID);
+    END IF;
+    
+    IF NEW.programName != OLD.programName THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'programName', OLD.programName, NEW.programName, NEW.programID);
+    END IF;
+    
+    IF NEW.programType != OLD.programType THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'programType', OLD.programType, NEW.programType, NEW.programID);
+    END IF;
+    
+    IF NEW.startDate != OLD.startDate THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'startDate', OLD.startDate, NEW.startDate, NEW.programID);
+    END IF;
+    
+    IF NEW.endDate != OLD.endDate THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'endDate', OLD.endDate, NEW.endDate, NEW.programID);
+    END IF;
+    
+    IF NEW.ESTdate != OLD.ESTdate THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'ESTdate', OLD.ESTdate, NEW.ESTdate, NEW.programID);
+    END IF;
+    
+    IF NEW.countryName != OLD.countryName THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'countryName', OLD.countryName, NEW.countryName, NEW.programID);
+    END IF;
+    
+    IF NEW.city != OLD.city THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'city', OLD.city, NEW.city, NEW.programID);
+    END IF;
+    
+    IF NEW.partnerName != OLD.partnerName THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'partnerName', OLD.partnerName, NEW.partnerName, NEW.programID);
+    END IF;
+    
+    IF NEW.overseasPartnerType != OLD.overseasPartnerType THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'overseasPartnerType', OLD.overseasPartnerType, NEW.overseasPartnerType, NEW.programID);
+    END IF;
+    
+    IF NEW.tripLeaders != OLD.tripLeaders THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'tripLeaders', OLD.tripLeaders, NEW.tripLeaders, NEW.programID);
+    END IF;
+    
+    IF NEW.EstNumStudents != OLD.EstNumStudents THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'EstNumStudents', OLD.EstNumStudents, NEW.EstNumStudents, NEW.programID);
+    END IF;
+    
+    IF NEW.Approved != OLD.Approved THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'Approved', OLD.Approved, NEW.Approved, NEW.programID);
+END IF;
+END //
+
 DELIMITER ;
+
+
+
+
+
+
+
+

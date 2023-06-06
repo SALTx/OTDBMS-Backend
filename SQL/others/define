@@ -40,3 +40,14 @@ JOIN countries c ON op.countryCode = c.countryCode
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3;
 
 
+
+create a table and the triggers to record all changes of these columns for the above two tables
+programTypeID
+countryName
+city
+tripLeaders
+EstNumStudents
+Approved
+date
+
+
