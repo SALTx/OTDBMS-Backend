@@ -1,0 +1,14 @@
+1. Tragets will be changing every year
+    - use environmental variables to store KPI's and their target values
+
+2. Final reports that are submitted based on quarterly reports are for students studying in stage 3
+
+3. Filter out information of the KPI for peoperties such as 
+    which diploma do they belong to
+
+4. Potentially take into account students that are in PFP 
+
+5. Populate production database with sample data 
+
+
+** 
