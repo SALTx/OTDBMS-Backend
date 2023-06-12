@@ -4,8 +4,6 @@ INSERT INTO pemGroup (pemGroupId, pemName) VALUES
 ('PEM002', 'David Loo'),
 ('PEM003', 'Marry Lim');
 
-
-
 -- Actual data for course table
 INSERT INTO course (courseCode, courseName, courseManager) VALUES
 ('EGDF94', 'Common Engineering Programme', 'Siew Peng Shorn'),
