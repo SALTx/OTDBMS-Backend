@@ -5,7 +5,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProgramDB')
+                           database='overseasDB')
     return conn
 
 def fetch_table_data(table_name, conn, columns='*'):
@@ -22,21 +22,23 @@ def generate_trips(students, programs, conn):
     for student in students:
         students_by_stage[student[3]].append(student)
 
-    # Assign students to programs
+    # Convert programs tuple to a list
+    programs = list(programs)
+
+    # Shuffle the programs to ensure variety
+    random.shuffle(programs)
+
     for program in programs:
         programID, startDate, endDate = program  # Unpack the program tuple
         available_students = []
         for stage in range(1, 4):
             available_students.extend(students_by_stage[stage])
 
-        if not available_students:
-            break  # No more students available, exit the loop
-
         # Shuffle the available students to ensure variety
         random.shuffle(available_students)
 
-        # Ensure that each program has at least one student and not more than twenty students
-        num_students_in_program = random.randint(1, min(20, len(available_students)))
+        # Determine the number of students to assign to the program
+        num_students_in_program = min(50, max(5, len(available_students)))
         selected_students = available_students[:num_students_in_program]
 
         for student in selected_students:

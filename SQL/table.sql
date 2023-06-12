@@ -1,11 +1,11 @@
-CREATE DATABASE IF NOT EXISTS test;
+CREATE DATABASE IF NOT EXISTS overseasDB;
 
-USE test;
+USE overseasDB;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2), -- not used in reports
     countryName varchar(64),
     aciCountry enum ('A', 'N'),
-    PRIMARY KEY (countryName)
+    PRIMARY KEY (countryCode)
 );
 
 CREATE TABLE IF NOT EXISTS pemGroup (
@@ -50,15 +50,15 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     startDate DATE,
     endDate DATE,
     ESTdate VARCHAR(64),
-    countryName VARCHAR(64),    
+    countryCode char(2),    
     city VARCHAR(64),
     partnerName VARCHAR(64),
     overseasPartnerType ENUM ('Company', 'Institution', 'Others'),
-    tripLeaders VARCHAR(512),
-    EstNumStudents INT,
+    tripLeaders VARCHAR(255),
+    EstNumStudents smallint,
     Approved ENUM('Yes', 'No'),
-    PRIMARY KEY (programID, countryName, city),
-    FOREIGN KEY (countryName) REFERENCES countries (countryName)
+    PRIMARY KEY (programID, countryCode, city),
+    FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
 );
 
 -- group by quater(financial year)
@@ -74,10 +74,10 @@ CREATE TABLE IF NOT EXISTS trips (
 
 
 CREATE TABLE IF NOT EXISTS OIMPdetails (
-    gsmCode varchar(20) not null,
+    gsmCode varchar(16) not null,
     courseCode char(6) not null,
     studAdmin char(7) not null,
-    gsmName varchar(50) not null,
+    gsmName varchar(64) not null,
     programID char(9) not null,
     PRIMARY KEY (studAdmin),
     FOREIGN KEY (courseCode) REFERENCES course (courseCode),

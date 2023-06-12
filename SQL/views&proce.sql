@@ -2,23 +2,24 @@ CREATE VIEW KPI1OverseasStudCount AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN students s ON t.studAdmin = s.adminNo
-WHERE s.stage = 3;
+WHERE s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
 CREATE VIEW KPI2ACIcount AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
-JOIN countries c ON op.countryName = c.countryName
+JOIN countries c ON op.countryCode = c.countryCode
 JOIN students s ON t.studAdmin = s.adminNo
-WHERE c.aciCountry = 'A' AND s.stage = 3;
+WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
 CREATE VIEW KPI3ACIoitp AS
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
-JOIN countries c ON op.countryName = c.countryName
+JOIN countries c ON op.countryCode = c.countryCode
 JOIN students s ON t.studAdmin = s.adminNo
-WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3;
+WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
+
 
 
 CREATE VIEW OIMPdetailsView AS
@@ -92,7 +93,7 @@ BEGIN
     SET year = SUBSTRING(YEAR(NEW.startDate), 3, 2);
 
     -- Get the ACI or NON-ACI character directly from the countries table
-    SET aciChar = (SELECT aciCountry FROM countries WHERE countryName = NEW.countryName);
+    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.countryCode);
 
     -- Get the next sequence number
     SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(programID, 4, 2) = year), 3, '0');
@@ -105,31 +106,31 @@ BEGIN
 END//
 DELIMITER ;
 
-SELECT *,
-CASE 
-    WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
-    WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
-    WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
-    WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
-    ELSE 'Unknown'
-END AS customQuarter
-FROM overseasPrograms;
+-- SELECT *,
+-- CASE 
+--     WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
+--     WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
+--     WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
+--     WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
+--     ELSE 'Unknown'
+-- END AS customQuarter
+-- FROM overseasPrograms;
 
-SELECT * FROM (
-    SELECT *,
-    CASE 
-        WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
-        WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
-        WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
-        WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
-        ELSE 'Unknown'
-    END AS customQuarter
-    FROM overseasPrograms
-) AS subquery
-WHERE customQuarter = 'Q2';
+-- SELECT * FROM (
+--     SELECT *,
+--     CASE 
+--         WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
+--         WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
+--         WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
+--         WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
+--         ELSE 'Unknown'
+--     END AS customQuarter
+--     FROM overseasPrograms
+-- ) AS subquery
+-- WHERE customQuarter = 'Q2';
 
 CREATE VIEW plannedTrips AS
-SELECT programName, programType, ESTdate, countryName, city, partnerName, tripLeaders, EstNumStudents, Approved
+SELECT programName, programType, ESTdate, countryCode, city, partnerName, tripLeaders, EstNumStudents, Approved
 FROM overseasPrograms;
 
 
@@ -169,9 +170,9 @@ BEGIN
         VALUES ('overseasPrograms', 'ESTdate', OLD.ESTdate, NEW.ESTdate, NEW.programID);
     END IF;
     
-    IF NEW.countryName != OLD.countryName THEN
+    IF NEW.countryCode != OLD.countryCode THEN
         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'countryName', OLD.countryName, NEW.countryName, NEW.programID);
+        VALUES ('overseasPrograms', 'countryCode', OLD.countryCode, NEW.countryCode, NEW.programID);
     END IF;
     
     IF NEW.city != OLD.city THEN
