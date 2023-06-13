@@ -20,6 +20,36 @@ JOIN countries c ON op.countryCode = c.countryCode
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
+CREATE VIEW KPI1OverseasStudCourse AS
+SELECT c.courseCode, c.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+FROM trips t
+JOIN students s ON t.studAdmin = s.adminNo
+JOIN course c ON s.course = c.courseCode
+WHERE s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
+GROUP BY c.courseCode, c.courseName;
+
+CREATE VIEW KPI2ACIcourse AS
+SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+FROM trips t
+JOIN overseasPrograms op ON t.programID = op.programID
+JOIN countries c ON op.countryCode = c.countryCode
+JOIN students s ON t.studAdmin = s.adminNo
+JOIN course co ON s.course = co.courseCode
+WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
+GROUP BY co.courseCode, co.courseName;
+
+CREATE VIEW KPI3ACIoitpCourse AS
+SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+FROM trips t
+JOIN overseasPrograms op ON t.programID = op.programID
+JOIN countries c ON op.countryCode = c.countryCode
+JOIN students s ON t.studAdmin = s.adminNo
+JOIN course co ON s.course = co.courseCode
+WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
+GROUP BY co.courseCode, co.courseName;
+
+
+
 
 
 CREATE VIEW OIMPdetailsView AS
