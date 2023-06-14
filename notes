@@ -1,14 +1,8 @@
-1. Tragets will be changing every year
-    - use environmental variables to store KPI's and their target values
-
-2. Final reports that are submitted based on quarterly reports are for students studying in stage 3
-
-3. Filter out information of the KPI for peoperties such as 
-    which diploma do they belong to
-
-4. Potentially take into account students that are in PFP 
-
-5. Populate production database with sample data 
-
-
-** 
+1. Finalize database name, we already had overseas-travel
+2. wtf is 'A' and 'N' as the enum. whats wrong with 'Yes' and 'No'. Even a bit would have been acceptable as a datatype where 1 = True and 0 = False
+3. EstNumStudents is not camelcase \*still
+4. Keep the kpi names as they were and add a comment over it or even add a description column since they only return one row
+   \*\*also see if you can calculate the predicted values and give it its own col
+5. Figure out how to keep track of previous years' KPI
+6. Simplify the overseasprogram update trigger to check if the row is different, dont check for each column individually because theres a lot of them. and also when the table changes it wont reflect in the trigger
+7. separate the dummy data into its own file, the deploy is only meant to be run once at the start of the project to create empty tables
