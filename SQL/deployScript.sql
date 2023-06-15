@@ -1,4 +1,4 @@
-/*CREATE DATABASE IF NOT EXISTS overseasDB;*/
+/*CREATE DATABASE IF NOT EXISTS overseas_travelDB;*/
 drop database opsystem_test_hz;
 create database opsystem_test_hz;
 USE opsystem_test_hz;
@@ -82,50 +82,15 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY (username)
 );
 CREATE TABLE auditTable (
-    auditID char(64) not null,
     tableName VARCHAR(100) NOT NULL,
     columnName VARCHAR(100) NOT NULL,
     oldValue TEXT,
     newValue TEXT,
     programID char(9),
-    timestamp TIMestAMP DEFAULT CURRENT_TIMestAMP,
-    PRIMARY KEY (auditID)
+    timeStamp TIMestAMP DEFAULT CURRENT_TIMestAMP
 );
 
-DELIMITER //
-
-CREATE PROCEDURE GenerateRandomHash(IN length INT, OUT randomHash CHAR(64))
-BEGIN
-    DECLARE characters VARCHAR(100) DEFAULT 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    DECLARE randomString VARCHAR(100) DEFAULT '';
-    
-    -- Generate random string
-    WHILE LENGTH(randomString) < length DO
-        SET randomString = CONCAT(randomString, SUBSTRING(characters, FLOOR(1 + RAND() * 62), 1));
-    END WHILE;
-    
-    -- Generate hash
-    SET randomHash = SHA2(randomString, 256);
-END //
-
-DELIMITER ;
-DELIMITER //
-
-CREATE TRIGGER generateRandomHashTrigger BEFORE INSERT ON auditTable
-FOR EACH ROW
-BEGIN
-    DECLARE randomHash CHAR(64);
-    
-    -- Call the GenerateRandomHash stored procedure
-    CALL GenerateRandomHash(64, randomHash);
-    
-    -- Set the random hash value for the new row
-    SET NEW.auditID = randomHash;
-END //
-
-DELIMITER ;
-
-CREATE VIEW KPI1AS
+CREATE VIEW KPI1 AS
 -- Overseas total student count
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
