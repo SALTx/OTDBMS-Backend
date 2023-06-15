@@ -38,7 +38,7 @@ def generate_programs(num_programs, conn):
         programType = random.choice(program_types)
         startDate = random_date(7)  # Start dates are up to a week after the global date
         endDate = random_date(14)  # End dates are up to two weeks after the global date
-        ESTdate = None
+        estDate = None
         countryCode = random.choice(country_code)
         city = 'City ' + str(i+1)  # Placeholder city name
         partnerName = 'Partner ' + str(i+1)  # Placeholder partner name
@@ -46,7 +46,7 @@ def generate_programs(num_programs, conn):
         tripLeaders = None
         EstNumStudents = None
         approved = 'Yes'
-        programs.append((programID, programName, programType, startDate, endDate, ESTdate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved))
+        programs.append((programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved))
     
     return programs
 
@@ -54,7 +54,7 @@ def insert_into_table(table_name, data, conn):
     with conn.cursor() as cursor:
         for row in data:
             placeholders = ', '.join(['%s'] * len(row))
-            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, ESTdate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved) VALUES ({placeholders})"
+            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved) VALUES ({placeholders})"
             cursor.execute(query, row)
     conn.commit()
 

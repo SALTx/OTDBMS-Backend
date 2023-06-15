@@ -1,10 +1,139 @@
-CREATE VIEW KPI1OverseasStudCount AS
+/*CREATE DATABASE IF NOT EXISTS overseasDB;*/
+drop database opsystem_test_hz;
+create database opsystem_test_hz;
+USE opsystem_test_hz;
+
+CREATE TABLE IF NOT EXISTS countries (
+    countryCode char(2), 
+    countryName varchar(64),
+    aciCountry enum ('A', 'N'),
+    PRIMARY KEY (countryCode)
+);
+CREATE TABLE IF NOT EXISTS pemGroup (
+    pemGroupId char(6) not null,
+    pemName varchar(64),
+    PRIMARY KEY (pemGroupId)
+);
+CREATE TABLE IF NOT EXISTS course (
+    courseCode char(6) not null,
+    courseName varchar(64),
+    courseManager varchar(64),
+    PRIMARY KEY (courseCode)
+);
+CREATE TABLE IF NOT EXISTS students (
+    adminNo char(7) not null,
+    name varchar(64) not null,
+    citizenshipStatus enum ('Singapore citizen', 'Permanent resident', 'International Student') not null,
+    stage tinyint not null,
+    course char(6) not null,
+    pemGroup char(6) not null,
+    PRIMARY KEY (adminNo),
+    FOREIGN KEY (course) REFERENCES course (courseCode),
+    FOREIGN KEY (pemGroup) REFERENCES pemGroup (pemGroupId)
+    );
+CREATE TABLE IF NOT EXISTS overseasPrograms (
+    programID CHAR(9) NOT NULL,
+    programName VARCHAR(64),
+    programType ENUM (
+        'Overseas educational trip',
+        'Overseas internship program',
+        'Overseas immersion program',
+        'Overseas Competition/Exchange',
+        'Overseas Leadership Training',
+        'Overseas Leadership Training with Outward Bound',
+        'Overseas Service Learning-Youth Expedition Programme'
+    ),
+    startDate DATE,
+    endDate DATE,
+    estDate VARCHAR(64),
+    countryCode char(2),    
+    city VARCHAR(64),
+    partnerName VARCHAR(64),
+    overseasPartnerType ENUM ('Company', 'Institution', 'Others'),
+    tripLeaders VARCHAR(255),
+    estNumStudents smallint,
+    approved ENUM('Yes', 'No'),
+    PRIMARY KEY (programID, countryCode, city),
+    FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
+);
+CREATE TABLE IF NOT EXISTS trips (
+    studAdmin CHAR(7) NOT NULL,
+    programID CHAR(9) NOT NULL,
+    comments TEXT,
+    PRIMARY KEY (studAdmin, programID),
+    FOREIGN KEY (studAdmin) REFERENCES students (adminNo),
+    FOREIGN KEY (programID) REFERENCES overseasPrograms (programID)
+);
+CREATE TABLE IF NOT EXISTS oimpDetails (
+    gsmCode varchar(16) not null,
+    courseCode char(6) not null,
+    studAdmin char(7) not null,
+    gsmName varchar(64) not null,
+    programID char(9) not null,
+    PRIMARY KEY (studAdmin),
+    FOREIGN KEY (courseCode) REFERENCES course (courseCode),
+    FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
+);
+CREATE TABLE IF NOT EXISTS users (
+    username varchar(64) not null,
+    password varchar(64),
+    accountType enum ('Admin', 'Teacher', 'Guest'),
+    name varchar(64),
+    PRIMARY KEY (username)
+);
+CREATE TABLE auditTable (
+    auditID char(64) not null,
+    tableName VARCHAR(100) NOT NULL,
+    columnName VARCHAR(100) NOT NULL,
+    oldValue TEXT,
+    newValue TEXT,
+    programID char(9),
+    timestamp TIMestAMP DEFAULT CURRENT_TIMestAMP,
+    PRIMARY KEY (auditID)
+);
+
+DELIMITER //
+
+CREATE PROCEDURE GenerateRandomHash(IN length INT, OUT randomHash CHAR(64))
+BEGIN
+    DECLARE characters VARCHAR(100) DEFAULT 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    DECLARE randomString VARCHAR(100) DEFAULT '';
+    
+    -- Generate random string
+    WHILE LENGTH(randomString) < length DO
+        SET randomString = CONCAT(randomString, SUBSTRING(characters, FLOOR(1 + RAND() * 62), 1));
+    END WHILE;
+    
+    -- Generate hash
+    SET randomHash = SHA2(randomString, 256);
+END //
+
+DELIMITER ;
+DELIMITER //
+
+CREATE TRIGGER generateRandomHashTrigger BEFORE INSERT ON auditTable
+FOR EACH ROW
+BEGIN
+    DECLARE randomHash CHAR(64);
+    
+    -- Call the GenerateRandomHash stored procedure
+    CALL GenerateRandomHash(64, randomHash);
+    
+    -- Set the random hash value for the new row
+    SET NEW.auditID = randomHash;
+END //
+
+DELIMITER ;
+
+CREATE VIEW KPI1AS
+-- Overseas total student count
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
-CREATE VIEW KPI2ACIcount AS
+CREATE VIEW KPI2 AS
+--Overseas ACI count
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
@@ -12,7 +141,8 @@ JOIN countries c ON op.countryCode = c.countryCode
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
-CREATE VIEW KPI3ACIoitp AS
+CREATE VIEW KPI3 AS
+--Overseas ACI OITP count
 SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
@@ -20,7 +150,7 @@ JOIN countries c ON op.countryCode = c.countryCode
 JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
-CREATE VIEW KPI1OverseasStudCourse AS
+CREATE VIEW KPI1courseLevel AS
 SELECT c.courseCode, c.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN students s ON t.studAdmin = s.adminNo
@@ -28,7 +158,7 @@ JOIN course c ON s.course = c.courseCode
 WHERE s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
 GROUP BY c.courseCode, c.courseName;
 
-CREATE VIEW KPI2ACIcourse AS
+CREATE VIEW KPI2courseLevel AS
 SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
@@ -38,7 +168,7 @@ JOIN course co ON s.course = co.courseCode
 WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
 GROUP BY co.courseCode, co.courseName;
 
-CREATE VIEW KPI3ACIoitpCourse AS
+CREATE VIEW KPI3courseLevel AS
 SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
@@ -49,7 +179,7 @@ WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND 
 GROUP BY co.courseCode, co.courseName;
 
 
-CREATE VIEW OIMPdetailsView AS
+CREATE VIEW oimpDetailsView AS
 SELECT 
     t.studAdmin, 
     t.programID, 
@@ -63,7 +193,7 @@ SELECT
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN students s ON t.studAdmin = s.adminNo
-JOIN OIMPdetails od ON t.studAdmin = od.studAdmin AND t.programID = od.programID
+JOIN oimpDetails od ON t.studAdmin = od.studAdmin AND t.programID = od.programID
 WHERE s.stage = 3;
 
 
@@ -82,25 +212,6 @@ BEGIN
     END CASE;
 END//
 DELIMITER //
--- programID format 
--- programType in shortcut as 1st,2nd,3rd,position
--- Overseas educational trip (OET),
--- Overseas internship program (OIP), 
--- Overseas immersion program (IMP), 
--- Overseas Competition/Exchange (OCP), 
--- Overseas Leadership Training (OLT), 
--- Overseas Leadership Training with Outward Bound (TOB),
--- Overseas Service Learning-Youth Expedition Programme (YEP)
-
--- Year as 4th and 5th position
-
--- ACI or NON-ACI as 6th position
--- N = NON-ACI
--- A = ACI
-
--- 000-999 as sequence of program that happened in the year as 7th,8th,9th position
--- e.g., OET23A001 = Overseas educational trip in ACI country ,this program is the 1st program of all overseas programs in year 2023
--- IMP23N002 = Overseas immersion program in NON-ACI country ,this program is the 2nd program of all overseas programs in year 2023
 
 DELIMITER //
 CREATE TRIGGER programID_Before_Insert
@@ -132,32 +243,8 @@ BEGIN
     SET NEW.programID = newProgramID;
 END//
 DELIMITER ;
-
--- SELECT *,
--- CASE 
---     WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
---     WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
---     WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
---     WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
---     ELSE 'Unknown'
--- END AS customQuarter
--- FROM overseasPrograms;
-
--- SELECT * FROM (
---     SELECT *,
---     CASE 
---         WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
---         WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
---         WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
---         WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
---         ELSE 'Unknown'
---     END AS customQuarter
---     FROM overseasPrograms
--- ) AS subquery
--- WHERE customQuarter = 'Q2';
-
 CREATE VIEW plannedTrips AS
-SELECT programName, programType, estDate, countryCode, city, partnerName, tripLeaders, EstNumStudents, approved
+SELECT programName, programType, estDate, countryCode, city, partnerName, tripLeaders, estNumStudents, approved
 FROM overseasPrograms;
 
 
@@ -222,9 +309,9 @@ BEGIN
         VALUES ('overseasPrograms', 'tripLeaders', OLD.tripLeaders, NEW.tripLeaders, NEW.programID);
     END IF;
     
-    IF NEW.EstNumStudents != OLD.EstNumStudents THEN
+    IF NEW.estNumStudents != OLD.estNumStudents THEN
         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'EstNumStudents', OLD.EstNumStudents, NEW.EstNumStudents, NEW.programID);
+        VALUES ('overseasPrograms', 'estNumStudents', OLD.EstNumStudents, NEW.EstNumStudents, NEW.programID);
     END IF;
     
     IF NEW.approved != OLD.approved THEN
@@ -234,11 +321,4 @@ END IF;
 END //
 
 DELIMITER ;
-
-
-
-
-
-
-
 
