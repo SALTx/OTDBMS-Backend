@@ -5,6 +5,7 @@
 
 2. Theres sql errors when trying to run the deploy script. 
 fix them.
+*no errors when trying to run the deploy script on my side*
 
 3. ps. even the triggers and procedures arent consistent with the 
 naming convention. fix that too.
@@ -13,11 +14,13 @@ naming convention. fix that too.
 defined on the studAdmin column. If there can be multiple rows with 
 the same studAdmin value, you should reconsider the primary key 
 definition.
+*changed to composite primary key*
 
 5. Missing Table Constraints: Some tables are missing constraints 
 such as NOT NULL for certain columns. Ensure that the appropriate 
 constraints are applied to maintain data integrity.
-*missed on purporse to allow null value for some columns*
+*checked and fixed some, rest are 
+missed on purporse to allow null value for some columns*
 
 6. Views: The views defined in the code seem fine, but it's always 
 a good practice to include column aliases for the aggregated 

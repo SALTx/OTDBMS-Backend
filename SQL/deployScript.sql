@@ -1,21 +1,21 @@
-create database `overseas-travel-proto`;
-USE 'overseas-travel-proto';
+create database `overseas_travel_proto`;
+USE overseas_travel_proto;
 
 CREATE TABLE IF NOT EXISTS countries (
-    countryCode char(2), 
-    countryName varchar(64),
-    aciCountry enum ('A', 'N'),
+    countryCode char(2) not null, 
+    countryName varchar(64) not null,
+    aciCountry enum ('A', 'N') not null,
     PRIMARY KEY (countryCode)
 );
 CREATE TABLE IF NOT EXISTS pemGroup (
     pemGroupId char(6) not null,
-    pemName varchar(64),
+    pemName varchar(64) not null,
     PRIMARY KEY (pemGroupId)
 );
 CREATE TABLE IF NOT EXISTS course (
     courseCode char(6) not null,
-    courseName varchar(64),
-    courseManager varchar(64),
+    courseName varchar(64) not null,
+    courseManager varchar(64) not null,
     PRIMARY KEY (courseCode)
 );
 CREATE TABLE IF NOT EXISTS students (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS students (
     );
 CREATE TABLE IF NOT EXISTS overseasPrograms (
     programID CHAR(9) NOT NULL,
-    programName VARCHAR(64),
+    programName VARCHAR(64) not null,
     programType ENUM (
         'Overseas educational trip',
         'Overseas internship program',
@@ -40,17 +40,17 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
         'Overseas Leadership Training',
         'Overseas Leadership Training with Outward Bound',
         'Overseas Service Learning-Youth Expedition Programme'
-    ),
-    startDate DATE,
-    endDate DATE,
+    ) not null,
+    startDate DATE not null,
+    endDate DATE not null,
     estDate VARCHAR(64),
-    countryCode char(2),    
-    city VARCHAR(64),
+    countryCode char(2) not null,    
+    city VARCHAR(64) not null,
     partnerName VARCHAR(64),
-    overseasPartnerType ENUM ('Company', 'Institution', 'Others'),
+    overseasPartnerType ENUM ('Company', 'Institution', 'Others') not null,
     tripLeaders VARCHAR(255),
     estNumStudents smallint,
-    approved ENUM('Yes', 'No'),
+    approved ENUM('Yes', 'No') not null,
     PRIMARY KEY (programID, countryCode, city),
     FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
 );
@@ -73,9 +73,9 @@ CREATE TABLE IF NOT EXISTS oimpDetails (
 );
 CREATE TABLE IF NOT EXISTS users (
     username varchar(64) not null,
-    password varchar(64),
-    accountType enum ('Admin', 'Teacher', 'Guest'),
-    name varchar(64),
+    password varchar(64) not null,
+    accountType enum ('Admin', 'Teacher', 'Guest') not null,
+    name varchar(64) not null,
     PRIMARY KEY (username)
 );
 CREATE TABLE auditTable (
@@ -83,7 +83,7 @@ CREATE TABLE auditTable (
     columnName VARCHAR(100) NOT NULL,
     oldValue TEXT,
     newValue TEXT,
-    programID CHAR(9),
+    programID CHAR(9) not null,
     timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
