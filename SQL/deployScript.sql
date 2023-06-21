@@ -1,7 +1,5 @@
-/*CREATE DATABASE IF NOT EXISTS overseas_travelDB;*/
-drop database opsystem_test_hz;
-create database opsystem_test_hz;
-USE opsystem_test_hz;
+create database `overseas-travel-proto`;
+USE 'overseas-travel-proto';
 
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2), 
