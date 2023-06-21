@@ -40,9 +40,9 @@ def generate_internship_programs(num_programs, conn):
         partnerName = 'Partner ' + str(random.randint(1, 100))
         overseasPartnerType = random.choice(overseas_partner_types)
         tripLeaders = None
-        EstNumStudents = None
+        estNumStudents = None
         approved = 'Yes'
-        programs.append((programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved))
+        programs.append((programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved))
     
     return programs
 
@@ -50,7 +50,7 @@ def insert_into_table(table_name, data, conn):
     with conn.cursor() as cursor:
         for row in data:
             placeholders = ', '.join(['%s'] * len(row))
-            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, EstNumStudents, approved) VALUES ({placeholders})"
+            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved) VALUES ({placeholders})"
             cursor.execute(query, row)
     conn.commit()
 

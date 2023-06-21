@@ -18,7 +18,7 @@
 9. Delimiter Usage: The DELIMITER statement is used correctly in most places. However, in the getProgramAcronym stored procedure, you missed setting the delimiter at the end of the procedure definition. Add DELIMITER ; after the END statement of the procedure.
     * I just went ahead and did this myself since you werent in your lab the 2 times i checked
 
-10. line 278 has EstNumStudents instead of estNumStudents. this is genuinely the 3rd week in a row where you havent fixed this. Id ask you how you failed to ctrl + f and change all instances but ill just ask you in person isntead xoxo
+10. line 278 has estNumStudents instead of estNumStudents. this is genuinely the 3rd week in a row where you havent fixed this. Id ask you how you failed to ctrl + f and change all instances but ill just ask you in person isntead xoxo
     * again, i made the change, just writing it here to keep track.
 
 11. see if you can implement env variables for the db connection in the deploy script. it would be nice to not have to change the script every time we want to deploy to a different db.

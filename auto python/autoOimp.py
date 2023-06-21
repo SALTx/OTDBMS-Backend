@@ -7,7 +7,7 @@ def create_conn():
                            database='overseasDB')
     return conn
 
-# Establish a connection to your MySQL database
+# establish a connection to your MySQL database
 connection = create_conn()
 
 try:
