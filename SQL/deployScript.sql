@@ -176,7 +176,7 @@ BEGIN
     ELSE SET acronym = '';
     END CASE;
 END//
-DELIMITER //
+DELIMITER;
 
 DELIMITER //
 CREATE TRIGGER programID_Before_Insert
@@ -208,13 +208,12 @@ BEGIN
     SET NEW.programID = newProgramID;
 END//
 DELIMITER ;
+
 CREATE VIEW plannedTrips AS
 SELECT programName, programType, estDate, countryCode, city, partnerName, tripLeaders, estNumStudents, approved
 FROM overseasPrograms;
 
-
 DELIMITER //
-
 CREATE TRIGGER overseasPrograms_update_trigger
 AFTER UPDATE ON overseasPrograms
 FOR EACH ROW
@@ -276,7 +275,7 @@ BEGIN
     
     IF NEW.estNumStudents != OLD.estNumStudents THEN
         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'estNumStudents', OLD.EstNumStudents, NEW.EstNumStudents, NEW.programID);
+        VALUES ('overseasPrograms', 'estNumStudents', OLD.estNumStudents, NEW.estNumStudents, NEW.programID);
     END IF;
     
     IF NEW.approved != OLD.approved THEN
@@ -284,7 +283,6 @@ BEGIN
         VALUES ('overseasPrograms', 'approved', OLD.approved, NEW.approved, NEW.programID);
 END IF;
 END //
-
 DELIMITER ;
 
 -- CREATE TRIGGER overseasPrograms_update_trigger
