@@ -3,4 +3,4 @@
 
 2. Theres sql errors when trying to run the deploy script. fix them.
 
-3. 
+3. ps. even the triggers and procedures arent consistent with the naming convention. fix that too.
