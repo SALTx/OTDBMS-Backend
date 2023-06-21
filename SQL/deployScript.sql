@@ -213,100 +213,100 @@ CREATE VIEW plannedTrips AS
 SELECT programName, programType, estDate, countryCode, city, partnerName, tripLeaders, estNumStudents, approved
 FROM overseasPrograms;
 
-DELIMITER //
-CREATE TRIGGER overseasPrograms_update_trigger
-AFTER UPDATE ON overseasPrograms
-FOR EACH ROW
-BEGIN
-    IF NEW.programID != OLD.programID THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'programID', OLD.programID, NEW.programID, NEW.programID);
-    END IF;
-    
-    IF NEW.programName != OLD.programName THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'programName', OLD.programName, NEW.programName, NEW.programID);
-    END IF;
-    
-    IF NEW.programType != OLD.programType THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'programType', OLD.programType, NEW.programType, NEW.programID);
-    END IF;
-    
-    IF NEW.startDate != OLD.startDate THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'startDate', OLD.startDate, NEW.startDate, NEW.programID);
-    END IF;
-    
-    IF NEW.endDate != OLD.endDate THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'endDate', OLD.endDate, NEW.endDate, NEW.programID);
-    END IF;
-    
-    IF NEW.estDate != OLD.estDate THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'estDate', OLD.estDate, NEW.estDate, NEW.programID);
-    END IF;
-    
-    IF NEW.countryCode != OLD.countryCode THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'countryCode', OLD.countryCode, NEW.countryCode, NEW.programID);
-    END IF;
-    
-    IF NEW.city != OLD.city THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'city', OLD.city, NEW.city, NEW.programID);
-    END IF;
-    
-    IF NEW.partnerName != OLD.partnerName THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'partnerName', OLD.partnerName, NEW.partnerName, NEW.programID);
-    END IF;
-    
-    IF NEW.overseasPartnerType != OLD.overseasPartnerType THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'overseasPartnerType', OLD.overseasPartnerType, NEW.overseasPartnerType, NEW.programID);
-    END IF;
-    
-    IF NEW.tripLeaders != OLD.tripLeaders THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'tripLeaders', OLD.tripLeaders, NEW.tripLeaders, NEW.programID);
-    END IF;
-    
-    IF NEW.estNumStudents != OLD.estNumStudents THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'estNumStudents', OLD.estNumStudents, NEW.estNumStudents, NEW.programID);
-    END IF;
-    
-    IF NEW.approved != OLD.approved THEN
-        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
-        VALUES ('overseasPrograms', 'approved', OLD.approved, NEW.approved, NEW.programID);
-END IF;
-END //
-DELIMITER ;
-
+-- DELIMITER //
 -- CREATE TRIGGER overseasPrograms_update_trigger
 -- AFTER UPDATE ON overseasPrograms
 -- FOR EACH ROW
 -- BEGIN
---     IF NOT (
---         NEW.programID <=> OLD.programID AND
---         NEW.programName <=> OLD.programName AND
---         NEW.programType <=> OLD.programType AND
---         NEW.startDate <=> OLD.startDate AND
---         NEW.endDate <=> OLD.endDate AND
---         NEW.estDate <=> OLD.estDate AND
---         NEW.countryCode <=> OLD.countryCode AND
---         NEW.city <=> OLD.city AND
---         NEW.partnerName <=> OLD.partnerName AND
---         NEW.overseasPartnerType <=> OLD.overseasPartnerType AND
---         NEW.tripLeaders <=> OLD.tripLeaders AND
---         NEW.estNumStudents <=> OLD.estNumStudents AND
---         NEW.approved <=> OLD.approved
---     ) THEN
+--     IF NEW.programID != OLD.programID THEN
 --         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
---         VALUES ('overseasPrograms', 'row', 'old row values', 'new row values', NEW.programID);
+--         VALUES ('overseasPrograms', 'programID', OLD.programID, NEW.programID, NEW.programID);
 --     END IF;
--- END;
+    
+--     IF NEW.programName != OLD.programName THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'programName', OLD.programName, NEW.programName, NEW.programID);
+--     END IF;
+    
+--     IF NEW.programType != OLD.programType THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'programType', OLD.programType, NEW.programType, NEW.programID);
+--     END IF;
+    
+--     IF NEW.startDate != OLD.startDate THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'startDate', OLD.startDate, NEW.startDate, NEW.programID);
+--     END IF;
+    
+--     IF NEW.endDate != OLD.endDate THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'endDate', OLD.endDate, NEW.endDate, NEW.programID);
+--     END IF;
+    
+--     IF NEW.estDate != OLD.estDate THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'estDate', OLD.estDate, NEW.estDate, NEW.programID);
+--     END IF;
+    
+--     IF NEW.countryCode != OLD.countryCode THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'countryCode', OLD.countryCode, NEW.countryCode, NEW.programID);
+--     END IF;
+    
+--     IF NEW.city != OLD.city THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'city', OLD.city, NEW.city, NEW.programID);
+--     END IF;
+    
+--     IF NEW.partnerName != OLD.partnerName THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'partnerName', OLD.partnerName, NEW.partnerName, NEW.programID);
+--     END IF;
+    
+--     IF NEW.overseasPartnerType != OLD.overseasPartnerType THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'overseasPartnerType', OLD.overseasPartnerType, NEW.overseasPartnerType, NEW.programID);
+--     END IF;
+    
+--     IF NEW.tripLeaders != OLD.tripLeaders THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'tripLeaders', OLD.tripLeaders, NEW.tripLeaders, NEW.programID);
+--     END IF;
+    
+--     IF NEW.estNumStudents != OLD.estNumStudents THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'estNumStudents', OLD.estNumStudents, NEW.estNumStudents, NEW.programID);
+--     END IF;
+    
+--     IF NEW.approved != OLD.approved THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'approved', OLD.approved, NEW.approved, NEW.programID);
+-- END IF;
+-- END //
+-- DELIMITER ;
+
+CREATE TRIGGER overseasPrograms_update_trigger
+AFTER UPDATE ON overseasPrograms
+FOR EACH ROW
+BEGIN
+    IF NOT (
+        NEW.programID <=> OLD.programID AND
+        NEW.programName <=> OLD.programName AND
+        NEW.programType <=> OLD.programType AND
+        NEW.startDate <=> OLD.startDate AND
+        NEW.endDate <=> OLD.endDate AND
+        NEW.estDate <=> OLD.estDate AND
+        NEW.countryCode <=> OLD.countryCode AND
+        NEW.city <=> OLD.city AND
+        NEW.partnerName <=> OLD.partnerName AND
+        NEW.overseasPartnerType <=> OLD.overseasPartnerType AND
+        NEW.tripLeaders <=> OLD.tripLeaders AND
+        NEW.estNumStudents <=> OLD.estNumStudents AND
+        NEW.approved <=> OLD.approved
+    ) THEN
+        INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+        VALUES ('overseasPrograms', 'row', 'old row values', 'new row values', NEW.programID);
+    END IF;
+END;
 
 
