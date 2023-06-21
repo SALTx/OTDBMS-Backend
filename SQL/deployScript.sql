@@ -287,3 +287,28 @@ END //
 
 DELIMITER ;
 
+-- CREATE TRIGGER overseasPrograms_update_trigger
+-- AFTER UPDATE ON overseasPrograms
+-- FOR EACH ROW
+-- BEGIN
+--     IF NOT (
+--         NEW.programID <=> OLD.programID AND
+--         NEW.programName <=> OLD.programName AND
+--         NEW.programType <=> OLD.programType AND
+--         NEW.startDate <=> OLD.startDate AND
+--         NEW.endDate <=> OLD.endDate AND
+--         NEW.estDate <=> OLD.estDate AND
+--         NEW.countryCode <=> OLD.countryCode AND
+--         NEW.city <=> OLD.city AND
+--         NEW.partnerName <=> OLD.partnerName AND
+--         NEW.overseasPartnerType <=> OLD.overseasPartnerType AND
+--         NEW.tripLeaders <=> OLD.tripLeaders AND
+--         NEW.estNumStudents <=> OLD.estNumStudents AND
+--         NEW.approved <=> OLD.approved
+--     ) THEN
+--         INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+--         VALUES ('overseasPrograms', 'row', 'old row values', 'new row values', NEW.programID);
+--     END IF;
+-- END;
+
+

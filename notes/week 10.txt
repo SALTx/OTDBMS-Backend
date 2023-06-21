@@ -1,0 +1,6 @@
+
+1. genuinely dont understand how you couldnt do 6 since all you do is use chatgpt for everything, but I added it in the deploy script with null safe equal operator instead
+
+2. Theres sql errors when trying to run the deploy script. fix them.
+
+3. 
