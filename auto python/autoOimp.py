@@ -19,7 +19,7 @@ try:
 
         for program in programs:
             # Step 2: Find the programID where overseasPrograms.programID = trips.programID
-            sql = f"SELECT studAdmin, programID FROM trips WHERE programID = '{program[0]}'"
+            sql = f"SELECT studAdmin FROM trips WHERE programID = '{program[0]}'"
             cursor.execute(sql)
             trips = cursor.fetchall()
 
@@ -32,7 +32,7 @@ try:
                 # Step 4: Insert auto-generated placeholders for gsmCode and gsmName into OIMPdetails
                 gsmCode = "your_gsmCode"  # Replace with your actual logic for gsmCode
                 gsmName = "your_gsmName"  # Replace with your actual logic for gsmName
-                sql = f"INSERT INTO OIMPdetails (gsmCode, courseCode, studAdmin, gsmName, programID) VALUES ('{gsmCode}', '{course[0]}', '{trip[0]}', '{gsmName}', '{trip[1]}')"
+                sql = f"INSERT INTO oimpDetails (gsmCode, courseCode, studAdmin, gsmName) VALUES ('{gsmCode}', '{course[0]}', '{trip[0]}', '{gsmName}')"
                 cursor.execute(sql)
 
         # Commit the transaction

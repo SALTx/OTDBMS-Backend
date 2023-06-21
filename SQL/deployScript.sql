@@ -67,8 +67,7 @@ CREATE TABLE IF NOT EXISTS oimpDetails (
     courseCode char(6) not null,
     studAdmin char(7) not null,
     gsmName varchar(64) not null,
-    programID char(9) not null,
-    PRIMARY KEY (studAdmin),
+    PRIMARY KEY (studAdmin,gsmCode),
     FOREIGN KEY (courseCode) REFERENCES course (courseCode),
     FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
 );
@@ -84,18 +83,18 @@ CREATE TABLE auditTable (
     columnName VARCHAR(100) NOT NULL,
     oldValue TEXT,
     newValue TEXT,
-    programID char(9),
-    timeStamp TIMestAMP DEFAULT CURRENT_TIMestAMP
+    programID CHAR(9),
+    timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE VIEW KPI1 AS
-SELECT COUNT(DISTINCT trips.studAdmin) AS `Number of students`
+SELECT COUNT(DISTINCT trips.studAdmin) AS `Number_of_Students`
 FROM trips
 JOIN students ON trips.studAdmin = students.adminNo
 WHERE students.stage = 3 AND students.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
 CREATE VIEW KPI2 AS
-SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
+SELECT COUNT(DISTINCT t.studAdmin) AS `ACI_Student_Count`
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
@@ -103,7 +102,7 @@ JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
 CREATE VIEW KPI3 AS
-SELECT COUNT(DISTINCT t.studAdmin) AS StudentCount
+SELECT COUNT(DISTINCT t.studAdmin) AS `OITP_Student_Count`
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
@@ -111,7 +110,8 @@ JOIN students s ON t.studAdmin = s.adminNo
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen');
 
 CREATE VIEW KPI1courseLevel AS
-SELECT c.courseCode, c.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+SELECT c.courseCode AS CourseCode, 
+c.courseName AS CourseName, COUNT(DISTINCT t.studAdmin) AS `Course_Level_Student_Count`
 FROM trips t
 JOIN students s ON t.studAdmin = s.adminNo
 JOIN course c ON s.course = c.courseCode
@@ -119,7 +119,8 @@ WHERE s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore c
 GROUP BY c.courseCode, c.courseName;
 
 CREATE VIEW KPI2courseLevel AS
-SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+SELECT co.courseCode AS CourseCode, 
+co.courseName AS CourseName, COUNT(DISTINCT t.studAdmin) AS `Course_Level_ACI_Student_Count`
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
@@ -129,7 +130,8 @@ WHERE c.aciCountry = 'A' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent 
 GROUP BY co.courseCode, co.courseName;
 
 CREATE VIEW KPI3courseLevel AS
-SELECT co.courseCode, co.courseName, COUNT(DISTINCT t.studAdmin) AS StudentCount
+SELECT co.courseCode AS CourseCode, 
+co.courseName AS CourseName, COUNT(DISTINCT t.studAdmin) AS `Course_Level_OITP_Student_Count`
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN countries c ON op.countryCode = c.countryCode
@@ -138,23 +140,23 @@ JOIN course co ON s.course = co.courseCode
 WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND s.stage = 3 AND s.citizenshipStatus IN ('Permanent resident', 'Singapore citizen')
 GROUP BY co.courseCode, co.courseName;
 
-
 CREATE VIEW oimpDetailsView AS
 SELECT 
-    t.studAdmin, 
-    t.programID, 
-    op.programName,
-    op.city,
-    op.partnerName,
-    s.course,
-    od.gsmCode,
-    od.courseCode,
-    od.gsmName
+    t.studAdmin AS StudentAdmin, 
+    t.programID AS ProgramID, 
+    op.programName AS ProgramName,
+    op.city AS City,
+    op.partnerName AS PartnerName,
+    s.course AS Course,
+    od.gsmCode AS GSMCode,
+    od.courseCode AS CourseCode,
+    od.gsmName AS GSMName
 FROM trips t
 JOIN overseasPrograms op ON t.programID = op.programID
 JOIN students s ON t.studAdmin = s.adminNo
-JOIN oimpDetails od ON t.studAdmin = od.studAdmin AND t.programID = od.programID
+JOIN oimpDetails od ON t.studAdmin = od.studAdmin
 WHERE s.stage = 3;
+
 
 
 DELIMITER //
