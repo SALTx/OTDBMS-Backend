@@ -4,3 +4,19 @@
 2. Theres sql errors when trying to run the deploy script. fix them.
 
 3. ps. even the triggers and procedures arent consistent with the naming convention. fix that too.
+
+4. Primary Key: In the oimpDetails table, the primary key is defined on the studAdmin column. If there can be multiple rows with the same studAdmin value, you should reconsider the primary key definition.
+
+5. Missing Table Constraints: Some tables are missing constraints such as NOT NULL for certain columns. Ensure that the appropriate constraints are applied to maintain data integrity.
+
+6. Views: The views defined in the code seem fine, but it's always a good practice to include column aliases for the aggregated columns in the views to improve readability.
+
+7. 'TIMestAMP' in line 90. do i honestly need to explain this overseasPartnerType
+
+8. duplicate foreign key constraint in oimpDetails and trips
+
+9. Delimiter Usage: The DELIMITER statement is used correctly in most places. However, in the getProgramAcronym stored procedure, you missed setting the delimiter at the end of the procedure definition. Add DELIMITER ; after the END statement of the procedure.
+    * I just went ahead and did this myself since you werent in your lab the 2 times i checked
+
+10. line 278 has EstNumStudents instead of estNumStudents. this is genuinely the 3rd week in a row where you havent fixed this. Id ask you how you failed to ctrl + f and change all instances but ill just ask you in person isntead xoxo
+    * again, i made the change, just writing it here to keep track.
