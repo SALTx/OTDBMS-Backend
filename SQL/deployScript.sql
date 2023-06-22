@@ -282,6 +282,36 @@ END IF;
 END //
 DELIMITER ;
 
+DELIMITER //
+CREATE TRIGGER overseasPrograms_delete_trigger
+AFTER DELETE ON overseasPrograms
+FOR EACH ROW
+BEGIN
+    DECLARE old_values TEXT;
+
+    SET old_values = CONCAT(
+        'programID:', COALESCE(OLD.programID, ''), ', ',
+        'programName:', COALESCE(OLD.programName, ''), ', ',
+        'programType:', COALESCE(OLD.programType, ''), ', ',
+        'startDate:', COALESCE(OLD.startDate, ''), ', ',
+        'endDate:', COALESCE(OLD.endDate, ''), ', ',
+        'estDate:', COALESCE(OLD.estDate, ''), ', ',
+        'countryCode:', COALESCE(OLD.countryCode, ''), ', ',
+        'city:', COALESCE(OLD.city, ''), ', ',
+        'partnerName:', COALESCE(OLD.partnerName, ''), ', ',
+        'overseasPartnerType:', COALESCE(OLD.overseasPartnerType, ''), ', ',
+        'tripLeaders:', COALESCE(OLD.tripLeaders, ''), ', ',
+        'estNumStudents:', COALESCE(OLD.estNumStudents, ''), ', ',
+        'approved:', COALESCE(OLD.approved, '')
+    );
+    
+    INSERT INTO auditTable (tableName, columnName, oldValue, newValue, programID)
+    VALUES ('overseasPrograms', 'FULL RECORD', old_values, 'data deleted', OLD.programID);
+END //
+DELIMITER ;
+
+
+
 -- CREATE TRIGGER overseasPrograms_update_trigger
 -- AFTER UPDATE ON overseasPrograms
 -- FOR EACH ROW
