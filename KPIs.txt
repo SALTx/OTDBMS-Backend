@@ -15,3 +15,10 @@ Example 3: Students do OET in Malaysia not counted as KPI 3 as KPI 3 only counts
 
 
 select adminNo as `Admin no`;
+
+now i will explain my reqiurements and my table to you. for Date, i want the value as month+year eg. September 2023 if `Approve Status` is 'Rejected' or 'Pending'
+and the value as dd/mm/yyyy(start date) to dd/mm/yyyy(end date) if  `Approve Status` is 'Approved'.
+there is a duration difference between different program Type. for 'Overseas internship program',it should be at least 3 months long and not more than 6 months.
+for other type of trips, it should be at least 7 days and not more than 14 days. 
+  'Overseas educational trip','Overseas internship program','Overseas immersion program', should take up 90% of the trip generated, 
+  the other trip types share the rest of the 10%
