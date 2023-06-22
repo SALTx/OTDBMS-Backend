@@ -1,63 +1,80 @@
 import pymysql
 import random
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasDB')
+                           database='overseasProto')
     return conn
 
-global_date = date(2023, 1, 1)  # This date will be incremented for each program
+def random_date(program_type):
+    current_year = datetime.now().year
+    start_date = datetime(current_year - 1, 1, 1)
+    end_date = datetime(current_year + 1, 12, 31)
 
-def random_date(num_days):
-    """Generate a random date within num_days after the global date."""
-    global global_date
-    random_days = random.randrange(num_days)
-    result_date = global_date + timedelta(days=random_days)
-    global_date = result_date
-    return result_date
+    if program_type == 'Overseas internship program':
+        min_duration = timedelta(days=90)
+        max_duration = timedelta(days=180)
+    else:
+        min_duration = timedelta(days=7)
+        max_duration = timedelta(days=14)
 
-def generate_internship_programs(num_programs, conn):
-    # Fetch country names from the 'countries' table where aciCountry = 'A'
+    duration = random.randint(min_duration.days, max_duration.days)
+    random_days = random.randint(0, (end_date - start_date - timedelta(days=duration)).days)
+    result_start_date = start_date + timedelta(days=random_days)
+    result_end_date = result_start_date + timedelta(days=duration)
+
+    return result_start_date.date(), result_end_date.date()
+
+
+def generate_programs(num_programs, conn):
+    # Fetch country names from the 'countries' table where 'aciCountry' is A
     with conn.cursor() as cursor:
-        cursor.execute("SELECT countryCode FROM countries WHERE aciCountry = 'A'")
+        cursor.execute("SELECT countryCode FROM countries WHERE aciCountry='A'")
         country_code = [row[0] for row in cursor.fetchall()]
     
     programs = []
     overseas_partner_types = ['Company', 'Institution', 'Others']
+    approval_statuses = ['Approved', 'Rejected', 'Pending']
     
-    for _ in range(num_programs):
-        programID = 'PROG' + str(random.randint(1, 99999)).zfill(5)
+    for i in range(num_programs):
+        programID = 'PROG' + str(i+1).zfill(5)
         programName = 'Program ' + programID
-        programType = 'Overseas internship program'
-        startDate = random_date(7)  # Start dates are up to a week after the global date
-        endDate = random_date(14)  # End dates are up to two weeks after the global date
-        estDate = None
+        programType = 'Overseas internship program'  # Set to 'Overseas internship program' only
+        startDate, endDate = random_date(programType)  # Generate random start and end dates based on program type
         countryCode = random.choice(country_code)
-        city = 'City ' + str(random.randint(1, 100))
-        partnerName = 'Partner ' + str(random.randint(1, 100))
+        city = 'City ' + str(i+1)  # Placeholder city name
+        partnerName = 'Partner ' + str(i+1)  # Placeholder partner name
         overseasPartnerType = random.choice(overseas_partner_types)
-        tripLeaders = None
-        estNumStudents = None
-        approved = 'Yes'
-        programs.append((programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved))
-    
+        tripLeaders = 'Unassigned '
+        estNumStudents = '1'
+        if startDate.year < 2024:  # If the start date is before 2024, set it as 'Approved'
+            approved = 'Approved'
+        else:
+            approved = random.choice(approval_statuses)
+        date_value = ""
+        if approved == 'Approved':
+            date_value = f"{startDate.strftime('%d/%m/%Y')} to {endDate.strftime('%d/%m/%Y')}"
+        else:
+            date_value = startDate.strftime('%B %Y')
+        programs.append((programID, programName, programType, date_value, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved))
+        
     return programs
 
 def insert_into_table(table_name, data, conn):
     with conn.cursor() as cursor:
         for row in data:
             placeholders = ', '.join(['%s'] * len(row))
-            query = f"INSERT INTO {table_name} (programID, programName, programType, startDate, endDate, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved) VALUES ({placeholders})"
+            query = f"INSERT INTO {table_name} (`Program ID`, `Program Name`, `Program Type`, Date, `Country Code`, City, `Partner Name`, `Overseas Partner Type`, `Trip Leaders`, `Estimated students`, `Approve status`) VALUES ({placeholders})"
             cursor.execute(query, row)
     conn.commit()
 
 conn = create_conn()
 
-# Generate dummy data for 20 overseas internship programs
-programs = generate_internship_programs(20, conn)
+# Generate dummy data for 200 overseas programs
+programs = generate_programs(500, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)

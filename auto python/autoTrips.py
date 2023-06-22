@@ -5,7 +5,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasDB')
+                           database='overseas_travel_proto')
     return conn
 
 def fetch_table_data(table_name, conn, columns='*'):
@@ -22,17 +22,19 @@ def generate_trips(students, programs, conn):
     for student in students:
         students_by_stage[student[3]].append(student)
 
-    # Convert programs tuple to a list
-    programs = list(programs)
-
-    # Shuffle the programs to ensure variety
-    random.shuffle(programs)
-
     for program in programs:
-        programID, startDate, endDate = program  # Unpack the program tuple
+        programID = program[0]  # Get the program ID
+        programType = program[2]  # Get the program type
+
         available_students = []
-        for stage in range(1, 4):
-            available_students.extend(students_by_stage[stage])
+        
+        # Check if the program type is 'Overseas internship program'
+        if programType == 'Overseas internship program':
+            # If it is, only select from stage 3 students
+            available_students = students_by_stage[3]
+        else:
+            for stage in range(1, 4):
+                available_students.extend(students_by_stage[stage])
 
         # Shuffle the available students to ensure variety
         random.shuffle(available_students)
@@ -42,9 +44,6 @@ def generate_trips(students, programs, conn):
         selected_students = available_students[:num_students_in_program]
 
         for student in selected_students:
-            tripLeaders = ''  # Modify as needed
-            estNumStudents = num_students_in_program
-            approved = 'Yes'  # Modify as needed
             comments = ''  # Modify as needed
             trips.append((student[0], programID, comments))
 
@@ -60,7 +59,7 @@ def insert_into_table(table_name, data, conn):
         for row in data:
             try:
                 placeholders = ', '.join(['%s'] * len(row))
-                query = f"INSERT INTO {table_name} (studAdmin, programID, comments) VALUES ({placeholders})"
+                query = f"INSERT INTO {table_name} (`Student Admin`, `Program ID`, Comments) VALUES ({placeholders})"
                 cursor.execute(query, row)
             except pymysql.Error as e:
                 print(f"Error inserting row {row} into table {table_name}: {e}")
@@ -71,7 +70,7 @@ conn = create_conn()
 
 # Fetch data from the 'students' and 'overseasPrograms' tables
 students = fetch_table_data('students', conn)
-programs = fetch_table_data('overseasPrograms', conn, columns='programID, startDate, endDate')
+programs = fetch_table_data('overseasPrograms', conn)
 
 # Generate dummy data for trips
 trips = generate_trips(students, programs, conn)

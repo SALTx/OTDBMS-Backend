@@ -1,7 +1,7 @@
 import pymysql
 
 def create_conn():
-    conn = pymysql.connect(host='localhost', user='root', password='', database='overseasDB')
+    conn = pymysql.connect(host='localhost', user='root', password='', database='overseas_travel_proto')
     return conn
 
 def insert_into_table(table_name, data, conn):

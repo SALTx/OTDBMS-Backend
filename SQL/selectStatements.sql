@@ -1,3 +1,6 @@
+SELECT `Citizenship Status`, `Study Stage`, COUNT(*) AS StudentCount
+FROM students
+GROUP BY `Citizenship Status`, `Study Stage`;
 
 -- programID format 
 -- programType in shortcut as 1st,2nd,3rd,position

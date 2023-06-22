@@ -6,7 +6,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasDB')
+                           database='overseas_travel_proto')
     return conn
 
 def generate_adminNo(year, existing_admins):
@@ -33,6 +33,16 @@ def generate_students(year, current_year, num_students, course_distribution, exi
     if total_students != num_students:
         raise ValueError(f"Total number of students for year {year} should be {num_students}, but got {total_students}")
 
+    # Calculate the number of students based on citizenship status
+    num_international_students = int(num_students * 0.1)
+    num_singapore_citizens = int(num_students * 0.7)
+    num_permanent_residents = num_students - num_international_students - num_singapore_citizens
+
+    # Assign citizenship status to students
+    citizenship_statuses = ['International Student'] * num_international_students + \
+                           ['Singapore citizen'] * num_singapore_citizens + \
+                           ['Permanent resident'] * num_permanent_residents
+
     for course, num_students in course_distribution.items():
         for _ in range(num_students):
             if pemGroup_size_counter == pemGroup_max_size:  # If the current PEM group is full
@@ -41,7 +51,7 @@ def generate_students(year, current_year, num_students, course_distribution, exi
                 pemGroup_size_counter = 0
             adminNo = generate_adminNo(year, existing_admins)
             name = 'Student ' + adminNo  # Placeholder student name
-            citizenshipStatus = random.choice(['Singapore citizen', 'Permanent resident', 'International Student'])
+            citizenshipStatus = random.choice(citizenship_statuses)
             pemGroup = f"PEM{str(pemGroup_counter).zfill(3)}"  # Create the PEM group ID
             students.append((adminNo, name, citizenshipStatus, stage, course, pemGroup))
             pemGroup_size_counter += 1
