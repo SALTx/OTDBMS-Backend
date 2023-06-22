@@ -50,7 +50,8 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     overseasPartnerType ENUM ('Company', 'Institution', 'Others') not null,
     tripLeaders VARCHAR(255),
     estNumStudents smallint,
-    approvalStatus ENUM('Approved', 'Rejected', 'Pending') not null,
+    -- approvalStatus ENUM('Approved', 'Rejected', 'Pending') not null,
+    approved ENUM('Yes', 'No') not null,
     PRIMARY KEY (programID, countryCode, city),
     FOREIGN KEY (countryCode) REFERENCES countries (countryCode)
 );
