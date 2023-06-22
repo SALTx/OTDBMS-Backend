@@ -173,6 +173,20 @@ JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 WHERE students.`Study Stage` = 3;
 
+CREATE VIEW ProgramCountByType AS
+SELECT `Program Type`, COUNT(*) AS `Program Count`
+FROM overseasPrograms
+GROUP BY `Program Type`;
+
+CREATE VIEW stage3_student_count_view AS
+SELECT op.`Program Type`, COUNT(DISTINCT s.`Admin Number`) AS `Student Count`
+FROM overseasPrograms op
+JOIN trips t ON op.`Program ID` = t.`Program ID`
+JOIN students s ON t.`Student Admin` = s.`Admin Number`
+WHERE s.`Study Stage` = 3
+    AND s.`Citizenship Status` IN ('Singapore citizen', 'Permanent resident')
+    AND op.`Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+GROUP BY op.`Program Type`;
 
 CREATE VIEW plannedTrips AS
 SELECT `Program Name`, `Program Type`, Date, `Country Code`, City, `Partner Name`, `Trip Leaders`, `Estimated students`, `Approve status`

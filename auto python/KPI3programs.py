@@ -74,7 +74,7 @@ def insert_into_table(table_name, data, conn):
 conn = create_conn()
 
 # Generate dummy data for 200 overseas programs
-programs = generate_programs(500, conn)
+programs = generate_programs(20, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)
