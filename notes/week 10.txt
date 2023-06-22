@@ -64,4 +64,6 @@ time we want to deploy to a different db.
     5. problems with uploading data for the overseasprograms table
     6. add comments to code for future maintainers.
     7. rebase repository tomrorrow (23/6/2021 Friday) and upload to server.
+    8. Decide on user privileges for data access
+    
     
