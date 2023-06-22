@@ -11,3 +11,7 @@ Example 1: If students do OITP in Japan, Australia or Europe, it is not counted 
 Example 2: Students do OIMP in China also not counted as KPI 3 as KPI 3 only counts OITP.
 
 Example 3: Students do OET in Malaysia not counted as KPI 3 as KPI 3 only counts OITP.
+
+
+
+select adminNo as `Admin no`;
