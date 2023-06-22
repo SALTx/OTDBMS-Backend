@@ -52,3 +52,9 @@ deploy script. it would be nice to not have to change the script every
 time we want to deploy to a different db.
     * this also applies to the python scripts that automate data 
     insertion
+
+
+    22/6/2023
+    1. aciCountry value changed to bit for consistency.
+    2. merge estimated and expected dates into one column
+    3. changed approved to enum value with greater range
