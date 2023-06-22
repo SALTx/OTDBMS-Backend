@@ -58,3 +58,5 @@ time we want to deploy to a different db.
     1. aciCountry value changed to bit for consistency.
     2. merge estimated and expected dates into one column
     3. changed approved to enum value with greater range
+    4. add more clarity to the kpi with the help of description, add readable headers
+        * optional make one view for all kpis that return 3 rows with 2 columns

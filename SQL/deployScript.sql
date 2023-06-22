@@ -141,21 +141,21 @@ WHERE c.aciCountry = 'A' AND op.programType = 'Overseas internship program' AND 
 GROUP BY co.courseCode, co.courseName;
 
 CREATE VIEW oimpDetailsView AS
-SELECT 
-    t.studAdmin AS StudentAdmin, 
-    t.programID AS ProgramID, 
-    op.programName AS ProgramName,
-    op.city AS City,
-    op.partnerName AS PartnerName,
-    s.course AS Course,
-    od.gsmCode AS GSMCode,
-    od.courseCode AS CourseCode,
-    od.gsmName AS GSMName
-FROM trips t
-JOIN overseasPrograms op ON t.programID = op.programID
-JOIN students s ON t.studAdmin = s.adminNo
-JOIN oimpDetails od ON t.studAdmin = od.studAdmin
-WHERE s.stage = 3;
+SELECT
+    trips.studAdmin AS StudentAdmin,
+    trips.programID AS ProgramID,
+    overseasPrograms.programName AS ProgramName,
+    overseasPrograms.city AS City,
+    overseasPrograms.partnerName AS PartnerName,
+    students.course AS Course,
+    oimpDetails.gsmCode AS GSMCode,
+    oimpDetails.courseCode AS CourseCode,
+    oimpDetails.gsmName AS GSMName
+FROM trips
+JOIN overseasPrograms ON trips.programID = overseasPrograms.programID
+JOIN students ON trips.studAdmin = students.adminNo
+JOIN oimpDetails ON trips.studAdmin = oimpDetails.studAdmin
+WHERE students.stage = 3;
 
 
 
