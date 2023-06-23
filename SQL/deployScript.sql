@@ -45,7 +45,9 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
         'Overseas Leadership Training with Outward Bound',
         'Overseas Service Learning-Youth Expedition Programme'
     ) NOT NULL,
-    Date VARCHAR(64),
+    `Start Date` DATE not null,
+    `End Date` DATE not null,
+    'Estimated Date'
     `Country Code` CHAR(2) NOT NULL,    
     City VARCHAR(64) NOT NULL,
     `Partner Name` VARCHAR(64),
@@ -189,7 +191,7 @@ GROUP BY overseasPrograms.`Program Type`;
 
 
 CREATE VIEW plannedTrips AS
-SELECT `Program Name`, `Program Type`, Date, `Country Code`, City, `Partner Name`, `Trip Leaders`, `Estimated students`, `Approve status`
+SELECT `Program Name`, `Program Type`, 'Estimated Date', `Country Code`, City, `Partner Name`, `Trip Leaders`, `Estimated students`, `Approve status`
 FROM `overseasPrograms`;
 
 CREATE VIEW tripDetails AS
@@ -199,7 +201,7 @@ SELECT
     trips.`Program ID`,
     students.`Study Stage`,
     students.`Citizenship Status`,
-    overseasPrograms.Date
+    overseasPrograms.'Estimated Date'
 FROM
     trips
 JOIN
@@ -230,45 +232,33 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER programIDBeforeInsert
+CREATE TRIGGER programID_Before_Insert
 BEFORE INSERT
-ON `overseasPrograms` FOR EACH ROW
+ON overseasPrograms FOR EACH ROW
 BEGIN
     DECLARE acronym CHAR(3);
-    DECLARE year CHAR(2);
+    DECLARE year CHAR(4);
     DECLARE aciChar CHAR(1);
-    DECLARE seqNum CHAR(3);
+    DECLARE seqNum CHAR(3); -- change this line
     DECLARE newProgramID CHAR(9);
-    DECLARE startDate DATE;
-    DECLARE endDate DATE;
 
     -- Call the stored procedure to get the acronym
-    CALL getProgramAcronym(NEW.`Program Type`, acronym);
+    CALL getProgramAcronym(NEW.programType, acronym);
 
-    -- Check if the date format is 'yyyy-mm-dd to yyyy-mm-dd'
-    IF INSTR(NEW.Date, ' to ') > 0 THEN
-        SET startDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', 1), '%Y-%m-%d');
-        SET endDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', -1), '%Y-%m-%d');
-        -- Extract the last two digits of the year from the start date
-        SET year = SUBSTRING(YEAR(startDate), -2);
-    ELSE
-        -- Extract the last two digits of the year from the date value
-        SET year = SUBSTRING(NEW.Date, -2);
-        SET startDate = STR_TO_DATE(CONCAT('01/', NEW.Date), '%d/%M/%Y');
-        SET endDate = startDate + INTERVAL 1 MONTH - INTERVAL 1 DAY;
-    END IF;
+    -- Get the year from the startDate
+    SET year = SUBSTRING(YEAR(NEW.startDate), 3, 2);
 
     -- Get the ACI or NON-ACI character directly from the countries table
-    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.`Country Code`);
+    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.countryCode);
 
     -- Get the next sequence number
-    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 2) = year), 3, '0');
+    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(programID, 4, 2) = year), 3, '0');
 
     -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);
 
-    -- Set the new `Program ID`
-    SET NEW.`Program ID` = newProgramID;
+    -- Set the new programID
+    SET NEW.programID = newProgramID;
 END//
 DELIMITER ;
 
