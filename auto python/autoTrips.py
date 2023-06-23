@@ -5,7 +5,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProto')
+                           database='opsystem_test')
     return conn
 
 def fetch_table_data(table_name, conn, columns='*'):

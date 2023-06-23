@@ -6,7 +6,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProto')
+                           database='opsystem_test')
     return conn
 
 def random_date(program_type):
@@ -26,12 +26,11 @@ def random_date(program_type):
     result_start_date = start_date + timedelta(days=random_days)
     result_end_date = result_start_date + timedelta(days=duration)
 
-    return result_start_date.strftime('%Y-%m-%d'), result_end_date.strftime('%Y-%m-%d')
-
+    return result_start_date, result_end_date
 
 
 def generate_programs(num_programs, conn):
-    # Fetch country names from the 'countries' table where 'aciCountry' is A
+    # Fetch country names from the 'countries' table where 'aciCountry' is 'A'
     with conn.cursor() as cursor:
         cursor.execute("SELECT countryCode FROM countries WHERE aciCountry='A'")
         country_code = [row[0] for row in cursor.fetchall()]
@@ -57,9 +56,11 @@ def generate_programs(num_programs, conn):
             approved = random.choice(approval_statuses)
         date_value = ""
         if approved == 'Approved':
-            date_value = f"{startDate.strftime('%d/%m/%Y')} to {endDate.strftime('%d/%m/%Y')}"
+            date_value = f"{startDate.strftime('%Y-%m-%d')} to {endDate.strftime('%Y-%m-%d')}"
         else:
-            date_value = startDate.strftime('%B %Y')
+            month = startDate.strftime('%b').upper()  # Extract the month abbreviation and convert to uppercase
+            year = startDate.strftime('%Y')  # Extract the year
+            date_value = f"{year} {month}"
         programs.append((programID, programName, programType, date_value, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved))
         
     return programs
@@ -74,8 +75,8 @@ def insert_into_table(table_name, data, conn):
 
 conn = create_conn()
 
-# Generate dummy data for 200 overseas programs
-programs = generate_programs(50, conn)
+# Generate dummy data for 20 overseas programs
+programs = generate_programs(20, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)

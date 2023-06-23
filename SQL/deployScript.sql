@@ -235,7 +235,7 @@ BEFORE INSERT
 ON `overseasPrograms` FOR EACH ROW
 BEGIN
     DECLARE acronym CHAR(3);
-    DECLARE year CHAR(4);
+    DECLARE year CHAR(2);
     DECLARE aciChar CHAR(1);
     DECLARE seqNum CHAR(3);
     DECLARE newProgramID CHAR(9);
@@ -249,12 +249,12 @@ BEGIN
     IF INSTR(NEW.Date, ' to ') > 0 THEN
         SET startDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', 1), '%Y-%m-%d');
         SET endDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', -1), '%Y-%m-%d');
-        -- Extract the year from the start date
-        SET year = YEAR(startDate);
+        -- Extract the last two digits of the year from the start date
+        SET year = SUBSTRING(YEAR(startDate), -2);
     ELSE
-        -- Extract the year from the date value
-        SET year = SUBSTRING(NEW.Date, 1, 4);
-        SET startDate = STR_TO_DATE(NEW.Date, '%Y-%m-%d');
+        -- Extract the last two digits of the year from the date value
+        SET year = SUBSTRING(NEW.Date, -2);
+        SET startDate = STR_TO_DATE(CONCAT('01/', NEW.Date), '%d/%M/%Y');
         SET endDate = startDate + INTERVAL 1 MONTH - INTERVAL 1 DAY;
     END IF;
 
@@ -262,7 +262,7 @@ BEGIN
     SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.`Country Code`);
 
     -- Get the next sequence number
-    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 4) = year), 3, '0');
+    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 2) = year), 3, '0');
 
     -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);

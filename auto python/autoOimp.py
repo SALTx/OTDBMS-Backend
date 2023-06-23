@@ -4,7 +4,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProto')
+                           database='opsystem_test')
     return conn
 
 # establish a connection to your MySQL database
