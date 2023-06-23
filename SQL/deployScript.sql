@@ -1,6 +1,8 @@
-create database `overseasProto`;
-USE overseasProto;
+create database `opsystem_test`;
+USE opsystem_test;
 
+-- create database `overseasProto`;
+-- USE overseasProto;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2) not null, 
     countryName varchar(64) not null,
@@ -18,16 +20,17 @@ CREATE TABLE IF NOT EXISTS course (
     courseManager varchar(64) not null,
     PRIMARY KEY (courseCode)
 );
+
 CREATE TABLE IF NOT EXISTS students (
-    `Admin Number` char(7) not null,
-    `Student Name` varchar(64) not null,
-    `Citizenship Status` enum ('Singapore citizen', 'Permanent resident', 'International Student') not null,
-    `Study Stage` tinyint not null,
-    `Course Code` char(6) not null,
-    `PEM Group` char(6) not null,
+    `Admin Number` CHAR(7) NOT NULL,
+    `Student Name` VARCHAR(64) NOT NULL,
+    `Citizenship Status` ENUM ('Singapore citizen', 'Permanent resident', 'International Student') NOT NULL,
+    `Study Stage` TINYINT NOT NULL,
+    `Course Code` CHAR(6) NOT NULL,
+    `PEM Group` CHAR(6) NOT NULL,
     PRIMARY KEY (`Admin Number`),
-    FOREIGN KEY (`Course Code`) REFERENCES course (courseCode),
-    FOREIGN KEY ( `PEM Group`) REFERENCES pemGroup ( `PEM Group`)
+    FOREIGN KEY (`Course Code`) REFERENCES course (`courseCode`),
+    FOREIGN KEY (`PEM Group`) REFERENCES pemGroup (`pemGroupId`)
 );
 
 CREATE TABLE IF NOT EXISTS overseasPrograms (
@@ -64,14 +67,15 @@ CREATE TABLE IF NOT EXISTS trips (
     FOREIGN KEY (`Program ID`) REFERENCES overseasPrograms (`Program ID`)
 );
 CREATE TABLE IF NOT EXISTS oimpDetails (
-    gsmCode varchar(16) not null,
-    courseCode char(6) not null,
-    studAdmin char(7) not null,
-    gsmName varchar(64) not null,
-    PRIMARY KEY (studAdmin,gsmCode),
+    gsmCode VARCHAR(16) NOT NULL,
+    courseCode CHAR(6) NOT NULL,
+    studAdmin CHAR(7) NOT NULL,
+    gsmName VARCHAR(64) NOT NULL,
+    PRIMARY KEY (studAdmin, gsmCode),
     FOREIGN KEY (courseCode) REFERENCES course (courseCode),
-    FOREIGN KEY (studAdmin) REFERENCES students (adminNo)
+    FOREIGN KEY (studAdmin) REFERENCES students (`Admin Number`)
 );
+
 CREATE TABLE IF NOT EXISTS users (
     username varchar(64) not null,
     password varchar(64) not null,
@@ -91,71 +95,66 @@ CREATE TABLE auditTable (
 
 CREATE VIEW KPI1 AS
 SELECT 
-    CASE WHEN course.courseCode IS NULL THEN 'Total' ELSE course.courseCode END AS `Course Code`,
-    CASE WHEN course.courseName IS NULL THEN 'Students' ELSE course.courseName END AS `Course Name`,
+    course.courseCode AS `Course Code`,
+    course.courseName AS `Course Name`,
     COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
-WITH ROLLUP
-HAVING GROUPING(course.courseCode, course.courseName) = 0
 UNION ALL
-SELECT 'Total', 'Students', COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
+SELECT 
+    'Total' AS `Course Code`,
+    'Students' AS `Course Name`,
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 UNION ALL
-SELECT 'KPI', 'Description', 'Trips for all Stage 3 local students';
+SELECT 
+    'KPI' AS `Course Code`,
+    'Description' AS `Course Name`,
+    'Trips for all Stage 3 local students' AS `Number of Students`;
 
 CREATE VIEW KPI2 AS
 SELECT 
-    CASE WHEN course.courseCode IS NULL THEN 'Total' ELSE course.courseCode END AS `Course Code`,
-    CASE WHEN course.courseName IS NULL THEN 'Students' ELSE course.courseName END AS `Course Name`,
+    course.courseCode AS `Course Code`,
+    course.courseName AS `Course Name`,
     COUNT(DISTINCT trips.`Student Admin`) AS `ACI Trips Student Count`
 FROM trips
-JOIN overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
-WHERE countries.aciCountry = 'A' AND students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
+JOIN (
+    SELECT DISTINCT `Program ID`
+    FROM overseasPrograms
+    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+) AS op ON trips.`Program ID` = op.`Program ID`
+WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
-WITH ROLLUP
-HAVING GROUPING(course.courseCode, course.courseName) = 0
-UNION ALL
-SELECT 'Total', 'Students', COUNT(DISTINCT trips.`Student Admin`) AS `ACI Trips Student Count`
-FROM trips
-JOIN overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-WHERE countries.aciCountry = 'A' AND students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 UNION ALL
 SELECT 'KPI', 'Description', 'ACI Trips for all Stage 3 local students';
 
+
 CREATE VIEW KPI3 AS
 SELECT 
-    CASE WHEN course.courseCode IS NULL THEN 'Total' ELSE course.courseCode END AS `Course Code`,
-    CASE WHEN course.courseName IS NULL THEN 'Students' ELSE course.courseName END AS `Course Name`,
+    course.courseCode AS `Course Code`,
+    course.courseName AS `Course Name`,
     COUNT(DISTINCT trips.`Student Admin`) AS `OITP ACI Trips Student Count`
 FROM trips
-JOIN overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
-WHERE countries.aciCountry = 'A' AND overseasPrograms.`Program Type` = 'Overseas internship program' AND students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
+JOIN (
+    SELECT DISTINCT `Program ID`
+    FROM overseasPrograms
+    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+        AND `Program Type` = 'Overseas internship program'
+) AS op ON trips.`Program ID` = op.`Program ID`
+WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
-WITH ROLLUP
-HAVING GROUPING(course.courseCode, course.courseName) = 0
-UNION ALL
-SELECT 'Total', 'Students', COUNT(DISTINCT trips.`Student Admin`) AS `OITP ACI Trips Student Count`
-FROM trips
-JOIN overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-WHERE countries.aciCountry = 'A' AND overseasPrograms.`Program Type` = 'Overseas internship program' AND students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 UNION ALL
 SELECT 'KPI', 'Description', 'ACI intern trips for all Stage 3 local students';
+
 
 CREATE VIEW oimpDetailsView AS
 SELECT
@@ -173,20 +172,21 @@ JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 WHERE students.`Study Stage` = 3;
 
-CREATE VIEW ProgramCountByType AS
+CREATE VIEW programCountByType AS
 SELECT `Program Type`, COUNT(*) AS `Program Count`
 FROM overseasPrograms
 GROUP BY `Program Type`;
 
-CREATE VIEW stage3_student_count_view AS
-SELECT op.`Program Type`, COUNT(DISTINCT s.`Admin Number`) AS `Student Count`
-FROM overseasPrograms op
-JOIN trips t ON op.`Program ID` = t.`Program ID`
-JOIN students s ON t.`Student Admin` = s.`Admin Number`
-WHERE s.`Study Stage` = 3
-    AND s.`Citizenship Status` IN ('Singapore citizen', 'Permanent resident')
-    AND op.`Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
-GROUP BY op.`Program Type`;
+CREATE VIEW stage3AciCountByProgramType AS
+SELECT overseasPrograms.`Program Type`, COUNT(DISTINCT students.`Admin Number`) AS `Student Count`
+FROM overseasPrograms
+JOIN trips ON overseasPrograms.`Program ID` = trips.`Program ID`
+JOIN students ON trips.`Student Admin` = students.`Admin Number`
+WHERE students.`Study Stage` = 3
+    AND students.`Citizenship Status` IN ('Singapore citizen', 'Permanent resident')
+    AND overseasPrograms.`Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+GROUP BY overseasPrograms.`Program Type`;
+
 
 CREATE VIEW plannedTrips AS
 SELECT `Program Name`, `Program Type`, Date, `Country Code`, City, `Partner Name`, `Trip Leaders`, `Estimated students`, `Approve status`
@@ -207,6 +207,11 @@ JOIN
 JOIN
     overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`;
 
+CREATE VIEW studentCountByCitizenshipAndStage AS
+SELECT `Citizenship Status`, `Study Stage`, COUNT(*) AS StudentCount
+FROM students
+GROUP BY `Citizenship Status`, `Study Stage`;
+
 
 DELIMITER //
 CREATE PROCEDURE getProgramAcronym(`Program Type` VARCHAR(64), OUT acronym CHAR(3))
@@ -225,12 +230,12 @@ END//
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER programID_Before_Insert
+CREATE TRIGGER programIDBeforeInsert
 BEFORE INSERT
 ON `overseasPrograms` FOR EACH ROW
 BEGIN
     DECLARE acronym CHAR(3);
-    DECLARE year CHAR(2);
+    DECLARE year CHAR(4);
     DECLARE aciChar CHAR(1);
     DECLARE seqNum CHAR(3);
     DECLARE newProgramID CHAR(9);
@@ -240,16 +245,16 @@ BEGIN
     -- Call the stored procedure to get the acronym
     CALL getProgramAcronym(NEW.`Program Type`, acronym);
 
-    -- Check if the date format is 'dd/mm/yyyy to dd/mm/yyyy'
+    -- Check if the date format is 'yyyy-mm-dd to yyyy-mm-dd'
     IF INSTR(NEW.Date, ' to ') > 0 THEN
-        SET startDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', 1), '%d/%m/%Y');
-        SET endDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', -1), '%d/%m/%Y');
-        -- Extract the last two digits of the year from the start date
-        SET year = SUBSTRING(YEAR(startDate), -2);
+        SET startDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', 1), '%Y-%m-%d');
+        SET endDate = STR_TO_DATE(SUBSTRING_INDEX(NEW.Date, ' to ', -1), '%Y-%m-%d');
+        -- Extract the year from the start date
+        SET year = YEAR(startDate);
     ELSE
         -- Extract the year from the date value
-        SET year = SUBSTRING(NEW.Date, -2);
-        SET startDate = STR_TO_DATE(CONCAT('01/', NEW.Date), '%d/%M/%Y');
+        SET year = SUBSTRING(NEW.Date, 1, 4);
+        SET startDate = STR_TO_DATE(NEW.Date, '%Y-%m-%d');
         SET endDate = startDate + INTERVAL 1 MONTH - INTERVAL 1 DAY;
     END IF;
 
@@ -257,7 +262,7 @@ BEGIN
     SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.`Country Code`);
 
     -- Get the next sequence number
-    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 2) = year), 3, '0');
+    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 4) = year), 3, '0');
 
     -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);
@@ -269,7 +274,7 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE TRIGGER overseasPrograms_update_trigger
+CREATE TRIGGER overseasProgramsUpdateTrigger
 AFTER UPDATE ON overseasPrograms
 FOR EACH ROW
 BEGIN
@@ -338,7 +343,7 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE TRIGGER overseasPrograms_delete_trigger
+CREATE TRIGGER overseasProgramsDeleteTrigger
 AFTER DELETE ON overseasPrograms
 FOR EACH ROW
 BEGIN

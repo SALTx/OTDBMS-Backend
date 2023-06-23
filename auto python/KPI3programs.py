@@ -26,7 +26,8 @@ def random_date(program_type):
     result_start_date = start_date + timedelta(days=random_days)
     result_end_date = result_start_date + timedelta(days=duration)
 
-    return result_start_date.date(), result_end_date.date()
+    return result_start_date.strftime('%Y-%m-%d'), result_end_date.strftime('%Y-%m-%d')
+
 
 
 def generate_programs(num_programs, conn):
@@ -74,7 +75,7 @@ def insert_into_table(table_name, data, conn):
 conn = create_conn()
 
 # Generate dummy data for 200 overseas programs
-programs = generate_programs(20, conn)
+programs = generate_programs(50, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)

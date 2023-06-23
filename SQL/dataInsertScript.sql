@@ -316,7 +316,7 @@ INSERT INTO `countries` (`countryCode`, `countryName`, `aciCountry`) VALUES ('AF
 ('ZM', 'Zambia', 'N'),
 ('ZW', 'Zimbabwe', 'N');
 
-INSERT INTO `overseasprograms` (`Program ID`, `Program Name`, `Program Type`, `Date`, `Country Code`, `City`, `Partner Name`, `Overseas Partner Type`, `Trip Leaders`, `Estimated students`, `Approve status`) VALUES
+INSERT INTO `overseasPrograms` (`Program ID`, `Program Name`, `Program Type`, `Date`, `Country Code`, `City`, `Partner Name`, `Overseas Partner Type`, `Trip Leaders`, `Estimated students`, `Approve status`) VALUES
 ('OLT24N047', 'Program PROG00030', 'Overseas Leadership Training', 'January 2024', 'PR', 'City 30', 'Partner 30', 'Company', 'Unassigned ', 1, 'Rejected'),
 ('TOB22N050', 'Program PROG00029', 'Overseas Leadership Training with Outward Bound', '15/04/2022 to 22/04/2022', 'MR', 'City 29', 'Partner 29', 'Company', 'Unassigned ', 1, 'Approved'),
 ('YEP22N049', 'Program PROG00028', 'Overseas Service Learning-Youth Expedition Programme', '04/02/2022 to 14/02/2022', 'PW', 'City 28', 'Partner 28', 'Institution', 'Unassigned ', 1, 'Approved'),
@@ -467,6 +467,8 @@ INSERT INTO `overseasprograms` (`Program ID`, `Program Name`, `Program Type`, `D
 ('OIP22A001', 'Program PROG00003', 'Overseas internship program', '11/01/2022 to 25/05/2022', 'IN', 'City 3', 'Partner 3', 'Company', 'Unassigned ', 1, 'Approved'),
 ('OET23N001', 'Program PROG00002', 'Overseas educational trip', '20/02/2023 to 06/03/2023', 'GN', 'City 2', 'Partner 2', 'Institution', 'Unassigned ', 1, 'Approved'),
 ('IMP24N001', 'Program PROG00001', 'Overseas immersion program', 'April 2024', 'KZ', 'City 1', 'Partner 1', 'Others', 'Unassigned ', 1, 'Pending');
+
+
 INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('239752S', 'Student 239752S', 'Permanent resident', 1, 'EGDF94', 'PEM001'),
 ('234145O', 'Student 234145O', 'International Student', 1, 'EGDF94', 'PEM001'),

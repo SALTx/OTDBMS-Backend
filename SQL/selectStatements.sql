@@ -1,6 +1,57 @@
-SELECT `Citizenship Status`, `Study Stage`, COUNT(*) AS StudentCount
-FROM students
-GROUP BY `Citizenship Status`, `Study Stage`;
+-- Table: countries
+SELECT * FROM countries;
+
+-- Table: pemGroup
+SELECT * FROM pemGroup;
+
+-- Table: course
+SELECT * FROM course;
+
+-- Table: students
+SELECT * FROM students;
+
+-- Table: overseasPrograms
+SELECT * FROM overseasPrograms;
+
+-- Table: trips
+SELECT * FROM trips;
+
+-- Table: oimpDetails
+SELECT * FROM oimpDetails;
+
+-- Table: users
+SELECT * FROM users;
+
+-- Table: auditTable
+SELECT * FROM auditTable;
+
+-- View: KPI1
+SELECT * FROM KPI1;
+
+-- View: KPI2
+SELECT * FROM KPI2;
+
+-- View: KPI3
+SELECT * FROM KPI3;
+
+-- View: oimpDetailsView
+SELECT * FROM oimpDetailsView;
+
+-- View: programCountByType
+SELECT * FROM programCountByType;
+
+-- View: stage3AciCountByProgramType
+SELECT * FROM stage3AciCountByProgramType;
+
+-- View: plannedTrips
+SELECT * FROM plannedTrips;
+
+-- View: tripDetails
+SELECT * FROM tripDetails;
+
+-- View: studentCountByCitizenshipAndStage
+SELECT * FROM studentCountByCitizenshipAndStage;
+
 
 -- programID format 
 -- programType in shortcut as 1st,2nd,3rd,position

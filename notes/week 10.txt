@@ -56,10 +56,14 @@ time we want to deploy to a different db.
 
     22/6/2023
     1. aciCountry value changed to bit for consistency.
+    *to be implemented*
     2. merge estimated and expected dates into one column
+    *check*
     3. changed approved to enum value with greater range
+    *check*
     4. add more clarity to the kpi with the help of description, add readable headers
         * optional make one view for all kpis that return 3 rows with 2 columns
+    *check*
 
     5. problems with uploading data for the overseasprograms table
     6. add comments to code for future maintainers.
