@@ -1,5 +1,6 @@
 import pymysql
 import random
+from datetime import datetime
 
 def create_conn():
     conn = pymysql.connect(host='localhost',
@@ -14,27 +15,33 @@ def fetch_table_data(table_name, conn, columns='*'):
         table_data = cursor.fetchall()
     return table_data
 
+
+
 def generate_trips(students, programs, conn):
     trips = []
 
-    # Group students by stage
-    students_by_stage = {1: [], 2: [], 3: []}
+    # Group students by stage and enrollment year
+    students_by_stage_year = {(1, 23): [], (2, 22): [], (3, 21): []}
     for student in students:
-        students_by_stage[student[3]].append(student)
+        stage = student[3]
+        year = int(student[0][:2])
+        students_by_stage_year[(stage, year)].append(student)
 
     for program in programs:
         programID = program[0]  # Get the program ID
         programType = program[2]  # Get the program type
+        programDate = program[3]  # Get the program start date
 
         available_students = []
-        
+
         # Check if the program type is 'Overseas internship program'
         if programType == 'Overseas internship program':
-            # If it is, only select from stage 3 students
-            available_students = students_by_stage[3]
+            # If it is, only select from stage 3 students enrolled in 2021
+            available_students = students_by_stage_year[(3, 21)]
         else:
-            for stage in range(1, 4):
-                available_students.extend(students_by_stage[stage])
+            for stage, year in students_by_stage_year.keys():
+                if year <= int(programDate.strftime('%y')):
+                    available_students.extend(students_by_stage_year[(stage, year)])
 
         # Shuffle the available students to ensure variety
         random.shuffle(available_students)
@@ -49,9 +56,10 @@ def generate_trips(students, programs, conn):
 
         # Remove selected students from the available pool
         for student in selected_students:
-            students_by_stage[student[3]].remove(student)
+            students_by_stage_year[(student[3], int(student[0][:2]))].remove(student)
 
     return trips
+
 
 
 def insert_into_table(table_name, data, conn):
