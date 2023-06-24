@@ -1,8 +1,8 @@
-create database `opsystem_test`;
-USE opsystem_test;
+-- create database `opsystem_test`;
+-- USE opsystem_test;
 
--- create database `overseasProto`;
--- USE overseasProto;
+create database `overseasProto`;
+USE overseasProto;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2) not null, 
     countryName varchar(64) not null,
@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
         'Overseas Leadership Training with Outward Bound',
         'Overseas Service Learning-Youth Expedition Programme'
     ) NOT NULL,
-    `Start Date` DATE not null,
-    `End Date` DATE not null,
-    'Estimated Date'
+    `Start Date` DATE NOT NULL,
+    `End Date` DATE NOT NULL,
+    `Estimated Date` varchar(32) NOT NULL,
     `Country Code` CHAR(2) NOT NULL,    
-    City VARCHAR(64) NOT NULL,
+     City VARCHAR(64) NOT NULL,
     `Partner Name` VARCHAR(64),
     `Overseas Partner Type` ENUM ('Company', 'Institution', 'Others') NOT NULL,
     `Trip Leaders` VARCHAR(255),
@@ -131,12 +131,24 @@ JOIN (
     SELECT DISTINCT `Program ID`
     FROM overseasPrograms
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
-) AS op ON trips.`Program ID` = op.`Program ID`
+) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
 UNION ALL
+SELECT 
+    'Total' AS `Course Code`,
+    'Students' AS `Course Name`,
+    COUNT(DISTINCT trips.`Student Admin`) AS `ACI Trips Student Count`
+FROM trips
+JOIN students ON trips.`Student Admin` = students.`Admin Number`
+JOIN (
+    SELECT DISTINCT `Program ID`
+    FROM overseasPrograms
+    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
+WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
+UNION ALL
 SELECT 'KPI', 'Description', 'ACI Trips for all Stage 3 local students';
-
 
 CREATE VIEW KPI3 AS
 SELECT 
@@ -151,12 +163,34 @@ JOIN (
     FROM overseasPrograms
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
         AND `Program Type` = 'Overseas internship program'
-) AS op ON trips.`Program ID` = op.`Program ID`
+) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
 UNION ALL
+SELECT 
+    'Total' AS `Course Code`,
+    'Students' AS `Course Name`,
+    COUNT(DISTINCT trips.`Student Admin`) AS `OITP ACI Trips Student Count`
+FROM trips
+JOIN students ON trips.`Student Admin` = students.`Admin Number`
+JOIN (
+    SELECT DISTINCT `Program ID`
+    FROM overseasPrograms
+    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
+        AND `Program Type` = 'Overseas internship program'
+) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
+WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
+UNION ALL
 SELECT 'KPI', 'Description', 'ACI intern trips for all Stage 3 local students';
 
+CREATE VIEW programStudentCount AS
+SELECT `Program ID`, COUNT(`Student Admin`) AS `Total Students`
+FROM trips
+GROUP BY `Program ID`;
+
+CREATE VIEW totalStudentsOnTrip AS
+SELECT COUNT(DISTINCT `Student Admin`) AS `Total Students`
+FROM trips;
 
 CREATE VIEW oimpDetailsView AS
 SELECT
@@ -201,7 +235,8 @@ SELECT
     trips.`Program ID`,
     students.`Study Stage`,
     students.`Citizenship Status`,
-    overseasPrograms.'Estimated Date'
+    overseasPrograms.`Start Date` AS `Program Start Date`,
+    overseasPrograms.`End Date` AS `Program End Date`
 FROM
     trips
 JOIN
@@ -209,13 +244,9 @@ JOIN
 JOIN
     overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`;
 
-CREATE VIEW studentCountByCitizenshipAndStage AS
-SELECT `Citizenship Status`, `Study Stage`, COUNT(*) AS StudentCount
-FROM students
-GROUP BY `Citizenship Status`, `Study Stage`;
-
 
 DELIMITER //
+
 CREATE PROCEDURE getProgramAcronym(`Program Type` VARCHAR(64), OUT acronym CHAR(3))
 BEGIN
     CASE `Program Type`
@@ -229,41 +260,42 @@ BEGIN
     ELSE SET acronym = '';
     END CASE;
 END//
-DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER programID_Before_Insert
+
+CREATE TRIGGER programIDBeforeInsert
 BEFORE INSERT
 ON overseasPrograms FOR EACH ROW
 BEGIN
     DECLARE acronym CHAR(3);
     DECLARE year CHAR(4);
     DECLARE aciChar CHAR(1);
-    DECLARE seqNum CHAR(3); -- change this line
+    DECLARE seqNum CHAR(3);
     DECLARE newProgramID CHAR(9);
 
     -- Call the stored procedure to get the acronym
-    CALL getProgramAcronym(NEW.programType, acronym);
+    CALL getProgramAcronym(NEW.`Program Type`, acronym);
 
     -- Get the year from the startDate
-    SET year = SUBSTRING(YEAR(NEW.startDate), 3, 2);
+    SET year = SUBSTRING(YEAR(NEW.`Start Date`), 3, 2);
 
     -- Get the ACI or NON-ACI character directly from the countries table
-    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.countryCode);
+    SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.`Country Code`);
 
     -- Get the next sequence number
-    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(programID, 4, 2) = year), 3, '0');
+    SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 2) = year), 3, '0');
 
     -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);
 
     -- Set the new programID
-    SET NEW.programID = newProgramID;
+    SET NEW.`Program ID` = newProgramID;
 END//
+
 DELIMITER ;
 
-
 DELIMITER //
+
 CREATE TRIGGER overseasProgramsUpdateTrigger
 AFTER UPDATE ON overseasPrograms
 FOR EACH ROW
@@ -283,9 +315,19 @@ BEGIN
         VALUES ('overseasPrograms', 'Program Type', OLD.`Program Type`, NEW.`Program Type`, NEW.`Program ID`);
     END IF;
     
-    IF NEW.Date != OLD.Date THEN
+    IF NEW.`Start Date` != OLD.`Start Date` THEN
         INSERT INTO auditTable (`Table Name`, `Column Name`, `Old Value`, `New Value`, `Program ID`)
-        VALUES ('overseasPrograms', 'Date', OLD.Date, NEW.Date, NEW.`Program ID`);
+        VALUES ('overseasPrograms', 'Start Date', OLD.`Start Date`, NEW.`Start Date`, NEW.`Program ID`);
+    END IF;
+    
+    IF NEW.`End Date` != OLD.`End Date` THEN
+        INSERT INTO auditTable (`Table Name`, `Column Name`, `Old Value`, `New Value`, `Program ID`)
+        VALUES ('overseasPrograms', 'End Date', OLD.`End Date`, NEW.`End Date`, NEW.`Program ID`);
+    END IF;
+    
+    IF NEW.`Estimated Date` != OLD.`Estimated Date` THEN
+        INSERT INTO auditTable (`Table Name`, `Column Name`, `Old Value`, `New Value`, `Program ID`)
+        VALUES ('overseasPrograms', 'Estimated Date', OLD.`Estimated Date`, NEW.`Estimated Date`, NEW.`Program ID`);
     END IF;
     
     IF NEW.`Country Code` != OLD.`Country Code` THEN
@@ -328,11 +370,12 @@ BEGIN
         VALUES ('overseasPrograms', 'Estimated students', 'Total Students', 'Total Students', NEW.`Program ID`);
     END IF;
 END //
+
 DELIMITER ;
 
 
-
 DELIMITER //
+
 CREATE TRIGGER overseasProgramsDeleteTrigger
 AFTER DELETE ON overseasPrograms
 FOR EACH ROW
@@ -343,7 +386,9 @@ BEGIN
         'Program ID:', COALESCE(OLD.`Program ID`, ''), ', ',
         'Program Name:', COALESCE(OLD.`Program Name`, ''), ', ',
         'Program Type:', COALESCE(OLD.`Program Type`, ''), ', ',
-        'Date:', COALESCE(OLD.Date, ''), ', ',
+        'Start Date:', COALESCE(OLD.`Start Date`, ''), ', ',
+        'End Date:', COALESCE(OLD.`End Date`, ''), ', ',
+        'Estimated Date:', COALESCE(OLD.`Estimated Date`, ''), ', ',
         'Country Code:', COALESCE(OLD.`Country Code`, ''), ', ',
         'City:', COALESCE(OLD.City, ''), ', ',
         'Partner Name:', COALESCE(OLD.`Partner Name`, ''), ', ',
@@ -356,7 +401,9 @@ BEGIN
     INSERT INTO auditTable (`Table Name`, `Column Name`, `Old Value`, `New Value`, `Program ID`)
     VALUES ('overseasPrograms', 'FULL RECORD', old_values, 'data deleted', OLD.`Program ID`);
 END //
+
 DELIMITER ;
+
 
 
 

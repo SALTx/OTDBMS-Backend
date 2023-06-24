@@ -5,7 +5,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='opsystem_test')
+                           database='overseasProto')
     return conn
 
 def fetch_table_data(table_name, conn, columns='*'):
@@ -40,7 +40,7 @@ def generate_trips(students, programs, conn):
         random.shuffle(available_students)
 
         # Determine the number of students to assign to the program
-        num_students_in_program = min(50, max(5, len(available_students)))
+        num_students_in_program = min(25, max(5, len(available_students)))
         selected_students = available_students[:num_students_in_program]
 
         for student in selected_students:
