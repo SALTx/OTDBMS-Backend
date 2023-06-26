@@ -1,8 +1,8 @@
--- create database `opsystem_test`;
--- USE opsystem_test;
+create database `opsystem_test`;
+USE opsystem_test;
 
-create database `overseasProto`;
-USE overseasProto;
+-- create database `overseasProto`;
+-- USE overseasProto;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2) not null, 
     countryName varchar(64) not null,
