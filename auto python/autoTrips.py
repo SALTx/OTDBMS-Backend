@@ -46,8 +46,8 @@ def generate_trips(students, programs, conn):
         # Shuffle the available students to ensure variety
         random.shuffle(available_students)
 
-        # Determine the number of students to assign to the program
-        num_students_in_program = min(25, max(5, len(available_students)))
+        # Determine the number of students to assign to the program randomly within the range of 3 to 20
+        num_students_in_program = random.randint(8, 30)
         selected_students = available_students[:num_students_in_program]
 
         for student in selected_students:
@@ -59,6 +59,7 @@ def generate_trips(students, programs, conn):
             students_by_stage_year[(student[3], int(student[0][:2]))].remove(student)
 
     return trips
+
 
 
 

@@ -95,6 +95,16 @@ CREATE TABLE auditTable (
     timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE VIEW nonACIyear3Trip AS
+SELECT op.`Program ID`, COUNT(t.`Student Admin`) AS student_count
+FROM overseasPrograms op
+JOIN trips t ON op.`Program ID` = t.`Program ID`
+JOIN students s ON t.`Student Admin` = s.`Admin Number`
+JOIN countries c ON op.`Country Code` = c.`countryCode`
+WHERE c.`aciCountry` = 'N'
+GROUP BY op.`Program ID`;
+
+
 CREATE VIEW KPI1 AS
 SELECT 
     course.courseCode AS `Course Code`,
