@@ -20,36 +20,46 @@ def random_date(start_date, end_date):
     return result_date
 
 def generate_programs(num_programs, conn):
+    current_year = get_current_year()
     # Fetch country codes and aciCountry values from the 'countries' table
     with conn.cursor() as cursor:
         cursor.execute("SELECT countryCode FROM countries WHERE aciCountry='N'")
+    # number of ACI and NON ACI countries hardcoded, change to A and change number of programs to be generated below to acheive wanted results
         country_data = cursor.fetchall()
 
     country_codes = [row[0] for row in country_data]
 
+
     programs = []
-    program_types = ['Overseas educational trip', 'Overseas internship program', 'Overseas immersion program', 
-                     'Overseas Competition/Exchange', 'Overseas Leadership Training', 
+    program_types = ['Overseas educational trip', 'Overseas internship program', 'Overseas immersion program',
+                     'Overseas Competition/Exchange', 'Overseas Leadership Training',
                      'Overseas Leadership Training with Outward Bound',
                      'Overseas Service Learning-Youth Expedition Programme']
     overseas_partner_types = ['Company', 'Institution', 'Others']
 
     for i in range(num_programs):
-        programID = 'PROG' + str(i+1).zfill(5)
+        programID = 'PROG' + str(i + 1).zfill(5)
         programName = 'Program ' + programID
         programType = choose_program_type(program_types)
         start_date, end_date = choose_dates(programType)
         estDate = None  # Adjusted to use None instead of 'undefined'
         countryCode = random.choice(country_codes)
-        city = 'City ' + str(i+1)  # Placeholder city name
-        partnerName = 'Partner ' + str(i+1)  # Placeholder partner name
+        city = 'City ' + str(i + 1)  # Placeholder city name
+        partnerName = 'Partner ' + str(i + 1)  # Placeholder partner name
         overseasPartnerType = random.choice(overseas_partner_types)
         tripLeaders = 'to be appointed'
         estNumStudents = 1  # Adjusted to use integer instead of string
-        approved = 'Approved'  # Adjusted to use 'Approved' as the default status
-        programs.append((programID, programName, programType, start_date, end_date, estDate, countryCode, city, partnerName, overseasPartnerType, tripLeaders, estNumStudents, approved))
+        # Set Approve status based on program date
+        if end_date.year > current_year:
+            approve_status = random.choice(['Pending', 'Rejected'])
+        else:
+            approve_status = 'Approved'
+        programs.append(
+            (programID, programName, programType, start_date, end_date, estDate, countryCode, city, partnerName,
+             overseasPartnerType, tripLeaders, estNumStudents, approve_status))
 
     return programs
+
 
 
 def choose_program_type(program_types):
@@ -91,7 +101,7 @@ def insert_into_table(table_name, data, conn):
 
 conn = create_conn()
 
-# Generate dummy data for 200 overseas programs
+# Generate dummy data for 400 overseas programs
 programs = generate_programs(60, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table

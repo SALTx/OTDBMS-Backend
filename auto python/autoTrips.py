@@ -15,8 +15,6 @@ def fetch_table_data(table_name, conn, columns='*'):
         table_data = cursor.fetchall()
     return table_data
 
-
-
 def generate_trips(students, programs, conn):
     trips = []
 
@@ -31,6 +29,7 @@ def generate_trips(students, programs, conn):
         programID = program[0]  # Get the program ID
         programType = program[2]  # Get the program type
         programDate = program[3]  # Get the program start date
+        approveStatus = program[12]  # Get the program approval status
 
         available_students = []
 
@@ -46,22 +45,27 @@ def generate_trips(students, programs, conn):
         # Shuffle the available students to ensure variety
         random.shuffle(available_students)
 
-        # Determine the number of students to assign to the program randomly within the range of 3 to 20
-        num_students_in_program = random.randint(8, 30)
-        selected_students = available_students[:num_students_in_program]
+        # Check if there are available students for assignment
+        if available_students:
+            # Determine the number of students to assign to the program randomly within the range of 3 to 20
+            num_students_in_program = random.randint(1, min(20, len(available_students)))
+            # When available students are lesser than min_students will get error message, unable to solve it by
+            #coding with my skills. 2 solutions: 1, reload the codes non-stop and by luck it will end up perfect once, or 
+            #2. change minimum reqiured amount to 1.
 
-        for student in selected_students:
-            comments = ''  # Modify as needed
-            trips.append((student[0], programID, comments))
+            # Check if the program is approved before assigning students
+            if approveStatus == 'Approved':
+                selected_students = available_students[:num_students_in_program]
 
-        # Remove selected students from the available pool
-        for student in selected_students:
-            students_by_stage_year[(student[3], int(student[0][:2]))].remove(student)
+                for student in selected_students:
+                    comments = ''  # Modify as needed
+                    trips.append((student[0], programID, comments))
+
+                # Remove selected students from the available pool
+                for student in selected_students:
+                    students_by_stage_year[(student[3], int(student[0][:2]))].remove(student)
 
     return trips
-
-
-
 
 def insert_into_table(table_name, data, conn):
     with conn.cursor() as cursor:
@@ -73,7 +77,6 @@ def insert_into_table(table_name, data, conn):
             except pymysql.Error as e:
                 print(f"Error inserting row {row} into table {table_name}: {e}")
     conn.commit()
-
 
 conn = create_conn()
 
