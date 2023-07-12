@@ -54,10 +54,12 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     `Overseas Partner Type` ENUM ('Company', 'Institution', 'Others') NOT NULL,
     `Trip Leaders` VARCHAR(255),
     `Estimated students` SMALLINT,
-    `Approve status` ENUM('Approved', 'Rejected', 'Planned',`Completed`) NOT NULL, --add in completed, pending change to plan
+    `Approve status` ENUM('Approved', 'Completed','Rejected', 'Planned') NOT NULL, 
     PRIMARY KEY (`Program ID`, `Country Code`, City),
     FOREIGN KEY (`Country Code`) REFERENCES countries (countryCode)
-);-- add trigger when trip.programid = program.programid approve status = completed
+); 
+--ALTER TABLE overseasPrograms MODIFY COLUMN `Approve status` ENUM('Approved', 'Completed', 'Rejected', 'Planned') NOT NULL;
+
 
 
 CREATE TABLE IF NOT EXISTS trips (
@@ -270,6 +272,19 @@ BEGIN
     ELSE SET acronym = '';
     END CASE;
 END//
+
+DELIMITER //
+
+CREATE TRIGGER updateProgramCompletionStatus
+AFTER INSERT ON trips
+FOR EACH ROW
+BEGIN
+    UPDATE overseasPrograms
+    SET `Approve status` = 'Completed'
+    WHERE `Program ID` = NEW.`Program ID`;
+END //
+
+DELIMITER ;
 
 DELIMITER //
 
