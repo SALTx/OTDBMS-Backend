@@ -97,16 +97,6 @@ CREATE TABLE auditTable (
     timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE VIEW nonACIyear3Trip AS
-SELECT op.`Program ID`, COUNT(t.`Student Admin`) AS student_count
-FROM overseasPrograms op
-JOIN trips t ON op.`Program ID` = t.`Program ID`
-JOIN students s ON t.`Student Admin` = s.`Admin Number`
-JOIN countries c ON op.`Country Code` = c.`countryCode`
-WHERE c.`aciCountry` = 'N'
-GROUP BY op.`Program ID`;
-
-
 CREATE VIEW KPI1 AS
 SELECT 
     course.courseCode AS `Course Code`,
@@ -204,6 +194,24 @@ CREATE VIEW totalStudentsOnTrip AS
 SELECT COUNT(DISTINCT `Student Admin`) AS `Total Students`
 FROM trips;
 
+CREATE VIEW nonACIyear3Trip AS
+SELECT op.`Program ID`, COUNT(t.`Student Admin`) AS student_count
+FROM overseasPrograms op
+JOIN trips t ON op.`Program ID` = t.`Program ID`
+JOIN students s ON t.`Student Admin` = s.`Admin Number`
+JOIN countries c ON op.`Country Code` = c.`countryCode`
+WHERE c.`aciCountry` = 'N'
+GROUP BY op.`Program ID`;
+
+CREATE VIEW noTripPrograms AS
+SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`, overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`, overseasPrograms.`Country Code`, overseasPrograms.City, overseasPrograms.`Partner Name`, overseasPrograms.`Overseas Partner Type`, overseasPrograms.`Trip Leaders`, overseasPrograms.`Estimated students`, overseasPrograms.`Approve status`
+FROM overseasPrograms
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM trips
+    WHERE overseasPrograms.`Program ID` = trips.`Program ID`
+);
+
 CREATE VIEW oimpDetailsView AS
 SELECT
     trips.`Student Admin`,
@@ -258,7 +266,6 @@ JOIN
 
 
 DELIMITER //
-
 CREATE PROCEDURE getProgramAcronym(`Program Type` VARCHAR(64), OUT acronym CHAR(3))
 BEGIN
     CASE `Program Type`
@@ -274,7 +281,6 @@ BEGIN
 END//
 
 DELIMITER //
-
 CREATE TRIGGER updateProgramCompletionStatus
 AFTER INSERT ON trips
 FOR EACH ROW
@@ -283,11 +289,9 @@ BEGIN
     SET `Approve status` = 'Completed'
     WHERE `Program ID` = NEW.`Program ID`;
 END //
-
 DELIMITER ;
 
 DELIMITER //
-
 CREATE TRIGGER programIDBeforeInsert
 BEFORE INSERT
 ON overseasPrograms FOR EACH ROW
@@ -316,11 +320,9 @@ BEGIN
     -- Set the new programID
     SET NEW.`Program ID` = newProgramID;
 END//
-
 DELIMITER ;
 
 DELIMITER //
-
 CREATE TRIGGER overseasProgramsUpdateTrigger
 AFTER UPDATE ON overseasPrograms
 FOR EACH ROW
@@ -395,7 +397,6 @@ BEGIN
         VALUES ('overseasPrograms', 'Estimated students', 'Total Students', 'Total Students', NEW.`Program ID`);
     END IF;
 END //
-
 DELIMITER ;
 
 

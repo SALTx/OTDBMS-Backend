@@ -42,7 +42,7 @@ def generate_programs(num_programs, conn):
         programName = 'Program ' + programID
         programType = choose_program_type(program_types)
         start_date, end_date = choose_dates(programType)
-        estDate = None  # Adjusted to use None instead of 'undefined'
+        estDate = None  
         countryCode = random.choice(country_codes)
         city = 'City ' + str(i + 1)  # Placeholder city name
         partnerName = 'Partner ' + str(i + 1)  # Placeholder partner name
@@ -51,7 +51,7 @@ def generate_programs(num_programs, conn):
         estNumStudents = 1  # Adjusted to use integer instead of string
         # Set Approve status based on program date
         if end_date.year > current_year:
-            approve_status = random.choice(['Pending', 'Rejected'])
+            approve_status = random.choice(['Planned', 'Rejected'])
         else:
             approve_status = 'Approved'
         programs.append(
