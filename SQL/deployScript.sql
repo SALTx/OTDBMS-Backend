@@ -125,7 +125,7 @@ CREATE VIEW KPI2 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `ACI Trips Student Count`
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
@@ -156,7 +156,7 @@ CREATE VIEW KPI3 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `OITP ACI Trips Student Count`
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
