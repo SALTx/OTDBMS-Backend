@@ -90,4 +90,4 @@ trips = generate_trips(students, programs, conn)
 # Insert the dummy data into the 'trips' table
 insert_into_table('trips', trips, conn)
 
-conn.close()  # Don't forget to close the connection
+conn.close() 

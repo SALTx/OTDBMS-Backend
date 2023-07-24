@@ -81,4 +81,4 @@ programs = generate_programs(20, conn)
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)
 
-conn.close()  # Don't forget to close the connection
+conn.close() 

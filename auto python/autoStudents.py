@@ -114,4 +114,4 @@ conn = create_conn()
 insert_into_table('students', students_year1, conn)
 insert_into_table('students', students_year2, conn)
 insert_into_table('students', students_year3, conn)
-conn.close()  # Don't forget to close the connection
+conn.close()  

@@ -34,4 +34,4 @@ pem_groups = generate_pemgroup_data(50)  # Generate 50 pem groups
 # Insert the dummy data into the 'pemGroup' table
 insert_into_table('pemGroup', pem_groups, conn)
 
-conn.close()  # Don't forget to close the connection
+conn.close()  

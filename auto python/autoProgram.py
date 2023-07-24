@@ -48,10 +48,10 @@ def generate_programs(num_programs, conn):
         partnerName = 'Partner ' + str(i + 1)  # Placeholder partner name
         overseasPartnerType = random.choice(overseas_partner_types)
         tripLeaders = 'to be appointed'
-        estNumStudents = 1  # Adjusted to use integer instead of string
+        estNumStudents = 1  
         # Set Approve status based on program date
         if end_date.year > current_year:
-            approve_status = random.choice(['Planned', 'Rejected'])
+            approve_status = random.choice(['Planned', 'Cancelled','Postponed'])
         else:
             approve_status = 'Approved'
         programs.append(
@@ -107,4 +107,4 @@ programs = generate_programs(60, conn)
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)
 
-conn.close()  # Don't forget to close the connection
+conn.close() 

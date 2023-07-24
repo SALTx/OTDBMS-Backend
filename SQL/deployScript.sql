@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     `Overseas Partner Type` ENUM ('Company', 'Institution', 'Others') NOT NULL,
     `Trip Leaders` VARCHAR(255),
     `Estimated students` SMALLINT,
-    `Approve status` ENUM('Approved', 'Completed','Rejected', 'Planned') NOT NULL, 
+    `Approve status` ENUM('Approved', 'Completed','Postponed', 'Planned','Cancelled') NOT NULL, 
     PRIMARY KEY (`Program ID`, `Country Code`, City),
     FOREIGN KEY (`Country Code`) REFERENCES countries (countryCode)
 ); 
@@ -185,32 +185,20 @@ WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanen
 UNION ALL
 SELECT 'KPI', 'Description', 'ACI intern trips for all Stage 3 local students';
 
-CREATE VIEW programStudentCount AS
-SELECT `Program ID`, COUNT(`Student Admin`) AS `Total Students`
-FROM trips
-GROUP BY `Program ID`;
+CREATE VIEW studentsView AS
+SELECT students.`Admin Number`, students.`Student Name`, students.`Citizenship Status`, students.`Study Stage`,
+       course.courseName AS `Course`, students.`PEM Group`
+FROM students
+JOIN course ON students.`Course Code` = course.courseCode;
 
-CREATE VIEW totalStudentsOnTrip AS
-SELECT COUNT(DISTINCT `Student Admin`) AS `Total Students`
-FROM trips;
-
-CREATE VIEW nonACIyear3Trip AS
-SELECT op.`Program ID`, COUNT(t.`Student Admin`) AS student_count
-FROM overseasPrograms op
-JOIN trips t ON op.`Program ID` = t.`Program ID`
-JOIN students s ON t.`Student Admin` = s.`Admin Number`
-JOIN countries c ON op.`Country Code` = c.`countryCode`
-WHERE c.`aciCountry` = 'N'
-GROUP BY op.`Program ID`;
-
-CREATE VIEW noTripPrograms AS
-SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`, overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`, overseasPrograms.`Country Code`, overseasPrograms.City, overseasPrograms.`Partner Name`, overseasPrograms.`Overseas Partner Type`, overseasPrograms.`Trip Leaders`, overseasPrograms.`Estimated students`, overseasPrograms.`Approve status`
+CREATE OR REPLACE VIEW overseasProgramsView AS
+SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`,
+       overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`,
+       countries.countryName AS `Country`, overseasPrograms.City, overseasPrograms.`Partner Name`,
+       overseasPrograms.`Overseas Partner Type`, overseasPrograms.`Trip Leaders`, overseasPrograms.`Estimated students`,
+       overseasPrograms.`Approve status`
 FROM overseasPrograms
-WHERE NOT EXISTS (
-    SELECT 1
-    FROM trips
-    WHERE overseasPrograms.`Program ID` = trips.`Program ID`
-);
+JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode;
 
 CREATE VIEW oimpDetailsView AS
 SELECT
@@ -228,27 +216,7 @@ JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 WHERE students.`Study Stage` = 3;
 
-CREATE VIEW programCountByType AS
-SELECT `Program Type`, COUNT(*) AS `Program Count`
-FROM overseasPrograms
-GROUP BY `Program Type`;
-
-CREATE VIEW stage3AciCountByProgramType AS
-SELECT overseasPrograms.`Program Type`, COUNT(DISTINCT students.`Admin Number`) AS `Student Count`
-FROM overseasPrograms
-JOIN trips ON overseasPrograms.`Program ID` = trips.`Program ID`
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-WHERE students.`Study Stage` = 3
-    AND students.`Citizenship Status` IN ('Singapore citizen', 'Permanent resident')
-    AND overseasPrograms.`Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
-GROUP BY overseasPrograms.`Program Type`;
-
-
-CREATE VIEW plannedTrips AS
-SELECT `Program Name`, `Program Type`, 'Estimated Date', `Country Code`, City, `Partner Name`, `Trip Leaders`, `Estimated students`, `Approve status`
-FROM `overseasPrograms`;
-
-CREATE VIEW tripDetails AS
+CREATE OR REPLACE VIEW tripDetails AS
 SELECT
     students.`Admin Number`,
     students.`Student Name`,
@@ -256,7 +224,8 @@ SELECT
     students.`Study Stage`,
     students.`Citizenship Status`,
     overseasPrograms.`Start Date` AS `Program Start Date`,
-    overseasPrograms.`End Date` AS `Program End Date`
+    overseasPrograms.`End Date` AS `Program End Date`,
+    overseasPrograms.City
 FROM
     trips
 JOIN
@@ -279,17 +248,6 @@ BEGIN
     ELSE SET acronym = '';
     END CASE;
 END//
-
-DELIMITER //
-CREATE TRIGGER updateProgramCompletionStatus
-AFTER INSERT ON trips
-FOR EACH ROW
-BEGIN
-    UPDATE overseasPrograms
-    SET `Approve status` = 'Completed'
-    WHERE `Program ID` = NEW.`Program ID`;
-END //
-DELIMITER ;
 
 DELIMITER //
 CREATE TRIGGER programIDBeforeInsert
@@ -320,6 +278,17 @@ BEGIN
     -- Set the new programID
     SET NEW.`Program ID` = newProgramID;
 END//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER updateProgramCompletionStatus
+AFTER INSERT ON trips
+FOR EACH ROW
+BEGIN
+    UPDATE overseasPrograms
+    SET `Approve status` = 'Completed'
+    WHERE `Program ID` = NEW.`Program ID`;
+END //
 DELIMITER ;
 
 DELIMITER //
