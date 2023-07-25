@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     PRIMARY KEY (`Program ID`, `Country Code`, City),
     FOREIGN KEY (`Country Code`) REFERENCES countries (countryCode)
 ); 
+--ALTER TABLE overseasPrograms MODIFY COLUMN `Approve status` ENUM('Approved', 'Completed', 'Rejected', 'Planned') NOT NULL;
+
 
 
 CREATE TABLE IF NOT EXISTS trips (
