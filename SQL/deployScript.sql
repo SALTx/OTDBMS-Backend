@@ -204,13 +204,15 @@ SELECT
     overseasPrograms.City,
     overseasPrograms.`Partner Name`,
     oimpDetails.gsmCode AS `GSM Code`,
-    oimpDetails.courseCode AS `Course Code`,
+    course.courseName AS `Course Name`, 
     oimpDetails.gsmName AS `GSM Name`
 FROM trips
 JOIN overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
+JOIN course ON oimpDetails.courseCode = course.courseCode 
 WHERE students.`Study Stage` = 3;
+
 
 CREATE VIEW tripDetails AS
 SELECT
