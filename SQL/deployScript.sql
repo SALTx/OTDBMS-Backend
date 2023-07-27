@@ -58,10 +58,6 @@ CREATE TABLE IF NOT EXISTS overseasPrograms (
     PRIMARY KEY (`Program ID`, `Country Code`, City),
     FOREIGN KEY (`Country Code`) REFERENCES countries (countryCode)
 ); 
---ALTER TABLE overseasPrograms MODIFY COLUMN `Approve status` ENUM('Approved', 'Completed', 'Rejected', 'Planned') NOT NULL;
-
-
-
 CREATE TABLE IF NOT EXISTS trips (
     `Student Admin` CHAR(7) NOT NULL,
     `Program ID` CHAR(9) NOT NULL,
@@ -191,7 +187,7 @@ SELECT students.`Admin Number`, students.`Student Name`, students.`Citizenship S
 FROM students
 JOIN course ON students.`Course Code` = course.courseCode;
 
-CREATE OR REPLACE VIEW overseasProgramsView AS
+CREATE VIEW overseasProgramsView AS
 SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`,
        overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`,
        countries.countryName AS `Country`, overseasPrograms.City, overseasPrograms.`Partner Name`,
@@ -216,7 +212,7 @@ JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 WHERE students.`Study Stage` = 3;
 
-CREATE OR REPLACE VIEW tripDetails AS
+CREATE VIEW tripDetails AS
 SELECT
     students.`Admin Number`,
     students.`Student Name`,
