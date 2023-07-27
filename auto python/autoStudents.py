@@ -97,6 +97,17 @@ course_distribution_year2 = {
     'EGDF12': 60,
     'EGDF13': 70,
 }
+# 'EGDF20': 17%
+#   'EGDF21': 16%
+#   'EGDF11': 11%
+#   'EGDF19': 11%
+#   'EGDF17': 8%
+#   'EGDF09': 8%
+#   'EGDF22': 8%
+#   'EGDFPA': 8%
+#   'EGDF12': 6%
+#   'EGDF13': 7%
+
 
 # Assume the same distribution for year 2 and 3
 course_distribution_year3 = course_distribution_year2

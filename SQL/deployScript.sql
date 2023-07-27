@@ -248,6 +248,16 @@ BEGIN
 END//
 
 DELIMITER //
+CREATE FUNCTION getAcronyms() RETURNS CHAR(64)
+BEGIN
+    DECLARE acronyms CHAR(64);
+    SET acronyms = 'OET,OIP,IMP,OCP,OLT,TOB,YEP';
+    RETURN acronyms;
+END//
+DELIMITER ;
+
+
+DELIMITER //
 CREATE TRIGGER programIDBeforeInsert
 BEFORE INSERT
 ON overseasPrograms FOR EACH ROW
@@ -273,10 +283,14 @@ BEGIN
     -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);
 
-    -- Set the new programID
-    SET NEW.`Program ID` = newProgramID;
+    -- Add condition here to prevent the trigger if the acronym already exists
+    IF NOT FIND_IN_SET(SUBSTRING(NEW.`Program ID`, 1, 3), getAcronyms()) THEN
+        -- Set the new programID
+        SET NEW.`Program ID` = newProgramID;
+    END IF;
 END//
 DELIMITER ;
+
 
 DELIMITER //
 CREATE TRIGGER updateProgramCompletionStatus
