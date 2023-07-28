@@ -93,44 +93,48 @@ CREATE TABLE auditTable (
     timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 DELIMITER //
-CREATE PROCEDURE Q1()
+CREATE PROCEDURE Q1(IN year INT)
 BEGIN
     SELECT *,
         'Q1' AS customQuarter
     FROM overseasPrograms
-    WHERE MONTH(`Start Date`) BETWEEN 4 AND 6;
+    WHERE MONTH(`Start Date`) BETWEEN 4 AND 6 AND YEAR(`Start Date`) = year;
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE Q2()
+CREATE PROCEDURE Q2(IN year INT)
 BEGIN
     SELECT *,
         'Q2' AS customQuarter
     FROM overseasPrograms
-    WHERE MONTH(`Start Date`) BETWEEN 7 AND 9;
+    WHERE MONTH(`Start Date`) BETWEEN 7 AND 9 AND YEAR(`Start Date`) = year;
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE Q3()
+CREATE PROCEDURE Q3(IN year INT)
 BEGIN
     SELECT *,
         'Q3' AS customQuarter
     FROM overseasPrograms
-    WHERE MONTH(`Start Date`) BETWEEN 10 AND 12;
+    WHERE MONTH(`Start Date`) BETWEEN 10 AND 12 AND YEAR(`Start Date`) = year;
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE Q4()
+CREATE PROCEDURE Q4(IN year INT)
 BEGIN
     SELECT *,
         'Q4' AS customQuarter
     FROM overseasPrograms
-    WHERE MONTH(`Start Date`) BETWEEN 1 AND 3;
+    WHERE MONTH(`Start Date`) BETWEEN 1 AND 3 AND YEAR(`Start Date`) = year;
 END //
 DELIMITER ;
+-- CALL Q1(2023);
+-- CALL Q2(2023);
+-- CALL Q3(2023);
+-- CALL Q4(2023);
 
 
 CREATE VIEW totalKpiEstimation AS
@@ -139,8 +143,10 @@ SELECT
     SUM(CASE WHEN students.`Study Stage` = 2 THEN 1 ELSE 0 END) AS stage2,
     SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) AS stage3,
     ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) AS kpi1Estimation,
-    ROUND(ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) * 0.67, 0) AS kpi2Estimation
+    ROUND(ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) * 0.67, 0) AS kpi2Estimation,
+    18 AS kpi3Estimation
 FROM students;
+
 
 CREATE VIEW kpiEstimation AS
 SELECT 
@@ -173,9 +179,25 @@ SELECT
             WHEN course.courseCode = 'EGDF12' THEN 0.06 
             WHEN course.courseCode = 'EGDF13' THEN 0.07 
             ELSE 0
-        END) AS kpi2
+        END) AS kpi2,
+    CEIL(totalKpiEstimation.kpi3Estimation * 
+        CASE
+            WHEN course.courseCode = 'EGDF20' THEN 0.17
+            WHEN course.courseCode = 'EGDF21' THEN 0.16
+            WHEN course.courseCode = 'EGDF11' THEN 0.11
+            WHEN course.courseCode = 'EGDF19' THEN 0.11
+            WHEN course.courseCode = 'EGDF17' THEN 0.08
+            WHEN course.courseCode = 'EGDF09' THEN 0.08
+            WHEN course.courseCode = 'EGDF22' THEN 0.08
+            WHEN course.courseCode = 'EGDFPA' THEN 0.08
+            WHEN course.courseCode = 'EGDF12' THEN 0.06
+            WHEN course.courseCode = 'EGDF13' THEN 0.07
+            ELSE 0
+        END) AS kpi3
 FROM course
-JOIN totalKpiEstimation ON 1=1;
+JOIN totalKpiEstimation ON 1=1
+WHERE course.courseCode <> 'EGDF94';
+
 
 
 CREATE VIEW KPI1 AS
