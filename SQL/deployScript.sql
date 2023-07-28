@@ -92,36 +92,111 @@ CREATE TABLE auditTable (
     `Program ID` CHAR(9) not null,
     timeStamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+DELIMITER //
+CREATE PROCEDURE Q1()
+BEGIN
+    SELECT *,
+        'Q1' AS customQuarter
+    FROM overseasPrograms
+    WHERE MONTH(`Start Date`) BETWEEN 4 AND 6;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Q2()
+BEGIN
+    SELECT *,
+        'Q2' AS customQuarter
+    FROM overseasPrograms
+    WHERE MONTH(`Start Date`) BETWEEN 7 AND 9;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Q3()
+BEGIN
+    SELECT *,
+        'Q3' AS customQuarter
+    FROM overseasPrograms
+    WHERE MONTH(`Start Date`) BETWEEN 10 AND 12;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE Q4()
+BEGIN
+    SELECT *,
+        'Q4' AS customQuarter
+    FROM overseasPrograms
+    WHERE MONTH(`Start Date`) BETWEEN 1 AND 3;
+END //
+DELIMITER ;
+
+
+CREATE VIEW totalKpiEstimation AS
+SELECT 
+    SUM(CASE WHEN students.`Study Stage` = 1 THEN 1 ELSE 0 END) AS stage1,
+    SUM(CASE WHEN students.`Study Stage` = 2 THEN 1 ELSE 0 END) AS stage2,
+    SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) AS stage3,
+    ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) AS kpi1Estimation,
+    ROUND(ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) * 0.67, 0) AS kpi2Estimation
+FROM students;
+
+CREATE VIEW kpiEstimation AS
+SELECT 
+    course.courseCode,
+    course.courseName,
+    CEIL(totalKpiEstimation.kpi1Estimation * 
+        CASE
+            WHEN course.courseCode = 'EGDF20' THEN 0.17
+            WHEN course.courseCode = 'EGDF21' THEN 0.16
+            WHEN course.courseCode = 'EGDF11' THEN 0.11
+            WHEN course.courseCode = 'EGDF19' THEN 0.11
+            WHEN course.courseCode = 'EGDF17' THEN 0.08
+            WHEN course.courseCode = 'EGDF09' THEN 0.08
+            WHEN course.courseCode = 'EGDF22' THEN 0.08
+            WHEN course.courseCode = 'EGDFPA' THEN 0.08
+            WHEN course.courseCode = 'EGDF12' THEN 0.06
+            WHEN course.courseCode = 'EGDF13' THEN 0.07
+            ELSE 0
+        END) AS kpi1,
+    CEIL(totalKpiEstimation.kpi2Estimation * 
+        CASE
+            WHEN course.courseCode = 'EGDF20' THEN 0.17 
+            WHEN course.courseCode = 'EGDF21' THEN 0.16 
+            WHEN course.courseCode = 'EGDF11' THEN 0.11 
+            WHEN course.courseCode = 'EGDF19' THEN 0.11 
+            WHEN course.courseCode = 'EGDF17' THEN 0.08 
+            WHEN course.courseCode = 'EGDF09' THEN 0.08 
+            WHEN course.courseCode = 'EGDF22' THEN 0.08 
+            WHEN course.courseCode = 'EGDFPA' THEN 0.08 
+            WHEN course.courseCode = 'EGDF12' THEN 0.06 
+            WHEN course.courseCode = 'EGDF13' THEN 0.07 
+            ELSE 0
+        END) AS kpi2
+FROM course
+JOIN totalKpiEstimation ON 1=1;
+
 
 CREATE VIEW KPI1 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`,
+    kpiEstimation.kpi1 AS `Estimated`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
+JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-GROUP BY course.courseCode, course.courseName
-UNION ALL
-SELECT 
-    'Total' AS `Course Code`,
-    'Students' AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
-FROM trips
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-UNION ALL
-SELECT 
-    'KPI' AS `Course Code`,
-    'Description' AS `Course Name`,
-    'Trips for all Stage 3 local students' AS `Number of Students`;
+GROUP BY course.courseCode, course.courseName;
 
 CREATE VIEW KPI2 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`,
+    kpiEstimation.kpi2 AS `Estimated`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
@@ -130,29 +205,16 @@ JOIN (
     FROM overseasPrograms
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
+JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-GROUP BY course.courseCode, course.courseName
-UNION ALL
-SELECT 
-    'Total' AS `Course Code`,
-    'Students' AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `ACI Trips Student Count`
-FROM trips
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-JOIN (
-    SELECT DISTINCT `Program ID`
-    FROM overseasPrograms
-    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
-) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-UNION ALL
-SELECT 'KPI', 'Description', 'ACI Trips for all Stage 3 local students';
+GROUP BY course.courseCode, course.courseName;
 
 CREATE VIEW KPI3 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`
+    COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`,
+    kpiEstimation.kpi3 AS `Estimated`
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
@@ -162,24 +224,9 @@ JOIN (
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
         AND `Program Type` = 'Overseas internship program'
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
+JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
 WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-GROUP BY course.courseCode, course.courseName
-UNION ALL
-SELECT 
-    'Total' AS `Course Code`,
-    'Students' AS `Course Name`,
-    COUNT(DISTINCT trips.`Student Admin`) AS `OITP ACI Trips Student Count`
-FROM trips
-JOIN students ON trips.`Student Admin` = students.`Admin Number`
-JOIN (
-    SELECT DISTINCT `Program ID`
-    FROM overseasPrograms
-    WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
-        AND `Program Type` = 'Overseas internship program'
-) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-WHERE students.`Study Stage` = 3 AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
-UNION ALL
-SELECT 'KPI', 'Description', 'ACI intern trips for all Stage 3 local students';
+GROUP BY course.courseCode, course.courseName;
 
 CREATE VIEW studentsView AS
 SELECT students.`Admin Number`, students.`Student Name`, students.`Citizenship Status`, students.`Study Stage`,

@@ -1,56 +1,4 @@
--- Table: countries
-SELECT * FROM countries;
 
--- Table: pemGroup
-SELECT * FROM pemGroup;
-
--- Table: course
-SELECT * FROM course;
-
--- Table: students
-SELECT * FROM students;
-
--- Table: overseasPrograms
-SELECT * FROM overseasPrograms;
-
--- Table: trips
-SELECT * FROM trips;
-
--- Table: oimpDetails
-SELECT * FROM oimpDetails;
-
--- Table: users
-SELECT * FROM users;
-
--- Table: auditTable
-SELECT * FROM auditTable;
-
--- View: KPI1
-SELECT * FROM KPI1;
-
--- View: KPI2
-SELECT * FROM KPI2;
-
--- View: KPI3
-SELECT * FROM KPI3;
-
--- View: oimpDetailsView
-SELECT * FROM oimpDetailsView;
-
--- View: programCountByType
-SELECT * FROM programCountByType;
-
--- View: stage3AciCountByProgramType
-SELECT * FROM stage3AciCountByProgramType;
-
--- View: plannedTrips
-SELECT * FROM plannedTrips;
-
--- View: tripDetails
-SELECT * FROM tripDetails;
-
--- View: studentCountByCitizenshipAndStage
-SELECT * FROM studentCountByCitizenshipAndStage;
 
 
 -- programID format 
@@ -77,10 +25,10 @@ SELECT * FROM studentCountByCitizenshipAndStage;
 
 -- SELECT *,
 -- CASE 
---     WHEN MONTH(startDate) BETWEEN 4 AND 6 THEN 'Q1'
---     WHEN MONTH(startDate) BETWEEN 7 AND 9 THEN 'Q2'
---     WHEN MONTH(startDate) BETWEEN 10 AND 12 THEN 'Q3'
---     WHEN MONTH(startDate) BETWEEN 1 AND 3 THEN 'Q4'
+--     WHEN MONTH(`Start Date`) BETWEEN 4 AND 6 THEN 'Q1'
+--     WHEN MONTH(`Start Date`) BETWEEN 7 AND 9 THEN 'Q2'
+--     WHEN MONTH(`Start Date`) BETWEEN 10 AND 12 THEN 'Q3'
+--     WHEN MONTH(`Start Date`) BETWEEN 1 AND 3 THEN 'Q4'
 --     ELSE 'Unknown'
 -- END AS customQuarter
 -- FROM overseasPrograms;
