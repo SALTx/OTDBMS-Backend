@@ -1,8 +1,6 @@
-create database `opsystem_test`;
+CREATE DATABASE IF NOT EXISTS `opsystem_test`;
 USE opsystem_test;
 
--- create database `overseasProto`;
--- USE overseasProto;
 CREATE TABLE IF NOT EXISTS countries (
     countryCode char(2) not null, 
     countryName varchar(64) not null,
@@ -133,28 +131,22 @@ BEGIN
 END //
 DELIMITER ;
 
-CREATE VIEW totalKpiEstimation AS
+CREATE VIEW IF NOT EXISTS totalKpiEstimation AS
 SELECT 
-    -- Count of students in 'Study Stage' 1
     SUM(CASE WHEN students.`Study Stage` = 1 THEN 1 ELSE 0 END) AS stage1,
     
-    -- Count of students in 'Study Stage' 2
     SUM(CASE WHEN students.`Study Stage` = 2 THEN 1 ELSE 0 END) AS stage2,
     
-    -- Count of students in 'Study Stage' 3
     SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) AS stage3,
     
-    -- Estimation for KPI1: 67% of students in 'Study Stage' 3, rounded to the nearest whole number
     ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) AS kpi1Estimation,
     
-    -- Estimation for KPI2: 67% of KPI1, rounded to the nearest whole number
     ROUND(ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) * 0.67, 0) AS kpi2Estimation,
     
-    -- Estimation for KPI3: A static value of 18
     18 AS kpi3Estimation
 FROM students;
 
-CREATE VIEW kpiEstimation AS
+CREATE VIEW IF NOT EXISTS kpiEstimation AS
 SELECT 
     course.courseCode,
     course.courseName,
@@ -204,27 +196,19 @@ FROM course
 JOIN totalKpiEstimation ON 1=1
 WHERE course.courseCode <> 'EGDF94';
 
-⁡⁣⁣⁢-- KPI1 VIEW⁡
-CREATE VIEW KPI1 AS
--- Retrieves data for specific courses with their corresponding KPI estimations.
+CREATE VIEW IF NOT EXISTS KPI1 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
     COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`,
     kpiEstimation.kpi1 AS `Estimated`
--- Specifies source tables for data retrieval and performs LEFT JOIN with 'kpiEstimation' table to get corresponding KPI estimations for specific courses.
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
 LEFT JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
--- Filters data based on conditions to consider students in 'Study Stage' 3 with specific citizenship statuses.
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
--- Groups results by 'courseCode' and 'courseName' for specific courses.
 GROUP BY course.courseCode, course.courseName
--- The UNION ALL operator is used to combine the results of three SELECT statements into a single result set.
--- Retrieves the total count of students for all courses without specifying a course code or name.
--- this process is done in such a redundant way to prevent unsolved bugs that will occur otherwise.
 UNION ALL
 SELECT 
     'Total' AS `Course Code`,
@@ -235,7 +219,6 @@ FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
--- Retrieves a KPI description without specifying a course code or name.
 UNION ALL
 SELECT 
     'KPI' AS `Course Code`,
@@ -243,15 +226,12 @@ SELECT
     'Trips for all Stage 3 local students' AS `Number of Students`,
     NULL AS `Estimated`;
 
-⁡⁣⁣⁢-- KPI2 VIEW⁡
-CREATE VIEW KPI2 AS
--- Retrieves data for specific courses with their corresponding KPI estimations for ACI trips.
+CREATE VIEW IF NOT EXISTS KPI2 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
     COUNT(DISTINCT trips.`Student Admin`) AS `Number of Students`,
     kpiEstimation.kpi2 AS `Estimated`
--- Specifies source tables for data retrieval and performs JOIN with a subquery to get distinct 'Program ID's of ACI trips.
 FROM trips
 JOIN students ON trips.`Student Admin` = students.`Admin Number`
 JOIN course ON students.`Course Code` = course.courseCode
@@ -260,16 +240,10 @@ JOIN (
     FROM overseasPrograms
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
--- Performs LEFT JOIN with 'kpiEstimation' table to get corresponding KPI estimations for specific courses.
 LEFT JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
--- Filters data based on conditions to consider students in 'Study Stage' 3 with specific citizenship statuses and ACI trips with the specified 'aciCountry'.
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
--- Groups results by 'courseCode' and 'courseName' for specific courses.
 GROUP BY course.courseCode, course.courseName
--- The UNION ALL operator is used to combine the results of three SELECT statements into a single result set.
--- Retrieves the total count of students in ACI trips without specifying a course code or name.
--- this process is done in such a redundant way to prevent unsolved bugs that will occur otherwise.
 UNION ALL
 SELECT 
     'Total' AS `Course Code`,
@@ -285,7 +259,6 @@ JOIN (
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
--- Retrieves a KPI description for ACI trips without specifying a course code or name.
 UNION ALL
 SELECT 
     'KPI' AS `Course Code`,
@@ -293,9 +266,7 @@ SELECT
     'ACI Trips for all Stage 3 local students' AS `ACI Trips Student Count`,
     NULL AS `Estimated`;
 
-⁡⁣⁣⁢-- KPI3 VIEW⁡
-CREATE VIEW KPI3 AS
--- Retrieves data for specific courses with their corresponding KPI estimations for ACI intern trips.
+CREATE VIEW IF NOT EXISTS KPI3 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
@@ -314,8 +285,6 @@ LEFT JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName
--- Retrieves the total count of students in ACI intern trips without specifying a course code or name.
--- this process is done in such a redundant way to prevent unsolved bugs that will occur otherwise.
 UNION ALL
 SELECT 
     'Total' AS `Course Code`,
@@ -332,22 +301,19 @@ JOIN (
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
--- Retrieves a KPI description for ACI intern trips without specifying a course code or name.
 UNION ALL
 SELECT 
     'KPI' AS `Course Code`,
     'Description' AS `Course Name`,
     'ACI intern trips for all Stage 3 local students' AS `OITP ACI Trips Student Count`,
     NULL AS `Estimated`;
-⁡⁣⁣⁢--studentsView⁡
-CREATE VIEW studentsView AS
+CREATE VIEW IF NOT EXISTS studentsView AS
 SELECT students.`Admin Number`, students.`Student Name`, students.`Citizenship Status`, students.`Study Stage`,
        course.courseName AS `Course`, students.`PEM Group`
 FROM students
 JOIN course ON students.`Course Code` = course.courseCode;
 
-⁡⁣⁣⁢-- overseasProgramsView⁡⁡
-CREATE VIEW overseasProgramsView AS
+CREATE VIEW IF NOT EXISTS overseasProgramsView AS
 SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`,
        overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`,
        countries.countryName AS `Country`, overseasPrograms.City, overseasPrograms.`Partner Name`,
@@ -356,8 +322,7 @@ SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasP
 FROM overseasPrograms
 JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode;
 
--⁡⁣⁣⁢- oimpDetailsView⁡⁡
-CREATE VIEW oimpDetailsView AS
+CREATE VIEW IF NOT EXISTS oimpDetailsView AS
 SELECT
     trips.`Student Admin`,
     trips.`Program ID`,
@@ -374,8 +339,7 @@ JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 JOIN course ON oimpDetails.courseCode = course.courseCode 
 WHERE students.`Study Stage` = 3;
 
-⁡⁣⁣⁢--tripDetails view⁡
-CREATE VIEW tripDetails AS
+CREATE VIEW IF NOT EXISTS tripDetails AS
 SELECT
     students.`Admin Number`,
     students.`Student Name`,
@@ -427,24 +391,17 @@ BEGIN
     DECLARE seqNum CHAR(3);
     DECLARE newProgramID CHAR(9);
 
-    -- Call the stored procedure to get the acronym
     CALL getProgramAcronym(NEW.`Program Type`, acronym);
 
-    -- Get the year from the startDate
     SET year = SUBSTRING(YEAR(NEW.`Start Date`), 3, 2);
 
-    -- Get the ACI or NON-ACI character directly from the countries table
     SET aciChar = (SELECT aciCountry FROM countries WHERE countryCode = NEW.`Country Code`);
 
-    -- Get the next sequence number
     SET seqNum = LPAD((SELECT COUNT(*) + 1 FROM overseasPrograms WHERE SUBSTRING(`Program ID`, 4, 2) = year), 3, '0');
 
-    -- Construct the new programID
     SET newProgramID = CONCAT(acronym, year, aciChar, seqNum);
 
-    -- Add condition here to prevent the trigger if the acronym already exists
     IF NOT FIND_IN_SET(SUBSTRING(NEW.`Program ID`, 1, 3), getAcronyms()) THEN
-        -- Set the new programID
         SET NEW.`Program ID` = newProgramID;
     END IF;
 END//
