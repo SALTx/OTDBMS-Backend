@@ -51,7 +51,7 @@ def generate_programs(num_programs, conn):
         estNumStudents = 1  
         # Set Approve status based on program date
         if end_date.year > current_year:
-            approve_status = random.choice(['Planned', 'Cancelled','Postponed'])
+            approve_status = random.choice(['Postponed', 'Planned','Cancelled'])
         else:
             approve_status = 'Approved'
         programs.append(
@@ -59,8 +59,6 @@ def generate_programs(num_programs, conn):
              overseasPartnerType, tripLeaders, estNumStudents, approve_status))
 
     return programs
-
-
 
 def choose_program_type(program_types):
     """Choose a program type based on the given distribution."""
