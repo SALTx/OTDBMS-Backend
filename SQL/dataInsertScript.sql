@@ -1,5 +1,4 @@
--- Sample data for pemGroup table
-INSERT INTO `pemGroup`(`pemGroupId`, `pemName`) VALUES
+INSERT IGNORE INTO `pemGroup`(`pemGroupId`, `pemName`) VALUES
 ('PEM002', 'Placeholder 2'),
 ('PEM001', 'Placeholder 1'),
 ('PEM003', 'Placeholder 3'),
@@ -51,8 +50,7 @@ INSERT INTO `pemGroup`(`pemGroupId`, `pemName`) VALUES
 ('PEM049', 'Placeholder 49'),
 ('PEM050', 'Placeholder 50');
 
--- Actual data for course table
-INSERT INTO `course` (`courseCode`, `courseName`, `courseManager`) VALUES
+INSERT IGNORE INTO `course` (`courseCode`, `courseName`, `courseManager`) VALUES
 ('EGDF94', 'Common Engineering Programme', 'Siew Peng Shorn'),
 ('EGDF22', 'Advanced & Digital Manufacturing', 'Kent Loo'),
 ('EGDF11', 'Aeronautical & Aerospace Technology', 'Sneharaj Malankad'),
@@ -66,13 +64,12 @@ INSERT INTO `course` (`courseCode`, `courseName`, `courseManager`) VALUES
 ('EGDF19', 'Robotics & Mechatronics', 'David Poh');
 
 
--- Sample data for users table
-INSERT INTO `users` (`username`, `password`, `accountType`, `name`) VALUES
+INSERT IGNORE INTO `users` (`username`, `password`, `accountType`, `name`) VALUES
 ('admin', 'adminpass', 'Admin', 'John Admin'),
 ('teacher1', 'teacher1pass', 'Teacher', 'Jane Teacher'),
 ('guest1', 'guest1pass', 'Guest', 'Bob Guest');
 
-INSERT INTO `countries` (`countryCode`, `countryName`, `aciCountry`) VALUES ('AF', 'Afghanistan', 'N'),
+INSERT IGNORE INTO `countries` (`countryCode`, `countryName`, `aciCountry`) VALUES ('AF', 'Afghanistan', 'N'),
 ('AX', 'Åland Islands', 'N'),
 ('AL', 'Albania', 'N'),
 ('DZ', 'Algeria', 'N'),
@@ -317,7 +314,7 @@ INSERT INTO `countries` (`countryCode`, `countryName`, `aciCountry`) VALUES ('AF
 ('ZW', 'Zimbabwe', 'N');
 
 
-INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
+INSERT IGNORE INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('239752S', 'Student 239752S', 'Permanent resident', 1, 'EGDF94', 'PEM001'),
 ('234145O', 'Student 234145O', 'International Student', 1, 'EGDF94', 'PEM001'),
 ('239964Q', 'Student 239964Q', 'Singapore citizen', 1, 'EGDF94', 'PEM001'),
@@ -986,7 +983,7 @@ INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `S
 ('238411R', 'Student 238411R', 'Singapore citizen', 1, 'EGDF11', 'PEM032'),
 ('230827B', 'Student 230827B', 'Singapore citizen', 1, 'EGDF11', 'PEM032'),
 ('230428E', 'Student 230428E', 'Permanent resident', 1, 'EGDF11', 'PEM032');
-INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
+INSERT IGNORE INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('237677B', 'Student 237677B', 'Singapore citizen', 1, 'EGDF11', 'PEM032'),
 ('233219Q', 'Student 233219Q', 'Singapore citizen', 1, 'EGDF11', 'PEM032'),
 ('230666X', 'Student 230666X', 'Singapore citizen', 1, 'EGDF11', 'PEM032'),
@@ -1655,7 +1652,7 @@ INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `S
 ('222373G', 'Student 222373G', 'Singapore citizen', 2, 'EGDF21', 'PEM016'),
 ('226063X', 'Student 226063X', 'International Student', 2, 'EGDF21', 'PEM016'),
 ('229591G', 'Student 229591G', 'Singapore citizen', 2, 'EGDF21', 'PEM016');
-INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
+INSERT IGNORE INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('229748R', 'Student 229748R', 'Singapore citizen', 2, 'EGDF11', 'PEM016'),
 ('223516S', 'Student 223516S', 'Permanent resident', 2, 'EGDF11', 'PEM016'),
 ('221693D', 'Student 221693D', 'Singapore citizen', 2, 'EGDF11', 'PEM016'),
@@ -2324,7 +2321,7 @@ INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `S
 ('225438S', 'Student 225438S', 'Singapore citizen', 2, 'EGDF13', 'PEM047'),
 ('229266I', 'Student 229266I', 'Singapore citizen', 2, 'EGDF13', 'PEM047'),
 ('221929F', 'Student 221929F', 'Singapore citizen', 2, 'EGDF13', 'PEM047');
-INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
+INSERT IGNORE INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('225976F', 'Student 225976F', 'Singapore citizen', 2, 'EGDF13', 'PEM048'),
 ('227305E', 'Student 227305E', 'Singapore citizen', 2, 'EGDF13', 'PEM048'),
 ('215025A', 'Student 215025A', 'Singapore citizen', 3, 'EGDF20', 'PEM001'),
@@ -2993,7 +2990,7 @@ INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `S
 ('211116V', 'Student 211116V', 'Singapore citizen', 3, 'EGDF09', 'PEM033'),
 ('211547R', 'Student 211547R', 'Singapore citizen', 3, 'EGDF09', 'PEM033'),
 ('210801C', 'Student 210801C', 'Singapore citizen', 3, 'EGDF09', 'PEM033');
-INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
+INSERT IGNORE INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `Study Stage`, `Course Code`, `PEM Group`) VALUES
 ('210582S', 'Student 210582S', 'Permanent resident', 3, 'EGDF09', 'PEM033'),
 ('214493E', 'Student 214493E', 'Permanent resident', 3, 'EGDF09', 'PEM033'),
 ('215402U', 'Student 215402U', 'Singapore citizen', 3, 'EGDF09', 'PEM033'),
@@ -3330,7 +3327,7 @@ INSERT INTO `students` (`Admin Number`, `Student Name`, `Citizenship Status`, `S
 ('213578V', 'Student 213578V', 'Singapore citizen', 3, 'EGDF13', 'PEM048');
 
 
-INSERT INTO `overseasPrograms` (`Program ID`, `Program Name`, `Program Type`, `Start Date`, `End Date`, `Estimated Date`, `Country Code`, `City`, `Partner Name`, `Overseas Partner Type`, `Trip Leaders`, `Estimated students`, `Approve status`) VALUES
+INSERT IGNORE INTO `overseasPrograms` (`Program ID`, `Program Name`, `Program Type`, `Start Date`, `End Date`, `Estimated Date`, `Country Code`, `City`, `Partner Name`, `Overseas Partner Type`, `Trip Leaders`, `Estimated students`, `Approve status`) VALUES
 ('OIP21N068', 'Program PROG00060', 'Overseas internship program', '2021-05-10', '2021-08-17', '', 'AD', 'City 60', 'Partner 60', 'Company', 'to be appointed', 1, 'Completed'),
 ('OIP21N067', 'Program PROG00059', 'Overseas internship program', '2021-03-06', '2021-06-04', '', 'LI', 'City 59', 'Partner 59', 'Institution', 'to be appointed', 1, 'Completed'),
 ('OIP21N066', 'Program PROG00058', 'Overseas internship program', '2021-11-29', '2022-04-27', '', 'OM', 'City 58', 'Partner 58', 'Others', 'to be appointed', 1, 'Completed'),
@@ -3593,7 +3590,7 @@ INSERT INTO `overseasPrograms` (`Program ID`, `Program Name`, `Program Type`, `S
 ('IMP21A001', 'Program PROG00001', 'Overseas immersion program', '2021-09-15', '2021-09-27', '', 'PH', 'City 1', 'Partner 1', 'Company', 'to be appointed', 1, 'Completed');
 
 
-INSERT INTO `trips` (`Student Admin`, `Program ID`, `Comments`) VALUES
+INSERT IGNORE INTO `trips` (`Student Admin`, `Program ID`, `Comments`) VALUES
 ('210593M', 'OIP21N068', ''),
 ('215970Q', 'OIP21N068', ''),
 ('219927P', 'OIP21N068', ''),
@@ -5296,7 +5293,7 @@ INSERT INTO `trips` (`Student Admin`, `Program ID`, `Comments`) VALUES
 ('223416O', 'OET22A002', ''),
 ('226627S', 'OET22A002', '');
 
-INSERT INTO `oimpDetails` (`gsmCode`, `courseCode`, `studAdmin`, `gsmName`) VALUES
+INSERT IGNORE INTO `oimpDetails` (`gsmCode`, `courseCode`, `studAdmin`, `gsmName`) VALUES
 ('your_gsmCode', 'EGDFPA', '216308S', 'your_gsmName'),
 ('your_gsmCode', 'EGDF09', '215402U', 'your_gsmName'),
 ('your_gsmCode', 'EGDF20', '212875Y', 'your_gsmName'),
