@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS students (
     `Admin Number` CHAR(7) NOT NULL,
     `Student Name` VARCHAR(64) NOT NULL,
     `Citizenship Status` ENUM ('Singapore citizen', 'Permanent resident', 'International Student') NOT NULL,
-    `Study Stage` TINYINT NOT NULL,
+    `Study Stage` TINYINT,
     `Course Code` CHAR(6) NOT NULL,
     `PEM Group` CHAR(6) NOT NULL,
     PRIMARY KEY (`Admin Number`),
@@ -131,22 +131,17 @@ BEGIN
 END //
 DELIMITER ;
 
-CREATE VIEW IF NOT EXISTS totalKpiEstimation AS
-SELECT 
+CREATE VIEW totalKpiEstimation AS
+SELECT
     SUM(CASE WHEN students.`Study Stage` = 1 THEN 1 ELSE 0 END) AS stage1,
-    
     SUM(CASE WHEN students.`Study Stage` = 2 THEN 1 ELSE 0 END) AS stage2,
-    
     SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) AS stage3,
-    
     ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) AS kpi1Estimation,
-    
     ROUND(ROUND(SUM(CASE WHEN students.`Study Stage` = 3 THEN 1 ELSE 0 END) * 0.67, 0) * 0.67, 0) AS kpi2Estimation,
-    
     18 AS kpi3Estimation
 FROM students;
 
-CREATE VIEW IF NOT EXISTS kpiEstimation AS
+CREATE VIEW kpiEstimation AS
 SELECT 
     course.courseCode,
     course.courseName,
@@ -196,7 +191,7 @@ FROM course
 JOIN totalKpiEstimation ON 1=1
 WHERE course.courseCode <> 'EGDF94';
 
-CREATE VIEW IF NOT EXISTS KPI1 AS
+CREATE VIEW KPI1 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
@@ -226,7 +221,7 @@ SELECT
     'Trips for all Stage 3 local students' AS `Number of Students`,
     NULL AS `Estimated`;
 
-CREATE VIEW IF NOT EXISTS KPI2 AS
+CREATE VIEW KPI2 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
@@ -266,7 +261,7 @@ SELECT
     'ACI Trips for all Stage 3 local students' AS `ACI Trips Student Count`,
     NULL AS `Estimated`;
 
-CREATE VIEW IF NOT EXISTS KPI3 AS
+CREATE VIEW KPI3 AS
 SELECT 
     course.courseCode AS `Course Code`,
     course.courseName AS `Course Name`,
@@ -307,13 +302,14 @@ SELECT
     'Description' AS `Course Name`,
     'ACI intern trips for all Stage 3 local students' AS `OITP ACI Trips Student Count`,
     NULL AS `Estimated`;
-CREATE VIEW IF NOT EXISTS studentsView AS
+
+CREATE VIEW studentsView AS
 SELECT students.`Admin Number`, students.`Student Name`, students.`Citizenship Status`, students.`Study Stage`,
        course.courseName AS `Course`, students.`PEM Group`
 FROM students
 JOIN course ON students.`Course Code` = course.courseCode;
 
-CREATE VIEW IF NOT EXISTS overseasProgramsView AS
+CREATE VIEW overseasProgramsView AS
 SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasPrograms.`Program Type`,
        overseasPrograms.`Start Date`, overseasPrograms.`End Date`, overseasPrograms.`Estimated Date`,
        countries.countryName AS `Country`, overseasPrograms.City, overseasPrograms.`Partner Name`,
@@ -322,7 +318,7 @@ SELECT overseasPrograms.`Program ID`, overseasPrograms.`Program Name`, overseasP
 FROM overseasPrograms
 JOIN countries ON overseasPrograms.`Country Code` = countries.countryCode;
 
-CREATE VIEW IF NOT EXISTS oimpDetailsView AS
+CREATE VIEW oimpDetailsView AS
 SELECT
     trips.`Student Admin`,
     trips.`Program ID`,
@@ -339,7 +335,7 @@ JOIN oimpDetails ON trips.`Student Admin` = oimpDetails.studAdmin
 JOIN course ON oimpDetails.courseCode = course.courseCode 
 WHERE students.`Study Stage` = 3;
 
-CREATE VIEW IF NOT EXISTS tripDetails AS
+CREATE VIEW tripDetails AS
 SELECT
     students.`Admin Number`,
     students.`Student Name`,

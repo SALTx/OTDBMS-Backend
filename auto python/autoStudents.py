@@ -6,7 +6,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProto')
+                           database='demo')
     return conn
 
 def generate_adminNo(year, existing_admins):

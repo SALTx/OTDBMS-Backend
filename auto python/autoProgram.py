@@ -6,7 +6,7 @@ def create_conn():
     conn = pymysql.connect(host='localhost',
                            user='root',
                            password='',
-                           database='overseasProto')
+                           database='demo')
     return conn
 
 def get_current_year():
@@ -99,8 +99,8 @@ def insert_into_table(table_name, data, conn):
 
 conn = create_conn()
 
-# Generate dummy data for 400 overseas programs
-programs = generate_programs(60, conn)
+# Generate dummy data for inserted amount of overseas programs
+programs = generate_programs(200, conn)
 
 # Insert the dummy data into the 'overseasPrograms' table
 insert_into_table('overseasPrograms', programs, conn)
