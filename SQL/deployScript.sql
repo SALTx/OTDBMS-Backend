@@ -246,7 +246,7 @@ JOIN (
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 LEFT JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
-LEFT JOIN totalKpiEstimation ON course.courseCode = 'Total'  -- Joining with totalKpiEstimation for "Total Students" row
+LEFT JOIN totalKpiEstimation ON course.courseCode = 'Total'  
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName, totalKpiEstimation.kpi2Estimation
@@ -265,7 +265,7 @@ JOIN (
     FROM overseasPrograms
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-LEFT JOIN totalKpiEstimation ON 1 = 1 -- Cartesian join to get the totalKpiEstimation values for "Total Students" row
+LEFT JOIN totalKpiEstimation ON 1 = 1 
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 
@@ -276,7 +276,7 @@ SELECT
     'Description' AS `Course Name`,
     'ACI Trips for all Stage 3 local students' AS `Number of Students`,
     NULL AS `Estimated`
-WHERE 1 = 1; -- Just to complete the UNION ALL
+WHERE 1 = 1; 
 
 CREATE VIEW KPI3 AS
 SELECT 
@@ -297,7 +297,7 @@ JOIN (
         AND `Program Type` = 'Overseas internship program'
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
 LEFT JOIN kpiEstimation ON course.courseCode = kpiEstimation.courseCode
-LEFT JOIN totalKpiEstimation ON course.courseCode = 'Total'  -- Joining with totalKpiEstimation for "Total Students" row
+LEFT JOIN totalKpiEstimation ON course.courseCode = 'Total' 
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 GROUP BY course.courseCode, course.courseName, totalKpiEstimation.kpi3Estimation
@@ -317,7 +317,7 @@ JOIN (
     WHERE `Country Code` IN (SELECT countryCode FROM countries WHERE aciCountry = 'A')
         AND `Program Type` = 'Overseas internship program'
 ) AS overseasPrograms ON trips.`Program ID` = overseasPrograms.`Program ID`
-LEFT JOIN totalKpiEstimation ON 1 = 1 -- Cartesian join to get the totalKpiEstimation values for "Total Students" row
+LEFT JOIN totalKpiEstimation ON 1 = 1 
 WHERE students.`Study Stage` = 3
     AND students.`Citizenship Status` IN ('Permanent resident', 'Singapore citizen')
 
@@ -328,7 +328,7 @@ SELECT
     'Description' AS `Course Name`,
     'ACI intern trips for all Stage 3 local students' AS `Number of Students`,
     NULL AS `Estimated`
-WHERE 1 = 1; -- Just to complete the UNION ALL
+WHERE 1 = 1; 
 
 
 CREATE VIEW studentsView AS
